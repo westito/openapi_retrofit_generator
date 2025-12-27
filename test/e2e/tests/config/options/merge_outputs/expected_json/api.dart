@@ -3,6 +3,7 @@
 // ignore_for_file: type=lint, unused_import, invalid_annotation_target, unnecessary_import
 
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:dio/dio.dart' hide Headers;
 import 'package:json_annotation/json_annotation.dart';
@@ -170,10 +171,8 @@ abstract class FilesClient {
 
   /// Download file
   @GET('/files/{fileId}/download')
-  @DioResponseType(ResponseType.bytes)
-  Future<HttpResponse<List<int>>> downloadFile({
-    @Path('fileId') required String fileId,
-  });
+  @DioResponseType(ResponseType.stream)
+  Stream<Uint8List> downloadFile({@Path('fileId') required String fileId});
 }
 
 @RestApi()

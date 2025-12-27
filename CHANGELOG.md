@@ -1,3 +1,15 @@
+## 2.1.0
+### Features
+- Add streaming response support for Server-Sent Events (SSE) and binary streaming
+  - Automatically detect streaming endpoints via:
+    - `text/event-stream` content type
+    - `application/octet-stream` content type
+    - `x-streaming: true` extension property on operations
+  - Generate `Stream<String>` for text/event-stream and x-streaming (default)
+  - Generate `Stream<Uint8List>` for application/octet-stream or `format: binary`
+  - Add `@DioResponseType(ResponseType.stream)` annotation for streaming endpoints
+  - Automatically add required imports (`dart:convert`, `dart:typed_data`)
+
 ## 2.0.2
 - Packages updated
 - Documentation improvements

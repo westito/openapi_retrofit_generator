@@ -72,17 +72,17 @@ class _FilesClient implements FilesClient {
   }
 
   @override
-  Future<HttpResponse<List<int>>> downloadFile({required String fileId}) async {
+  Stream<Uint8List> downloadFile({required String fileId}) async* {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<HttpResponse<List<int>>>(
+    final _options = _setStreamType<Uint8List>(
       Options(
             method: 'GET',
             headers: _headers,
             extra: _extra,
-            responseType: ResponseType.bytes,
+            responseType: ResponseType.stream,
           )
           .compose(
             _dio.options,
@@ -92,16 +92,15 @@ class _FilesClient implements FilesClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<int> _value;
+    final _result = await _dio.fetch<Uint8List>(_options);
+    late Uint8List _value;
     try {
-      _value = _result.data!.cast<int>();
+      _value = _result.data!;
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    final httpResponse = HttpResponse(_value, _result);
-    return httpResponse;
+    yield _value;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

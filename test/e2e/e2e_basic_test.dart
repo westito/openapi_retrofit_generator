@@ -498,5 +498,19 @@ void main() {
         buildFolder: buildFolder,
       );
     });
+
+    test('sse_streaming', () async {
+      await e2eTest(
+        'basic/sse_streaming',
+        (outputDirectory, schemaPath, serializer) => OpenApiConfig(
+          outputDirectory: outputDirectory,
+          schemaPath: schemaPath,
+          jsonSerializer: serializer,
+          putClientsInFolder: true,
+        ),
+        schemaFileName: 'openapi.yaml',
+        buildFolder: buildFolder,
+      );
+    });
   });
 }

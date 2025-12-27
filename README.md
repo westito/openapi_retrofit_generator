@@ -398,6 +398,96 @@ try {
 }
 ```
 
+### Streaming Responses
+
+The generator supports streaming endpoints for Server-Sent Events (SSE) and binary streaming. Streaming is automatically detected based on:
+
+1. **`text/event-stream`** content type - for SSE endpoints
+2. **`application/octet-stream`** content type - for binary streaming
+3. **`x-streaming: true`** extension property on the operation
+
+**Response Type Logic:**
+- `Stream<String>` - Default for `text/event-stream` and `x-streaming`
+- `Stream<Uint8List>` - For `application/octet-stream` or when `format: binary` is specified
+
+**Example OpenAPI spec:**
+
+```yaml
+paths:
+  /events:
+    get:
+      operationId: getEvents
+      responses:
+        '200':
+          content:
+            text/event-stream:
+              schema:
+                type: string
+  
+  /stream/binary:
+    get:
+      operationId: streamBinary
+      responses:
+        '200':
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+  
+  /chat:
+    post:
+      operationId: chat
+      x-streaming: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+```
+
+**Generated code:**
+
+```dart
+@RestApi()
+abstract class ApiClient {
+  factory ApiClient(Dio dio) = _ApiClient;
+
+  // text/event-stream -> Stream<String> (default)
+  @GET('/events')
+  @DioResponseType(ResponseType.stream)
+  Stream<String> getEvents();
+
+  // application/octet-stream -> Stream<Uint8List>
+  @GET('/stream/binary')
+  @DioResponseType(ResponseType.stream)
+  Stream<Uint8List> streamBinary();
+
+  // x-streaming -> Stream<String> (default)
+  @POST('/chat')
+  @DioResponseType(ResponseType.stream)
+  Stream<String> chat();
+}
+```
+
+**Usage example:**
+
+```dart
+// SSE text stream
+final eventStream = client.api.getEvents();
+await for (final event in eventStream) {
+  print('Received: $event');
+}
+
+// Binary stream
+final binaryStream = client.api.streamBinary();
+await for (final chunk in binaryStream) {
+  // Process Uint8List chunks
+  processChunk(chunk);
+}
+```
+
 ## Complete Configuration Reference
 
 For all available configuration options, see:

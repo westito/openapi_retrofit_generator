@@ -1,0 +1,307 @@
+openapi: "3.1.0"
+info:
+  title: SSE Streaming API
+  description: API with Server-Sent Events streaming endpoint
+  version: "1.0.0"
+
+paths:
+  /api/session/{id}/event:
+    get:
+      tags:
+        - sessions
+      operationId: subscribe_events
+      parameters:
+        - name: id
+          in: path
+          description: Session ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: SSE event stream
+          content:
+            text/event-stream:
+              schema:
+                $ref: "#/components/schemas/SessionEvent"
+
+components:
+  schemas:
+    Session:
+      type: object
+      required:
+        - id
+        - project_id
+        - title
+        - created_at
+      properties:
+        id:
+          type: string
+        project_id:
+          type: string
+        title:
+          type: string
+        agent:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+          nullable: true
+
+    Message:
+      type: object
+      required:
+        - id
+        - thread_id
+        - role
+        - parts
+        - created_at
+      properties:
+        id:
+          type: string
+        thread_id:
+          type: string
+        role:
+          $ref: "#/components/schemas/MessageRole"
+        parts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Part"
+        created_at:
+          type: string
+          format: date-time
+
+    MessageRole:
+      type: string
+      enum:
+        - user
+        - assistant
+
+    Part:
+      oneOf:
+        - type: object
+          required:
+            - id
+            - text
+            - type
+          properties:
+            id:
+              type: string
+            text:
+              type: string
+            type:
+              type: string
+              enum:
+                - text
+        - type: object
+          required:
+            - id
+            - tool_name
+            - tool_call_id
+            - tool_input
+            - type
+          properties:
+            id:
+              type: string
+            tool_name:
+              type: string
+            tool_call_id:
+              type: string
+            tool_input: {}
+            type:
+              type: string
+              enum:
+                - tool_use
+        - type: object
+          required:
+            - id
+            - tool_name
+            - tool_call_id
+            - tool_result
+            - is_error
+            - type
+          properties:
+            id:
+              type: string
+            tool_name:
+              type: string
+            tool_call_id:
+              type: string
+            tool_result:
+              type: string
+            is_error:
+              type: boolean
+            type:
+              type: string
+              enum:
+                - tool_result
+
+    TokenUsage:
+      type: object
+      required:
+        - input
+        - output
+        - reasoning
+        - cache_read
+        - cache_write
+      properties:
+        input:
+          type: integer
+          format: int32
+        output:
+          type: integer
+          format: int32
+        reasoning:
+          type: integer
+          format: int32
+        cache_read:
+          type: integer
+          format: int32
+        cache_write:
+          type: integer
+          format: int32
+
+    SessionEvent:
+      description: Server-sent event for a session
+      oneOf:
+        - type: object
+          description: Sent when SSE connection is established
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - connected
+        - type: object
+          description: Session was updated
+          required:
+            - session
+            - type
+          properties:
+            session:
+              $ref: "#/components/schemas/Session"
+            type:
+              type: string
+              enum:
+                - session_updated
+        - type: object
+          description: Session was deleted
+          required:
+            - session_id
+            - type
+          properties:
+            session_id:
+              type: string
+            type:
+              type: string
+              enum:
+                - session_deleted
+        - type: object
+          description: New message was created
+          required:
+            - message
+            - type
+          properties:
+            message:
+              $ref: "#/components/schemas/Message"
+            type:
+              type: string
+              enum:
+                - message_created
+        - type: object
+          description: Message was updated
+          required:
+            - message
+            - type
+          properties:
+            message:
+              $ref: "#/components/schemas/Message"
+            type:
+              type: string
+              enum:
+                - message_updated
+        - type: object
+          description: Message was removed
+          required:
+            - message_id
+            - type
+          properties:
+            message_id:
+              type: string
+            type:
+              type: string
+              enum:
+                - message_removed
+        - type: object
+          description: Message part was updated (streaming)
+          required:
+            - message_id
+            - part
+            - type
+          properties:
+            message_id:
+              type: string
+            part:
+              $ref: "#/components/schemas/Part"
+            type:
+              type: string
+              enum:
+                - part_updated
+        - type: object
+          description: Message part was removed
+          required:
+            - message_id
+            - part_id
+            - type
+          properties:
+            message_id:
+              type: string
+            part_id:
+              type: string
+            type:
+              type: string
+              enum:
+                - part_removed
+        - type: object
+          description: Processing started
+          required:
+            - type
+          properties:
+            type:
+              type: string
+              enum:
+                - processing_started
+        - type: object
+          description: Processing finished
+          required:
+            - type
+          properties:
+            error:
+              type: string
+              nullable: true
+              description: Optional error message if processing failed
+            type:
+              type: string
+              enum:
+                - processing_finished
+        - type: object
+          description: Error occurred
+          required:
+            - message
+            - type
+          properties:
+            message:
+              type: string
+            type:
+              type: string
+              enum:
+                - error
+
+tags:
+  - name: sessions
+    description: Session management

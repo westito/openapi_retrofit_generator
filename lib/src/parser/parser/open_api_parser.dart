@@ -99,6 +99,9 @@ class OpenApiParser {
   static const _typeConst = 'type';
   static const _versionConst = 'version';
   static const _xNullableConst = 'x-nullable';
+  static const _xStreamingConst = 'x-streaming';
+  static const _textEventStreamConst = 'text/event-stream';
+  static const _octetStreamConst = 'application/octet-stream';
 
   UniversalEnumClass _getUniqueEnumClass({
     required final String name,
@@ -216,25 +219,38 @@ class OpenApiParser {
     var resultContentType = config.defaultContentType;
 
     /// Parses return type for client query for OpenApi v3
-    UniversalType? returnTypeV3(
-      Map<String, dynamic> map,
-      String additionalName,
-    ) {
+    /// Returns a record with the return type and streaming content type info
+    ({UniversalType? type, bool isEventStream, bool isOctetStream})
+    returnTypeV3(Map<String, dynamic> map, String additionalName) {
       final code2xx = code2xxMap(map);
       if (code2xx == null || !code2xx.containsKey(_contentConst)) {
-        return null;
+        return (type: null, isEventStream: false, isOctetStream: false);
       }
-      final contentType = (code2xx[_contentConst] as Map<String, dynamic>?)
-          ?.entries
-          .firstOrNull;
+      final contentTypeMap = code2xx[_contentConst] as Map<String, dynamic>?;
+      final contentType = contentTypeMap?.entries.firstOrNull;
       if (contentType == null) {
-        return null;
+        return (type: null, isEventStream: false, isOctetStream: false);
       }
+
+      // Detect text/event-stream (SSE)
+      final isEventStream =
+          contentType.key == _textEventStreamConst ||
+          contentTypeMap?.containsKey(_textEventStreamConst) == true;
+
+      // Detect octet-stream (binary streaming)
+      final isOctetStream =
+          contentType.key == _octetStreamConst ||
+          contentTypeMap?.containsKey(_octetStreamConst) == true;
+
       final contentTypeValue = contentType.value as Map<String, dynamic>;
       if (contentTypeValue.isEmpty ||
           !contentTypeValue.containsKey(_schemaConst) ||
           (contentTypeValue[_schemaConst] as Map<String, dynamic>).isEmpty) {
-        return null;
+        return (
+          type: null,
+          isEventStream: isEventStream,
+          isOctetStream: isOctetStream,
+        );
       }
       final schemaMap = contentTypeValue[_schemaConst] as Map<String, dynamic>;
 
@@ -253,10 +269,18 @@ class OpenApiParser {
 
       // List<dynamic> is not supported by Retrofit, use dynamic instead
       if (typeWithImport.type.type == _objectConst) {
-        return typeWithImport.type.copyWith(wrappingCollections: const []);
+        return (
+          type: typeWithImport.type.copyWith(wrappingCollections: const []),
+          isEventStream: isEventStream,
+          isOctetStream: isOctetStream,
+        );
       }
 
-      return typeWithImport.type;
+      return (
+        type: typeWithImport.type,
+        isEventStream: isEventStream,
+        isOctetStream: isOctetStream,
+      );
     }
 
     /// Parses query parameters (parameters and requestBody)
@@ -535,6 +559,7 @@ class OpenApiParser {
     }
 
     /// Parses return type for client query for OpenApi v2
+    /// Returns a record with the return type (streaming is detected separately)
     UniversalType? returnTypeV2(
       Map<String, dynamic> map,
       String additionalName,
@@ -738,9 +763,62 @@ class OpenApiParser {
           final responseAdditionalName = '${indexedBaseName}Response';
           final requestBodyAdditionalName = '${indexedBaseName}Request';
 
-          final returnType = _apiInfo.schemaVersion == OAS.v2
-              ? returnTypeV2(requestPathResponses, responseAdditionalName)
-              : returnTypeV3(requestPathResponses, responseAdditionalName);
+          // Detect streaming from x-streaming property on the operation
+          final xStreaming =
+              requestPath[_xStreamingConst]?.toString().toBool() ?? false;
+
+          final UniversalType? returnType;
+          final StreamingType streamingType;
+          bool isSSE = false;
+
+          if (_apiInfo.schemaVersion == OAS.v2) {
+            returnType = returnTypeV2(
+              requestPathResponses,
+              responseAdditionalName,
+            );
+            // For V2, streaming is only detected via x-streaming property
+            if (xStreaming) {
+              // String by default, binary only if explicitly binary format
+              final isBinaryFormat =
+                  returnType?.format == 'binary' ||
+                  returnType?.format == 'byte';
+              streamingType = isBinaryFormat
+                  ? StreamingType.binary
+                  : StreamingType.string;
+            } else {
+              streamingType = StreamingType.none;
+            }
+          } else {
+            final result = returnTypeV3(
+              requestPathResponses,
+              responseAdditionalName,
+            );
+            returnType = result.type;
+
+            // SSE is only when content-type is text/event-stream
+            isSSE = result.isEventStream;
+
+            final isStreaming =
+                xStreaming || result.isEventStream || result.isOctetStream;
+
+            if (isStreaming) {
+              // Determine if response should be String or Binary:
+              // - octet-stream: always binary
+              // - binary format: always binary
+              // - everything else (text/event-stream, x-streaming): String by default
+              final isBinaryFormat =
+                  returnType?.format == 'binary' ||
+                  returnType?.format == 'byte';
+
+              if (result.isOctetStream || isBinaryFormat) {
+                streamingType = StreamingType.binary;
+              } else {
+                streamingType = StreamingType.string;
+              }
+            } else {
+              streamingType = StreamingType.none;
+            }
+          }
 
           final parameters = _apiInfo.schemaVersion == OAS.v2
               ? parametersV2(requestPath)
@@ -807,6 +885,8 @@ class OpenApiParser {
             parameters: parameters,
             isDeprecated:
                 requestPath[_deprecatedConst].toString().toBool() ?? false,
+            streamingType: streamingType,
+            isSSE: isSSE,
           );
           final sameTagIndex = restClients.indexWhere(
             (e) => e.name == currentTag,
@@ -837,6 +917,8 @@ class OpenApiParser {
                 returnType: request.returnType,
                 parameters: request.parameters,
                 isDeprecated: request.isDeprecated,
+                streamingType: request.streamingType,
+                isSSE: request.isSSE,
               );
               restClients[sameTagIndex].requests.add(updatedRequest);
             } else {

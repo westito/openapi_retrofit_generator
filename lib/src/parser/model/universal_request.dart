@@ -3,6 +3,20 @@ import 'package:meta/meta.dart';
 import 'package:openapi_retrofit_generator/src/parser/model/universal_request_type.dart';
 import 'package:openapi_retrofit_generator/src/parser/model/universal_type.dart';
 
+/// Streaming type for request responses
+enum StreamingType {
+  /// Not a streaming response
+  none,
+
+  /// Streaming with String response (text/event-stream or non-binary x-streaming)
+  /// Returns Stream<String>
+  string,
+
+  /// Streaming with binary response (x-streaming with binary format)
+  /// Returns Stream<Uint8List>
+  binary,
+}
+
 /// Universal template for containing information about Request
 @immutable
 final class UniversalRequest {
@@ -16,6 +30,8 @@ final class UniversalRequest {
     this.contentType = 'application/json',
     this.description,
     this.isDeprecated = false,
+    this.streamingType = StreamingType.none,
+    this.isSSE = false,
   });
 
   /// Request name
@@ -49,6 +65,16 @@ final class UniversalRequest {
   /// Value indicating whether this request is deprecated
   final bool isDeprecated;
 
+  /// Type of streaming for this request
+  final StreamingType streamingType;
+
+  /// Whether this request returns a stream
+  bool get isStreaming => streamingType != StreamingType.none;
+
+  /// Whether this request is a Server-Sent Events (SSE) endpoint
+  /// (content-type: text/event-stream)
+  final bool isSSE;
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -61,7 +87,9 @@ final class UniversalRequest {
           returnType == other.returnType &&
           const DeepCollectionEquality().equals(parameters, other.parameters) &&
           isMultiPart == other.isMultiPart &&
-          isFormUrlEncoded == other.isFormUrlEncoded;
+          isFormUrlEncoded == other.isFormUrlEncoded &&
+          streamingType == other.streamingType &&
+          isSSE == other.isSSE;
 
   @override
   int get hashCode =>
@@ -72,7 +100,9 @@ final class UniversalRequest {
       contentType.hashCode ^
       parameters.hashCode ^
       isMultiPart.hashCode ^
-      isFormUrlEncoded.hashCode;
+      isFormUrlEncoded.hashCode ^
+      streamingType.hashCode ^
+      isSSE.hashCode;
 
   @override
   String toString() =>
@@ -80,7 +110,9 @@ final class UniversalRequest {
       'requestType: $requestType, '
       'route: $route, '
       'parameters: $parameters, '
-      'contentType: $contentType)';
+      'contentType: $contentType, '
+      'streamingType: $streamingType, '
+      'isSSE: $isSSE)';
 }
 
 /// Request type

@@ -65,9 +65,9 @@ class _$SessionMessageResponseCopyWithImpl<$Res>
 
 /// Create a copy of SessionMessageResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? info = freezed,Object? parts = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? info = null,Object? parts = null,}) {
   return _then(_self.copyWith(
-info: freezed == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
+info: null == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
 as Message,parts: null == parts ? _self.parts : parts // ignore: cast_nullable_to_non_nullable
 as List<PartModel>,
   ));
@@ -272,9 +272,9 @@ class __$SessionMessageResponseCopyWithImpl<$Res>
 
 /// Create a copy of SessionMessageResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? info = freezed,Object? parts = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? info = null,Object? parts = null,}) {
   return _then(_SessionMessageResponse(
-info: freezed == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
+info: null == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
 as Message,parts: null == parts ? _self._parts : parts // ignore: cast_nullable_to_non_nullable
 as List<PartModel>,
   ));

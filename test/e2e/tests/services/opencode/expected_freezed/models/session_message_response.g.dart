@@ -9,15 +9,9 @@ part of 'session_message_response.dart';
 _SessionMessageResponse _$SessionMessageResponseFromJson(
   Map<String, dynamic> json,
 ) => _SessionMessageResponse(
-  info: json['info'] == null
-      ? null
-      : MessageUnion.fromJson(json['info'] as Map<String, dynamic>),
+  info: Message.fromJson(json['info'] as Map<String, dynamic>),
   parts: (json['parts'] as List<dynamic>)
-      .map(
-        (e) => e == null
-            ? null
-            : PartModelUnion.fromJson(e as Map<String, dynamic>),
-      )
+      .map((e) => PartModel.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 

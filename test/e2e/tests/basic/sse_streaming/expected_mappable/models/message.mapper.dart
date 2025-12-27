@@ -15,7 +15,7 @@ class MessageMapper extends ClassMapperBase<Message> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = MessageMapper._());
       MessageRoleMapper.ensureInitialized();
-      PartModelUnionMapper.ensureInitialized();
+      PartModelMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -33,8 +33,8 @@ class MessageMapper extends ClassMapperBase<Message> {
   );
   static MessageRole _$role(Message v) => v.role;
   static const Field<Message, MessageRole> _f$role = Field('role', _$role);
-  static List<PartModelUnion?> _$parts(Message v) => v.parts;
-  static const Field<Message, List<PartModelUnion?>> _f$parts = Field(
+  static List<PartModel> _$parts(Message v) => v.parts;
+  static const Field<Message, List<PartModel>> _f$parts = Field(
     'parts',
     _$parts,
   );
@@ -121,17 +121,13 @@ extension MessageValueCopy<$R, $Out> on ObjectCopyWith<$R, Message, $Out> {
 
 abstract class MessageCopyWith<$R, $In extends Message, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ListCopyWith<
-    $R,
-    PartModelUnion?,
-    PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>?
-  >
+  ListCopyWith<$R, PartModel, PartModelCopyWith<$R, PartModel, PartModel>>
   get parts;
   $R call({
     String? id,
     String? threadId,
     MessageRole? role,
-    List<PartModelUnion?>? parts,
+    List<PartModel>? parts,
     DateTime? createdAt,
   });
   MessageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -146,14 +142,10 @@ class _MessageCopyWithImpl<$R, $Out>
   late final ClassMapperBase<Message> $mapper =
       MessageMapper.ensureInitialized();
   @override
-  ListCopyWith<
-    $R,
-    PartModelUnion?,
-    PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>?
-  >
+  ListCopyWith<$R, PartModel, PartModelCopyWith<$R, PartModel, PartModel>>
   get parts => ListCopyWith(
     $value.parts,
-    (v, t) => v?.copyWith.$chain(t),
+    (v, t) => v.copyWith.$chain(t),
     (v) => call(parts: v),
   );
   @override
@@ -161,7 +153,7 @@ class _MessageCopyWithImpl<$R, $Out>
     String? id,
     String? threadId,
     MessageRole? role,
-    List<PartModelUnion?>? parts,
+    List<PartModel>? parts,
     DateTime? createdAt,
   }) => $apply(
     FieldCopyWithData({

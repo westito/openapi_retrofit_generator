@@ -652,36 +652,8 @@ class FileUploadResponse with FileUploadResponseMappable {
 sealed class PaymentRequest with PaymentRequestMappable {
   const PaymentRequest();
 
-  static PaymentRequest fromJson(Map<String, dynamic> json) {
-    return PaymentRequestUnionDeserializer.tryDeserialize(json);
-  }
-}
-
-extension PaymentRequestUnionDeserializer on PaymentRequest {
-  static PaymentRequest tryDeserialize(
-    Map<String, dynamic> json, {
-    String key = 'paymentType',
-    Map<Type, Object?>? mapping,
-  }) {
-    final mappingFallback = const <Type, Object?>{
-      PaymentRequestCreditCard: 'credit_card',
-      PaymentRequestBankTransfer: 'bank_transfer',
-      PaymentRequestCrypto: 'crypto',
-    };
-    final value = json[key];
-    final effective = mapping ?? mappingFallback;
-    return switch (value) {
-      _ when value == effective[PaymentRequestCreditCard] =>
-        PaymentRequestCreditCardMapper.fromJson(json),
-      _ when value == effective[PaymentRequestBankTransfer] =>
-        PaymentRequestBankTransferMapper.fromJson(json),
-      _ when value == effective[PaymentRequestCrypto] =>
-        PaymentRequestCryptoMapper.fromJson(json),
-      _ => throw FormatException(
-        'Unknown discriminator value "${json[key]}" for PaymentRequest',
-      ),
-    };
-  }
+  static PaymentRequest fromJson(Map<String, dynamic> json) =>
+      PaymentRequestMapper.fromJson(json);
 }
 
 @MappableClass(discriminatorValue: 'credit_card')
@@ -825,7 +797,7 @@ class PaymentResponse with PaymentResponseMappable {
   final PaymentResponseStatusStatus status;
   final double amount;
   final DateTime? processedAt;
-  final PaymentResponseDetailsDetailsUnion? details;
+  final PaymentResponseDetailsDetails? details;
   final String currency;
 
   static PaymentResponse fromJson(Map<String, dynamic> json) =>
@@ -833,61 +805,37 @@ class PaymentResponse with PaymentResponseMappable {
 }
 
 @MappableClass(
-  includeSubClasses: [
-    SearchResultUnionUserSearchResult,
-    SearchResultUnionPostSearchResult,
-    SearchResultUnionCommentSearchResult,
-  ],
+  discriminatorKey: 'type',
+  includeSubClasses: [SearchResultUser, SearchResultPost, SearchResultComment],
 )
-sealed class SearchResultUnion with SearchResultUnionMappable {
-  const SearchResultUnion();
+sealed class SearchResult with SearchResultMappable {
+  const SearchResult();
 
-  static SearchResultUnion fromJson(Map<String, dynamic> json) {
-    return SearchResultUnionDeserializer.tryDeserialize(json);
-  }
+  static SearchResult fromJson(Map<String, dynamic> json) =>
+      SearchResultMapper.fromJson(json);
 }
 
-extension SearchResultUnionDeserializer on SearchResultUnion {
-  static SearchResultUnion tryDeserialize(Map<String, dynamic> json) {
-    try {
-      return SearchResultUnionUserSearchResultMapper.fromJson(json);
-    } catch (_) {}
-    try {
-      return SearchResultUnionPostSearchResultMapper.fromJson(json);
-    } catch (_) {}
-    try {
-      return SearchResultUnionCommentSearchResultMapper.fromJson(json);
-    } catch (_) {}
-
-    throw FormatException(
-      'Could not determine the correct type for SearchResultUnion from: $json',
-    );
-  }
-}
-
-@MappableClass()
-class SearchResultUnionUserSearchResult extends SearchResultUnion
-    with SearchResultUnionUserSearchResultMappable {
+@MappableClass(discriminatorValue: 'user')
+class SearchResultUser extends SearchResult with SearchResultUserMappable {
   final UserSearchResultTypeType type;
   final User user;
   final double? score;
 
-  const SearchResultUnionUserSearchResult({
+  const SearchResultUser({
     required this.type,
     required this.user,
     required this.score,
   });
 }
 
-@MappableClass()
-class SearchResultUnionPostSearchResult extends SearchResultUnion
-    with SearchResultUnionPostSearchResultMappable {
+@MappableClass(discriminatorValue: 'post')
+class SearchResultPost extends SearchResult with SearchResultPostMappable {
   final PostSearchResultTypeType type;
   final PostModel post;
   final double? score;
   final List<String>? highlights;
 
-  const SearchResultUnionPostSearchResult({
+  const SearchResultPost({
     required this.type,
     required this.post,
     required this.score,
@@ -895,21 +843,19 @@ class SearchResultUnionPostSearchResult extends SearchResultUnion
   });
 }
 
-@MappableClass()
-class SearchResultUnionCommentSearchResult extends SearchResultUnion
-    with SearchResultUnionCommentSearchResultMappable {
+@MappableClass(discriminatorValue: 'comment')
+class SearchResultComment extends SearchResult
+    with SearchResultCommentMappable {
   final CommentSearchResultTypeType type;
   final Comment comment;
   final double? score;
 
-  const SearchResultUnionCommentSearchResult({
+  const SearchResultComment({
     required this.type,
     required this.comment,
     required this.score,
   });
 }
-
-typedef SearchResult = SearchResultUnion?;
 
 @MappableClass()
 class UserSearchResult with UserSearchResultMappable {
@@ -964,34 +910,8 @@ class CommentSearchResult with CommentSearchResultMappable {
 sealed class Entity with EntityMappable {
   const Entity();
 
-  static Entity fromJson(Map<String, dynamic> json) {
-    return EntityUnionDeserializer.tryDeserialize(json);
-  }
-}
-
-extension EntityUnionDeserializer on Entity {
-  static Entity tryDeserialize(
-    Map<String, dynamic> json, {
-    String key = 'entityType',
-    Map<Type, Object?>? mapping,
-  }) {
-    final mappingFallback = const <Type, Object?>{
-      EntityPerson: 'person',
-      EntityOrganization: 'organization',
-    };
-    final value = json[key];
-    final effective = mapping ?? mappingFallback;
-    return switch (value) {
-      _ when value == effective[EntityPerson] => EntityPersonMapper.fromJson(
-        json,
-      ),
-      _ when value == effective[EntityOrganization] =>
-        EntityOrganizationMapper.fromJson(json),
-      _ => throw FormatException(
-        'Unknown discriminator value "${json[key]}" for Entity',
-      ),
-    };
-  }
+  static Entity fromJson(Map<String, dynamic> json) =>
+      EntityMapper.fromJson(json);
 }
 
 @MappableClass(discriminatorValue: 'person')
@@ -1421,54 +1341,25 @@ class UserSettingsPrivacy with UserSettingsPrivacyMappable {
 }
 
 @MappableClass(
+  discriminatorKey: 'paymentType',
   includeSubClasses: [
-    PaymentResponseDetailsDetailsUnionCreditCardPayment,
-    PaymentResponseDetailsDetailsUnionBankTransferPayment,
-    PaymentResponseDetailsDetailsUnionCryptoPayment,
+    PaymentResponseDetailsDetailsCreditCard,
+    PaymentResponseDetailsDetailsBankTransfer,
+    PaymentResponseDetailsDetailsCrypto,
   ],
 )
-sealed class PaymentResponseDetailsDetailsUnion
-    with PaymentResponseDetailsDetailsUnionMappable {
-  const PaymentResponseDetailsDetailsUnion();
+sealed class PaymentResponseDetailsDetails
+    with PaymentResponseDetailsDetailsMappable {
+  const PaymentResponseDetailsDetails();
 
-  static PaymentResponseDetailsDetailsUnion fromJson(
-    Map<String, dynamic> json,
-  ) {
-    return PaymentResponseDetailsDetailsUnionDeserializer.tryDeserialize(json);
-  }
+  static PaymentResponseDetailsDetails fromJson(Map<String, dynamic> json) =>
+      PaymentResponseDetailsDetailsMapper.fromJson(json);
 }
 
-extension PaymentResponseDetailsDetailsUnionDeserializer
-    on PaymentResponseDetailsDetailsUnion {
-  static PaymentResponseDetailsDetailsUnion tryDeserialize(
-    Map<String, dynamic> json,
-  ) {
-    try {
-      return PaymentResponseDetailsDetailsUnionCreditCardPaymentMapper.fromJson(
-        json,
-      );
-    } catch (_) {}
-    try {
-      return PaymentResponseDetailsDetailsUnionBankTransferPaymentMapper.fromJson(
-        json,
-      );
-    } catch (_) {}
-    try {
-      return PaymentResponseDetailsDetailsUnionCryptoPaymentMapper.fromJson(
-        json,
-      );
-    } catch (_) {}
-
-    throw FormatException(
-      'Could not determine the correct type for PaymentResponseDetailsDetailsUnion from: $json',
-    );
-  }
-}
-
-@MappableClass()
-class PaymentResponseDetailsDetailsUnionCreditCardPayment
-    extends PaymentResponseDetailsDetailsUnion
-    with PaymentResponseDetailsDetailsUnionCreditCardPaymentMappable {
+@MappableClass(discriminatorValue: 'credit_card')
+class PaymentResponseDetailsDetailsCreditCard
+    extends PaymentResponseDetailsDetails
+    with PaymentResponseDetailsDetailsCreditCardMappable {
   final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
@@ -1477,7 +1368,7 @@ class PaymentResponseDetailsDetailsUnionCreditCardPayment
   final String? cardholderName;
   final double amount;
 
-  const PaymentResponseDetailsDetailsUnionCreditCardPayment({
+  const PaymentResponseDetailsDetailsCreditCard({
     required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
@@ -1488,10 +1379,10 @@ class PaymentResponseDetailsDetailsUnionCreditCardPayment
   });
 }
 
-@MappableClass()
-class PaymentResponseDetailsDetailsUnionBankTransferPayment
-    extends PaymentResponseDetailsDetailsUnion
-    with PaymentResponseDetailsDetailsUnionBankTransferPaymentMappable {
+@MappableClass(discriminatorValue: 'bank_transfer')
+class PaymentResponseDetailsDetailsBankTransfer
+    extends PaymentResponseDetailsDetails
+    with PaymentResponseDetailsDetailsBankTransferMappable {
   final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
@@ -1499,7 +1390,7 @@ class PaymentResponseDetailsDetailsUnionBankTransferPayment
   final double amount;
   final String? reference;
 
-  const PaymentResponseDetailsDetailsUnionBankTransferPayment({
+  const PaymentResponseDetailsDetailsBankTransfer({
     required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
@@ -1509,17 +1400,16 @@ class PaymentResponseDetailsDetailsUnionBankTransferPayment
   });
 }
 
-@MappableClass()
-class PaymentResponseDetailsDetailsUnionCryptoPayment
-    extends PaymentResponseDetailsDetailsUnion
-    with PaymentResponseDetailsDetailsUnionCryptoPaymentMappable {
+@MappableClass(discriminatorValue: 'crypto')
+class PaymentResponseDetailsDetailsCrypto extends PaymentResponseDetailsDetails
+    with PaymentResponseDetailsDetailsCryptoMappable {
   final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
-  const PaymentResponseDetailsDetailsUnionCryptoPayment({
+  const PaymentResponseDetailsDetailsCrypto({
     required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,

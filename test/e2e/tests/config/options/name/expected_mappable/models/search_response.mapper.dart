@@ -14,7 +14,7 @@ class SearchResponseMapper extends ClassMapperBase<SearchResponse> {
   static SearchResponseMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SearchResponseMapper._());
-      SearchResultUnionMapper.ensureInitialized();
+      SearchResultMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -22,9 +22,12 @@ class SearchResponseMapper extends ClassMapperBase<SearchResponse> {
   @override
   final String id = 'SearchResponse';
 
-  static List<SearchResultUnion?>? _$results(SearchResponse v) => v.results;
-  static const Field<SearchResponse, List<SearchResultUnion?>> _f$results =
-      Field('results', _$results, opt: true);
+  static List<SearchResult>? _$results(SearchResponse v) => v.results;
+  static const Field<SearchResponse, List<SearchResult>> _f$results = Field(
+    'results',
+    _$results,
+    opt: true,
+  );
 
   @override
   final MappableFields<SearchResponse> fields = const {#results: _f$results};
@@ -97,11 +100,11 @@ abstract class SearchResponseCopyWith<$R, $In extends SearchResponse, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
-    SearchResultUnion?,
-    SearchResultUnionCopyWith<$R, SearchResultUnion, SearchResultUnion>?
+    SearchResult,
+    SearchResultCopyWith<$R, SearchResult, SearchResult>
   >?
   get results;
-  $R call({List<SearchResultUnion?>? results});
+  $R call({List<SearchResult>? results});
   SearchResponseCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -118,13 +121,13 @@ class _SearchResponseCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<
     $R,
-    SearchResultUnion?,
-    SearchResultUnionCopyWith<$R, SearchResultUnion, SearchResultUnion>?
+    SearchResult,
+    SearchResultCopyWith<$R, SearchResult, SearchResult>
   >?
   get results => $value.results != null
       ? ListCopyWith(
           $value.results!,
-          (v, t) => v?.copyWith.$chain(t),
+          (v, t) => v.copyWith.$chain(t),
           (v) => call(results: v),
         )
       : null;

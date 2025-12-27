@@ -14,7 +14,6 @@ class FilePartInputMapper extends ClassMapperBase<FilePartInput> {
   static FilePartInputMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = FilePartInputMapper._());
-      FilePartSourceUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -40,8 +39,8 @@ class FilePartInputMapper extends ClassMapperBase<FilePartInput> {
     _$filename,
     opt: true,
   );
-  static FilePartSourceUnion? _$source(FilePartInput v) => v.source;
-  static const Field<FilePartInput, FilePartSourceUnion> _f$source = Field(
+  static FilePartSource? _$source(FilePartInput v) => v.source;
+  static const Field<FilePartInput, FilePartSource> _f$source = Field(
     'source',
     _$source,
     opt: true,
@@ -130,15 +129,13 @@ extension FilePartInputValueCopy<$R, $Out>
 
 abstract class FilePartInputCopyWith<$R, $In extends FilePartInput, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  FilePartSourceUnionCopyWith<$R, FilePartSourceUnion, FilePartSourceUnion>?
-  get source;
   $R call({
     String? type,
     String? mime,
     String? url,
     String? id,
     String? filename,
-    FilePartSourceUnion? source,
+    FilePartSource? source,
   });
   FilePartInputCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -151,9 +148,6 @@ class _FilePartInputCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<FilePartInput> $mapper =
       FilePartInputMapper.ensureInitialized();
-  @override
-  FilePartSourceUnionCopyWith<$R, FilePartSourceUnion, FilePartSourceUnion>?
-  get source => $value.source?.copyWith.$chain((v) => call(source: v));
   @override
   $R call({
     String? type,

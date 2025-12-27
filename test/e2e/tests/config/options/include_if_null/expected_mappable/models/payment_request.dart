@@ -25,36 +25,8 @@ part 'payment_request.mapper.dart';
 sealed class PaymentRequest with PaymentRequestMappable {
   const PaymentRequest();
 
-  static PaymentRequest fromJson(Map<String, dynamic> json) {
-    return PaymentRequestUnionDeserializer.tryDeserialize(json);
-  }
-}
-
-extension PaymentRequestUnionDeserializer on PaymentRequest {
-  static PaymentRequest tryDeserialize(
-    Map<String, dynamic> json, {
-    String key = 'paymentType',
-    Map<Type, Object?>? mapping,
-  }) {
-    final mappingFallback = const <Type, Object?>{
-      PaymentRequestCreditCard: 'credit_card',
-      PaymentRequestBankTransfer: 'bank_transfer',
-      PaymentRequestCrypto: 'crypto',
-    };
-    final value = json[key];
-    final effective = mapping ?? mappingFallback;
-    return switch (value) {
-      _ when value == effective[PaymentRequestCreditCard] =>
-        PaymentRequestCreditCardMapper.fromJson(json),
-      _ when value == effective[PaymentRequestBankTransfer] =>
-        PaymentRequestBankTransferMapper.fromJson(json),
-      _ when value == effective[PaymentRequestCrypto] =>
-        PaymentRequestCryptoMapper.fromJson(json),
-      _ => throw FormatException(
-        'Unknown discriminator value "${json[key]}" for PaymentRequest',
-      ),
-    };
-  }
+  static PaymentRequest fromJson(Map<String, dynamic> json) =>
+      PaymentRequestMapper.fromJson(json);
 }
 
 @MappableClass(discriminatorValue: 'credit_card')

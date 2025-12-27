@@ -65,9 +65,9 @@ class _$EventMessageUpdatedPropertiesCopyWithImpl<$Res>
 
 /// Create a copy of EventMessageUpdatedProperties
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? info = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? info = null,}) {
   return _then(_self.copyWith(
-info: freezed == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
+info: null == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
 as Message,
   ));
 }
@@ -264,9 +264,9 @@ class __$EventMessageUpdatedPropertiesCopyWithImpl<$Res>
 
 /// Create a copy of EventMessageUpdatedProperties
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? info = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? info = null,}) {
   return _then(_EventMessageUpdatedProperties(
-info: freezed == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
+info: null == info ? _self.info : info // ignore: cast_nullable_to_non_nullable
 as Message,
   ));
 }

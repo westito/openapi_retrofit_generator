@@ -17,7 +17,6 @@ class AssistantMessageMapper extends ClassMapperBase<AssistantMessage> {
       AssistantMessageTimeMapper.ensureInitialized();
       AssistantMessagePathMapper.ensureInitialized();
       AssistantMessageTokensMapper.ensureInitialized();
-      AssistantMessageErrorErrorUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -80,10 +79,9 @@ class AssistantMessageMapper extends ClassMapperBase<AssistantMessage> {
     _$assistantMessageTokens,
     key: r'AssistantMessageTokens',
   );
-  static AssistantMessageErrorErrorUnion? _$error(AssistantMessage v) =>
-      v.error;
-  static const Field<AssistantMessage, AssistantMessageErrorErrorUnion>
-  _f$error = Field('error', _$error, opt: true);
+  static AssistantMessageErrorError? _$error(AssistantMessage v) => v.error;
+  static const Field<AssistantMessage, AssistantMessageErrorError> _f$error =
+      Field('error', _$error, opt: true);
   static bool? _$summary(AssistantMessage v) => v.summary;
   static const Field<AssistantMessage, bool> _f$summary = Field(
     'summary',
@@ -199,12 +197,6 @@ abstract class AssistantMessageCopyWith<$R, $In extends AssistantMessage, $Out>
     AssistantMessageTokens
   >
   get assistantMessageTokens;
-  AssistantMessageErrorErrorUnionCopyWith<
-    $R,
-    AssistantMessageErrorErrorUnion,
-    AssistantMessageErrorErrorUnion
-  >?
-  get error;
   $R call({
     String? id,
     String? sessionId,
@@ -217,7 +209,7 @@ abstract class AssistantMessageCopyWith<$R, $In extends AssistantMessage, $Out>
     AssistantMessagePath? assistantMessagePath,
     num? cost,
     AssistantMessageTokens? assistantMessageTokens,
-    AssistantMessageErrorErrorUnion? error,
+    AssistantMessageErrorError? error,
     bool? summary,
   });
   AssistantMessageCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
@@ -259,13 +251,6 @@ class _AssistantMessageCopyWithImpl<$R, $Out>
   get assistantMessageTokens => $value.assistantMessageTokens.copyWith.$chain(
     (v) => call(assistantMessageTokens: v),
   );
-  @override
-  AssistantMessageErrorErrorUnionCopyWith<
-    $R,
-    AssistantMessageErrorErrorUnion,
-    AssistantMessageErrorErrorUnion
-  >?
-  get error => $value.error?.copyWith.$chain((v) => call(error: v));
   @override
   $R call({
     String? id,

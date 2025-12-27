@@ -6,6 +6,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 import 'credit_card_payment_payment_type_payment_type.dart';
 import 'payment_request.dart';
+import 'payment_response_details_details.dart';
 
 part 'credit_card_payment.mapper.dart';
 

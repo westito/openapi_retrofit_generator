@@ -17,7 +17,6 @@ class EventMessageUpdatedPropertiesMapper
       MapperContainer.globals.use(
         _instance = EventMessageUpdatedPropertiesMapper._(),
       );
-      MessageUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,9 +24,11 @@ class EventMessageUpdatedPropertiesMapper
   @override
   final String id = 'EventMessageUpdatedProperties';
 
-  static MessageUnion? _$info(EventMessageUpdatedProperties v) => v.info;
-  static const Field<EventMessageUpdatedProperties, MessageUnion> _f$info =
-      Field('info', _$info);
+  static Message _$info(EventMessageUpdatedProperties v) => v.info;
+  static const Field<EventMessageUpdatedProperties, Message> _f$info = Field(
+    'info',
+    _$info,
+  );
 
   @override
   final MappableFields<EventMessageUpdatedProperties> fields = const {
@@ -112,8 +113,7 @@ abstract class EventMessageUpdatedPropertiesCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  MessageUnionCopyWith<$R, MessageUnion, MessageUnion>? get info;
-  $R call({MessageUnion? info});
+  $R call({Message? info});
   EventMessageUpdatedPropertiesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -137,11 +137,8 @@ class _EventMessageUpdatedPropertiesCopyWithImpl<$R, $Out>
   late final ClassMapperBase<EventMessageUpdatedProperties> $mapper =
       EventMessageUpdatedPropertiesMapper.ensureInitialized();
   @override
-  MessageUnionCopyWith<$R, MessageUnion, MessageUnion>? get info =>
-      $value.info?.copyWith.$chain((v) => call(info: v));
-  @override
-  $R call({Object? info = $none}) =>
-      $apply(FieldCopyWithData({if (info != $none) #info: info}));
+  $R call({Message? info}) =>
+      $apply(FieldCopyWithData({if (info != null) #info: info}));
   @override
   EventMessageUpdatedProperties $make(CopyWithData data) =>
       EventMessageUpdatedProperties(info: data.get(#info, or: $value.info));

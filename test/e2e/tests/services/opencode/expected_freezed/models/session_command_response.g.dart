@@ -11,11 +11,7 @@ _SessionCommandResponse _$SessionCommandResponseFromJson(
 ) => _SessionCommandResponse(
   info: AssistantMessage.fromJson(json['info'] as Map<String, dynamic>),
   parts: (json['parts'] as List<dynamic>)
-      .map(
-        (e) => e == null
-            ? null
-            : PartModelUnion.fromJson(e as Map<String, dynamic>),
-      )
+      .map((e) => PartModel.fromJson(e as Map<String, dynamic>))
       .toList(),
 );
 

@@ -14,7 +14,6 @@ class ToolPartMapper extends ClassMapperBase<ToolPart> {
   static ToolPartMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ToolPartMapper._());
-      ToolStateUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -46,11 +45,8 @@ class ToolPartMapper extends ClassMapperBase<ToolPart> {
   );
   static String _$tool(ToolPart v) => v.tool;
   static const Field<ToolPart, String> _f$tool = Field('tool', _$tool);
-  static ToolStateUnion? _$state(ToolPart v) => v.state;
-  static const Field<ToolPart, ToolStateUnion> _f$state = Field(
-    'state',
-    _$state,
-  );
+  static ToolState _$state(ToolPart v) => v.state;
+  static const Field<ToolPart, ToolState> _f$state = Field('state', _$state);
   static Map<String, dynamic>? _$metadata(ToolPart v) => v.metadata;
   static const Field<ToolPart, Map<String, dynamic>> _f$metadata = Field(
     'metadata',
@@ -140,7 +136,6 @@ extension ToolPartValueCopy<$R, $Out> on ObjectCopyWith<$R, ToolPart, $Out> {
 
 abstract class ToolPartCopyWith<$R, $In extends ToolPart, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  ToolStateUnionCopyWith<$R, ToolStateUnion, ToolStateUnion>? get state;
   MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
   get metadata;
   $R call({
@@ -150,7 +145,7 @@ abstract class ToolPartCopyWith<$R, $In extends ToolPart, $Out>
     String? type,
     String? callId,
     String? tool,
-    ToolStateUnion? state,
+    ToolState? state,
     Map<String, dynamic>? metadata,
   });
   ToolPartCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -164,9 +159,6 @@ class _ToolPartCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<ToolPart> $mapper =
       ToolPartMapper.ensureInitialized();
-  @override
-  ToolStateUnionCopyWith<$R, ToolStateUnion, ToolStateUnion>? get state =>
-      $value.state?.copyWith.$chain((v) => call(state: v));
   @override
   MapCopyWith<$R, String, dynamic, ObjectCopyWith<$R, dynamic, dynamic>>?
   get metadata => $value.metadata != null
@@ -184,7 +176,7 @@ class _ToolPartCopyWithImpl<$R, $Out>
     String? type,
     String? callId,
     String? tool,
-    Object? state = $none,
+    ToolState? state,
     Object? metadata = $none,
   }) => $apply(
     FieldCopyWithData({
@@ -194,7 +186,7 @@ class _ToolPartCopyWithImpl<$R, $Out>
       if (type != null) #type: type,
       if (callId != null) #callId: callId,
       if (tool != null) #tool: tool,
-      if (state != $none) #state: state,
+      if (state != null) #state: state,
       if (metadata != $none) #metadata: metadata,
     }),
   );

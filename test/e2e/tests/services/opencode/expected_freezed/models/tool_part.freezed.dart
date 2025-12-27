@@ -65,7 +65,7 @@ class _$ToolPartCopyWithImpl<$Res>
 
 /// Create a copy of ToolPart
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sessionId = null,Object? messageId = null,Object? type = null,Object? callId = null,Object? tool = null,Object? state = freezed,Object? metadata = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? sessionId = null,Object? messageId = null,Object? type = null,Object? callId = null,Object? tool = null,Object? state = null,Object? metadata = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,sessionId: null == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
@@ -73,7 +73,7 @@ as String,messageId: null == messageId ? _self.messageId : messageId // ignore: 
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,callId: null == callId ? _self.callId : callId // ignore: cast_nullable_to_non_nullable
 as String,tool: null == tool ? _self.tool : tool // ignore: cast_nullable_to_non_nullable
-as String,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as String,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as ToolState,metadata: freezed == metadata ? _self.metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,
   ));
@@ -286,7 +286,7 @@ class __$ToolPartCopyWithImpl<$Res>
 
 /// Create a copy of ToolPart
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sessionId = null,Object? messageId = null,Object? type = null,Object? callId = null,Object? tool = null,Object? state = freezed,Object? metadata = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? sessionId = null,Object? messageId = null,Object? type = null,Object? callId = null,Object? tool = null,Object? state = null,Object? metadata = freezed,}) {
   return _then(_ToolPart(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,sessionId: null == sessionId ? _self.sessionId : sessionId // ignore: cast_nullable_to_non_nullable
@@ -294,7 +294,7 @@ as String,messageId: null == messageId ? _self.messageId : messageId // ignore: 
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,callId: null == callId ? _self.callId : callId // ignore: cast_nullable_to_non_nullable
 as String,tool: null == tool ? _self.tool : tool // ignore: cast_nullable_to_non_nullable
-as String,state: freezed == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
+as String,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
 as ToolState,metadata: freezed == metadata ? _self._metadata : metadata // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,
   ));

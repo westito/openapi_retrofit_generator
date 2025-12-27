@@ -890,92 +890,108 @@ class PaymentResponse {
   final double amount;
   final String currency;
   final DateTime? processedAt;
-  final PaymentResponseDetailsDetailsUnion? details;
+  final PaymentResponseDetailsDetails? details;
 
   Map<String, Object?> toJson() => _$PaymentResponseToJson(this);
 }
 
-class SearchResultUnion {
-  final Map<String, dynamic> _json;
+@JsonSerializable(createFactory: false)
+sealed class SearchResult {
+  const SearchResult();
 
-  const SearchResultUnion(this._json);
+  factory SearchResult.fromJson(Map<String, dynamic> json) =>
+      SearchResultUnionDeserializer.tryDeserialize(json);
 
-  factory SearchResultUnion.fromJson(Map<String, dynamic> json) =>
-      SearchResultUnion(json);
+  Map<String, dynamic> toJson();
+}
 
-  Map<String, dynamic> toJson() => _json;
-
-  SearchResultUnionUserSearchResult toUserSearchResult() =>
-      SearchResultUnionUserSearchResult.fromJson(_json);
-  SearchResultUnionPostSearchResult toPostSearchResult() =>
-      SearchResultUnionPostSearchResult.fromJson(_json);
-  SearchResultUnionCommentSearchResult toCommentSearchResult() =>
-      SearchResultUnionCommentSearchResult.fromJson(_json);
+extension SearchResultUnionDeserializer on SearchResult {
+  static SearchResult tryDeserialize(
+    Map<String, dynamic> json, {
+    String key = 'type',
+    Map<Type, Object?>? mapping,
+  }) {
+    final mappingFallback = const <Type, Object?>{
+      SearchResultUser: 'user',
+      SearchResultPost: 'post',
+      SearchResultComment: 'comment',
+    };
+    final value = json[key];
+    final effective = mapping ?? mappingFallback;
+    return switch (value) {
+      _ when value == effective[SearchResultUser] => SearchResultUser.fromJson(
+        json,
+      ),
+      _ when value == effective[SearchResultPost] => SearchResultPost.fromJson(
+        json,
+      ),
+      _ when value == effective[SearchResultComment] =>
+        SearchResultComment.fromJson(json),
+      _ => throw FormatException(
+        'Unknown discriminator value "${json[key]}" for SearchResult',
+      ),
+    };
+  }
 }
 
 @JsonSerializable()
-class SearchResultUnionUserSearchResult {
+class SearchResultUser extends SearchResult {
   final UserSearchResultTypeType type;
   final User user;
   final double? score;
 
-  const SearchResultUnionUserSearchResult({
+  const SearchResultUser({
     required this.type,
     required this.user,
     required this.score,
   });
 
-  factory SearchResultUnionUserSearchResult.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SearchResultUnionUserSearchResultFromJson(json);
+  factory SearchResultUser.fromJson(Map<String, dynamic> json) =>
+      _$SearchResultUserFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$SearchResultUnionUserSearchResultToJson(this);
+  @override
+  Map<String, dynamic> toJson() => _$SearchResultUserToJson(this);
 }
 
 @JsonSerializable()
-class SearchResultUnionPostSearchResult {
+class SearchResultPost extends SearchResult {
   final PostSearchResultTypeType type;
   final PostModel post;
   final double? score;
   final List<String>? highlights;
 
-  const SearchResultUnionPostSearchResult({
+  const SearchResultPost({
     required this.type,
     required this.post,
     required this.score,
     required this.highlights,
   });
 
-  factory SearchResultUnionPostSearchResult.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SearchResultUnionPostSearchResultFromJson(json);
+  factory SearchResultPost.fromJson(Map<String, dynamic> json) =>
+      _$SearchResultPostFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$SearchResultUnionPostSearchResultToJson(this);
+  @override
+  Map<String, dynamic> toJson() => _$SearchResultPostToJson(this);
 }
 
 @JsonSerializable()
-class SearchResultUnionCommentSearchResult {
+class SearchResultComment extends SearchResult {
   final CommentSearchResultTypeType type;
   final Comment comment;
   final double? score;
 
-  const SearchResultUnionCommentSearchResult({
+  const SearchResultComment({
     required this.type,
     required this.comment,
     required this.score,
   });
 
-  factory SearchResultUnionCommentSearchResult.fromJson(
-    Map<String, dynamic> json,
-  ) => _$SearchResultUnionCommentSearchResultFromJson(json);
+  factory SearchResultComment.fromJson(Map<String, dynamic> json) =>
+      _$SearchResultCommentFromJson(json);
 
-  Map<String, dynamic> toJson() =>
-      _$SearchResultUnionCommentSearchResultToJson(this);
+  @override
+  Map<String, dynamic> toJson() => _$SearchResultCommentToJson(this);
 }
-
-typedef SearchResult = SearchResultUnion?;
 
 @JsonSerializable()
 class UserSearchResult {
@@ -1545,28 +1561,47 @@ class UserSettingsPrivacy {
   Map<String, Object?> toJson() => _$UserSettingsPrivacyToJson(this);
 }
 
-class PaymentResponseDetailsDetailsUnion {
-  final Map<String, dynamic> _json;
+@JsonSerializable(createFactory: false)
+sealed class PaymentResponseDetailsDetails {
+  const PaymentResponseDetailsDetails();
 
-  const PaymentResponseDetailsDetailsUnion(this._json);
+  factory PaymentResponseDetailsDetails.fromJson(Map<String, dynamic> json) =>
+      PaymentResponseDetailsDetailsUnionDeserializer.tryDeserialize(json);
 
-  factory PaymentResponseDetailsDetailsUnion.fromJson(
-    Map<String, dynamic> json,
-  ) => PaymentResponseDetailsDetailsUnion(json);
+  Map<String, dynamic> toJson();
+}
 
-  Map<String, dynamic> toJson() => _json;
-
-  PaymentResponseDetailsDetailsUnionCreditCardPayment toCreditCardPayment() =>
-      PaymentResponseDetailsDetailsUnionCreditCardPayment.fromJson(_json);
-  PaymentResponseDetailsDetailsUnionBankTransferPayment
-  toBankTransferPayment() =>
-      PaymentResponseDetailsDetailsUnionBankTransferPayment.fromJson(_json);
-  PaymentResponseDetailsDetailsUnionCryptoPayment toCryptoPayment() =>
-      PaymentResponseDetailsDetailsUnionCryptoPayment.fromJson(_json);
+extension PaymentResponseDetailsDetailsUnionDeserializer
+    on PaymentResponseDetailsDetails {
+  static PaymentResponseDetailsDetails tryDeserialize(
+    Map<String, dynamic> json, {
+    String key = 'paymentType',
+    Map<Type, Object?>? mapping,
+  }) {
+    final mappingFallback = const <Type, Object?>{
+      PaymentResponseDetailsDetailsCreditCard: 'credit_card',
+      PaymentResponseDetailsDetailsBankTransfer: 'bank_transfer',
+      PaymentResponseDetailsDetailsCrypto: 'crypto',
+    };
+    final value = json[key];
+    final effective = mapping ?? mappingFallback;
+    return switch (value) {
+      _ when value == effective[PaymentResponseDetailsDetailsCreditCard] =>
+        PaymentResponseDetailsDetailsCreditCard.fromJson(json),
+      _ when value == effective[PaymentResponseDetailsDetailsBankTransfer] =>
+        PaymentResponseDetailsDetailsBankTransfer.fromJson(json),
+      _ when value == effective[PaymentResponseDetailsDetailsCrypto] =>
+        PaymentResponseDetailsDetailsCrypto.fromJson(json),
+      _ => throw FormatException(
+        'Unknown discriminator value "${json[key]}" for PaymentResponseDetailsDetails',
+      ),
+    };
+  }
 }
 
 @JsonSerializable()
-class PaymentResponseDetailsDetailsUnionCreditCardPayment {
+class PaymentResponseDetailsDetailsCreditCard
+    extends PaymentResponseDetailsDetails {
   final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
@@ -1575,7 +1610,7 @@ class PaymentResponseDetailsDetailsUnionCreditCardPayment {
   final String? cardholderName;
   final double amount;
 
-  const PaymentResponseDetailsDetailsUnionCreditCardPayment({
+  const PaymentResponseDetailsDetailsCreditCard({
     required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
@@ -1585,16 +1620,18 @@ class PaymentResponseDetailsDetailsUnionCreditCardPayment {
     required this.amount,
   });
 
-  factory PaymentResponseDetailsDetailsUnionCreditCardPayment.fromJson(
+  factory PaymentResponseDetailsDetailsCreditCard.fromJson(
     Map<String, dynamic> json,
-  ) => _$PaymentResponseDetailsDetailsUnionCreditCardPaymentFromJson(json);
+  ) => _$PaymentResponseDetailsDetailsCreditCardFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
-      _$PaymentResponseDetailsDetailsUnionCreditCardPaymentToJson(this);
+      _$PaymentResponseDetailsDetailsCreditCardToJson(this);
 }
 
 @JsonSerializable()
-class PaymentResponseDetailsDetailsUnionBankTransferPayment {
+class PaymentResponseDetailsDetailsBankTransfer
+    extends PaymentResponseDetailsDetails {
   final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
@@ -1602,7 +1639,7 @@ class PaymentResponseDetailsDetailsUnionBankTransferPayment {
   final double amount;
   final String? reference;
 
-  const PaymentResponseDetailsDetailsUnionBankTransferPayment({
+  const PaymentResponseDetailsDetailsBankTransfer({
     required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
@@ -1611,23 +1648,25 @@ class PaymentResponseDetailsDetailsUnionBankTransferPayment {
     required this.reference,
   });
 
-  factory PaymentResponseDetailsDetailsUnionBankTransferPayment.fromJson(
+  factory PaymentResponseDetailsDetailsBankTransfer.fromJson(
     Map<String, dynamic> json,
-  ) => _$PaymentResponseDetailsDetailsUnionBankTransferPaymentFromJson(json);
+  ) => _$PaymentResponseDetailsDetailsBankTransferFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
-      _$PaymentResponseDetailsDetailsUnionBankTransferPaymentToJson(this);
+      _$PaymentResponseDetailsDetailsBankTransferToJson(this);
 }
 
 @JsonSerializable()
-class PaymentResponseDetailsDetailsUnionCryptoPayment {
+class PaymentResponseDetailsDetailsCrypto
+    extends PaymentResponseDetailsDetails {
   final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
-  const PaymentResponseDetailsDetailsUnionCryptoPayment({
+  const PaymentResponseDetailsDetailsCrypto({
     required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
@@ -1635,12 +1674,13 @@ class PaymentResponseDetailsDetailsUnionCryptoPayment {
     required this.transactionHash,
   });
 
-  factory PaymentResponseDetailsDetailsUnionCryptoPayment.fromJson(
+  factory PaymentResponseDetailsDetailsCrypto.fromJson(
     Map<String, dynamic> json,
-  ) => _$PaymentResponseDetailsDetailsUnionCryptoPaymentFromJson(json);
+  ) => _$PaymentResponseDetailsDetailsCryptoFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() =>
-      _$PaymentResponseDetailsDetailsUnionCryptoPaymentToJson(this);
+      _$PaymentResponseDetailsDetailsCryptoToJson(this);
 }
 
 @JsonSerializable()

@@ -65,9 +65,9 @@ class _$EventMessagePartUpdatedPropertiesCopyWithImpl<$Res>
 
 /// Create a copy of EventMessagePartUpdatedProperties
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? partField = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? partField = null,}) {
   return _then(_self.copyWith(
-partField: freezed == partField ? _self.partField : partField // ignore: cast_nullable_to_non_nullable
+partField: null == partField ? _self.partField : partField // ignore: cast_nullable_to_non_nullable
 as PartModel,
   ));
 }
@@ -264,9 +264,9 @@ class __$EventMessagePartUpdatedPropertiesCopyWithImpl<$Res>
 
 /// Create a copy of EventMessagePartUpdatedProperties
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? partField = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? partField = null,}) {
   return _then(_EventMessagePartUpdatedProperties(
-partField: freezed == partField ? _self.partField : partField // ignore: cast_nullable_to_non_nullable
+partField: null == partField ? _self.partField : partField // ignore: cast_nullable_to_non_nullable
 as PartModel,
   ));
 }

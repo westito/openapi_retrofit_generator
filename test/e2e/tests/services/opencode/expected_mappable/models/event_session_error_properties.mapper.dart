@@ -17,7 +17,6 @@ class EventSessionErrorPropertiesMapper
       MapperContainer.globals.use(
         _instance = EventSessionErrorPropertiesMapper._(),
       );
-      EventSessionErrorPropertiesErrorErrorUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -32,12 +31,12 @@ class EventSessionErrorPropertiesMapper
     key: r'sessionID',
     opt: true,
   );
-  static EventSessionErrorPropertiesErrorErrorUnion? _$error(
+  static EventSessionErrorPropertiesErrorError? _$error(
     EventSessionErrorProperties v,
   ) => v.error;
   static const Field<
     EventSessionErrorProperties,
-    EventSessionErrorPropertiesErrorErrorUnion
+    EventSessionErrorPropertiesErrorError
   >
   _f$error = Field('error', _$error, opt: true);
 
@@ -128,16 +127,7 @@ abstract class EventSessionErrorPropertiesCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  EventSessionErrorPropertiesErrorErrorUnionCopyWith<
-    $R,
-    EventSessionErrorPropertiesErrorErrorUnion,
-    EventSessionErrorPropertiesErrorErrorUnion
-  >?
-  get error;
-  $R call({
-    String? sessionId,
-    EventSessionErrorPropertiesErrorErrorUnion? error,
-  });
+  $R call({String? sessionId, EventSessionErrorPropertiesErrorError? error});
   EventSessionErrorPropertiesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -160,13 +150,6 @@ class _EventSessionErrorPropertiesCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<EventSessionErrorProperties> $mapper =
       EventSessionErrorPropertiesMapper.ensureInitialized();
-  @override
-  EventSessionErrorPropertiesErrorErrorUnionCopyWith<
-    $R,
-    EventSessionErrorPropertiesErrorErrorUnion,
-    EventSessionErrorPropertiesErrorErrorUnion
-  >?
-  get error => $value.error?.copyWith.$chain((v) => call(error: v));
   @override
   $R call({Object? sessionId = $none, Object? error = $none}) => $apply(
     FieldCopyWithData({

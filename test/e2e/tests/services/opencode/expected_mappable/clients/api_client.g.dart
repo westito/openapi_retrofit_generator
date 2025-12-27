@@ -1745,7 +1745,7 @@ class _ApiClient implements ApiClient {
   Future<bool> authSet({
     required String id,
     String? directory,
-    AuthUnion? body,
+    Auth? body,
     Map<String, dynamic>? extras,
     RequestOptions? options,
   }) async {
@@ -1778,7 +1778,7 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Stream<String> eventSubscribe({
+  Stream<String> _eventSubscribe({
     String? directory,
     Map<String, dynamic>? extras,
     RequestOptions? options,

@@ -4,7 +4,7 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'payment_response_details_details_union.dart';
+import 'payment_response_details_details.dart';
 import 'payment_response_status_status.dart';
 
 part 'payment_response.g.dart';
@@ -30,7 +30,7 @@ class PaymentResponse {
   @JsonKey(includeIfNull: false)
   final DateTime? processedAt;
   @JsonKey(includeIfNull: false)
-  final PaymentResponseDetailsDetailsUnion? details;
+  final PaymentResponseDetailsDetails? details;
 
   Map<String, Object?> toJson() => _$PaymentResponseToJson(this);
 }

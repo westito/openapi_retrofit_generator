@@ -14,7 +14,6 @@ class SessionPromptRequestMapper extends ClassMapperBase<SessionPromptRequest> {
   static SessionPromptRequestMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SessionPromptRequestMapper._());
-      SessionPromptRequestPartsPartsUnionMapper.ensureInitialized();
       SessionPromptRequestModelMapper.ensureInitialized();
       SessionPromptRequestAcpConnectionMapper.ensureInitialized();
     }
@@ -24,13 +23,9 @@ class SessionPromptRequestMapper extends ClassMapperBase<SessionPromptRequest> {
   @override
   final String id = 'SessionPromptRequest';
 
-  static List<SessionPromptRequestPartsPartsUnion> _$parts(
-    SessionPromptRequest v,
-  ) => v.parts;
-  static const Field<
-    SessionPromptRequest,
-    List<SessionPromptRequestPartsPartsUnion>
-  >
+  static List<SessionPromptRequestPartsParts> _$parts(SessionPromptRequest v) =>
+      v.parts;
+  static const Field<SessionPromptRequest, List<SessionPromptRequestPartsParts>>
   _f$parts = Field('parts', _$parts);
   static String? _$messageId(SessionPromptRequest v) => v.messageId;
   static const Field<SessionPromptRequest, String> _f$messageId = Field(
@@ -175,11 +170,11 @@ abstract class SessionPromptRequestCopyWith<
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
-    SessionPromptRequestPartsPartsUnion,
-    SessionPromptRequestPartsPartsUnionCopyWith<
+    SessionPromptRequestPartsParts,
+    ObjectCopyWith<
       $R,
-      SessionPromptRequestPartsPartsUnion,
-      SessionPromptRequestPartsPartsUnion
+      SessionPromptRequestPartsParts,
+      SessionPromptRequestPartsParts
     >
   >
   get parts;
@@ -197,7 +192,7 @@ abstract class SessionPromptRequestCopyWith<
   >?
   get sessionPromptRequestAcpConnection;
   $R call({
-    List<SessionPromptRequestPartsPartsUnion>? parts,
+    List<SessionPromptRequestPartsParts>? parts,
     String? messageId,
     SessionPromptRequestModel? sessionPromptRequestModel,
     String? agent,
@@ -221,16 +216,16 @@ class _SessionPromptRequestCopyWithImpl<$R, $Out>
   @override
   ListCopyWith<
     $R,
-    SessionPromptRequestPartsPartsUnion,
-    SessionPromptRequestPartsPartsUnionCopyWith<
+    SessionPromptRequestPartsParts,
+    ObjectCopyWith<
       $R,
-      SessionPromptRequestPartsPartsUnion,
-      SessionPromptRequestPartsPartsUnion
+      SessionPromptRequestPartsParts,
+      SessionPromptRequestPartsParts
     >
   >
   get parts => ListCopyWith(
     $value.parts,
-    (v, t) => v.copyWith.$chain(t),
+    (v, t) => ObjectCopyWith(v, $identity, t),
     (v) => call(parts: v),
   );
   @override
@@ -262,7 +257,7 @@ class _SessionPromptRequestCopyWithImpl<$R, $Out>
       .$chain((v) => call(sessionPromptRequestAcpConnection: v));
   @override
   $R call({
-    List<SessionPromptRequestPartsPartsUnion>? parts,
+    List<SessionPromptRequestPartsParts>? parts,
     Object? messageId = $none,
     Object? sessionPromptRequestModel = $none,
     Object? agent = $none,

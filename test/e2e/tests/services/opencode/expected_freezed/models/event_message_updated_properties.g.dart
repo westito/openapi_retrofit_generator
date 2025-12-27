@@ -9,9 +9,7 @@ part of 'event_message_updated_properties.dart';
 _EventMessageUpdatedProperties _$EventMessageUpdatedPropertiesFromJson(
   Map<String, dynamic> json,
 ) => _EventMessageUpdatedProperties(
-  info: json['info'] == null
-      ? null
-      : MessageUnion.fromJson(json['info'] as Map<String, dynamic>),
+  info: Message.fromJson(json['info'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$EventMessageUpdatedPropertiesToJson(

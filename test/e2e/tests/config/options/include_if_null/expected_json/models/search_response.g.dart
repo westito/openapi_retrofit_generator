@@ -9,11 +9,7 @@ part of 'search_response.dart';
 SearchResponse _$SearchResponseFromJson(Map<String, dynamic> json) =>
     SearchResponse(
       results: (json['results'] as List<dynamic>?)
-          ?.map(
-            (e) => e == null
-                ? null
-                : SearchResultUnion.fromJson(e as Map<String, dynamic>),
-          )
+          ?.map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

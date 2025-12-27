@@ -11,11 +11,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) => Message(
   threadId: json['thread_id'] as String,
   role: MessageRole.fromJson(json['role'] as String),
   parts: (json['parts'] as List<dynamic>)
-      .map(
-        (e) => e == null
-            ? null
-            : PartModelUnion.fromJson(e as Map<String, dynamic>),
-      )
+      .map((e) => PartModel.fromJson(e as Map<String, dynamic>))
       .toList(),
   createdAt: DateTime.parse(json['created_at'] as String),
 );

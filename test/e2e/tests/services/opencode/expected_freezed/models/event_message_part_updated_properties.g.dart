@@ -9,9 +9,7 @@ part of 'event_message_part_updated_properties.dart';
 _EventMessagePartUpdatedProperties _$EventMessagePartUpdatedPropertiesFromJson(
   Map<String, dynamic> json,
 ) => _EventMessagePartUpdatedProperties(
-  partField: json['part'] == null
-      ? null
-      : PartModelUnion.fromJson(json['part'] as Map<String, dynamic>),
+  partField: PartModel.fromJson(json['part'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$EventMessagePartUpdatedPropertiesToJson(

@@ -15,9 +15,7 @@ FilePartInput _$FilePartInputFromJson(Map<String, dynamic> json) =>
       filename: json['filename'] as String?,
       source: json['source'] == null
           ? null
-          : FilePartSourceUnion.fromJson(
-              json['source'] as Map<String, dynamic>,
-            ),
+          : FilePartSource.fromJson(json['source'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$FilePartInputToJson(FilePartInput instance) =>

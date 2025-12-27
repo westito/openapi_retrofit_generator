@@ -6,6 +6,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 import 'comment.dart';
 import 'comment_search_result_type_type.dart';
+import 'search_result.dart';
 
 part 'comment_search_result.mapper.dart';
 

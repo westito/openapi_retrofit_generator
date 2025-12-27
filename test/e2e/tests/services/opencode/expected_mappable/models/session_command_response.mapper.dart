@@ -16,7 +16,6 @@ class SessionCommandResponseMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SessionCommandResponseMapper._());
       AssistantMessageMapper.ensureInitialized();
-      PartModelUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -29,9 +28,11 @@ class SessionCommandResponseMapper
     'info',
     _$info,
   );
-  static List<PartModelUnion?> _$parts(SessionCommandResponse v) => v.parts;
-  static const Field<SessionCommandResponse, List<PartModelUnion?>> _f$parts =
-      Field('parts', _$parts);
+  static List<PartModel> _$parts(SessionCommandResponse v) => v.parts;
+  static const Field<SessionCommandResponse, List<PartModel>> _f$parts = Field(
+    'parts',
+    _$parts,
+  );
 
   @override
   final MappableFields<SessionCommandResponse> fields = const {
@@ -117,13 +118,9 @@ abstract class SessionCommandResponseCopyWith<
 >
     implements ClassCopyWith<$R, $In, $Out> {
   AssistantMessageCopyWith<$R, AssistantMessage, AssistantMessage> get info;
-  ListCopyWith<
-    $R,
-    PartModelUnion?,
-    PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>?
-  >
+  ListCopyWith<$R, PartModel, ObjectCopyWith<$R, PartModel, PartModel>>
   get parts;
-  $R call({AssistantMessage? info, List<PartModelUnion?>? parts});
+  $R call({AssistantMessage? info, List<PartModel>? parts});
   SessionCommandResponseCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -142,18 +139,14 @@ class _SessionCommandResponseCopyWithImpl<$R, $Out>
   AssistantMessageCopyWith<$R, AssistantMessage, AssistantMessage> get info =>
       $value.info.copyWith.$chain((v) => call(info: v));
   @override
-  ListCopyWith<
-    $R,
-    PartModelUnion?,
-    PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>?
-  >
+  ListCopyWith<$R, PartModel, ObjectCopyWith<$R, PartModel, PartModel>>
   get parts => ListCopyWith(
     $value.parts,
-    (v, t) => v?.copyWith.$chain(t),
+    (v, t) => ObjectCopyWith(v, $identity, t),
     (v) => call(parts: v),
   );
   @override
-  $R call({AssistantMessage? info, List<PartModelUnion?>? parts}) => $apply(
+  $R call({AssistantMessage? info, List<PartModel>? parts}) => $apply(
     FieldCopyWithData({
       if (info != null) #info: info,
       if (parts != null) #parts: parts,

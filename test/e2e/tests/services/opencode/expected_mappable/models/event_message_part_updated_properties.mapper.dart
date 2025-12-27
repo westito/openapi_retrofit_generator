@@ -17,7 +17,6 @@ class EventMessagePartUpdatedPropertiesMapper
       MapperContainer.globals.use(
         _instance = EventMessagePartUpdatedPropertiesMapper._(),
       );
-      PartModelUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -25,9 +24,9 @@ class EventMessagePartUpdatedPropertiesMapper
   @override
   final String id = 'EventMessagePartUpdatedProperties';
 
-  static PartModelUnion? _$partField(EventMessagePartUpdatedProperties v) =>
+  static PartModel _$partField(EventMessagePartUpdatedProperties v) =>
       v.partField;
-  static const Field<EventMessagePartUpdatedProperties, PartModelUnion>
+  static const Field<EventMessagePartUpdatedProperties, PartModel>
   _f$partField = Field('partField', _$partField, key: r'part');
 
   @override
@@ -118,8 +117,7 @@ abstract class EventMessagePartUpdatedPropertiesCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>? get partField;
-  $R call({PartModelUnion? partField});
+  $R call({PartModel? partField});
   EventMessagePartUpdatedPropertiesCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -143,12 +141,8 @@ class _EventMessagePartUpdatedPropertiesCopyWithImpl<$R, $Out>
   late final ClassMapperBase<EventMessagePartUpdatedProperties> $mapper =
       EventMessagePartUpdatedPropertiesMapper.ensureInitialized();
   @override
-  PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>? get partField =>
-      $value.partField?.copyWith.$chain((v) => call(partField: v));
-  @override
-  $R call({Object? partField = $none}) => $apply(
-    FieldCopyWithData({if (partField != $none) #partField: partField}),
-  );
+  $R call({PartModel? partField}) =>
+      $apply(FieldCopyWithData({if (partField != null) #partField: partField}));
   @override
   EventMessagePartUpdatedProperties $make(CopyWithData data) =>
       EventMessagePartUpdatedProperties(

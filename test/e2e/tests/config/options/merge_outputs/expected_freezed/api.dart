@@ -7,7 +7,6 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart' hide Headers;
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:retrofit/error_logger.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -648,7 +647,7 @@ abstract class PaymentResponse with _$PaymentResponse {
     required PaymentResponseStatusStatus status,
     required double amount,
     DateTime? processedAt,
-    PaymentResponseDetailsDetailsUnion? details,
+    PaymentResponseDetailsDetails? details,
     @Default('USD') String currency,
   }) = _PaymentResponse;
 
@@ -656,87 +655,28 @@ abstract class PaymentResponse with _$PaymentResponse {
       _$PaymentResponseFromJson(json);
 }
 
-class SearchResultUnion {
-  final Map<String, dynamic> _json;
+@Freezed(unionKey: 'type')
+sealed class SearchResult with _$SearchResult {
+  @FreezedUnionValue('user')
+  const factory SearchResult.user({required User user, double? score}) =
+      SearchResultUser;
 
-  const SearchResultUnion(this._json);
+  @FreezedUnionValue('post')
+  const factory SearchResult.post({
+    required PostModel post,
+    double? score,
+    List<String>? highlights,
+  }) = SearchResultPost;
 
-  factory SearchResultUnion.fromJson(Map<String, dynamic> json) =>
-      SearchResultUnion(json);
+  @FreezedUnionValue('comment')
+  const factory SearchResult.comment({
+    required Comment comment,
+    double? score,
+  }) = SearchResultComment;
 
-  Map<String, dynamic> toJson() => _json;
-
-  SearchResultUnionUserSearchResult toUserSearchResult() =>
-      SearchResultUnionUserSearchResult.fromJson(_json);
-  SearchResultUnionPostSearchResult toPostSearchResult() =>
-      SearchResultUnionPostSearchResult.fromJson(_json);
-  SearchResultUnionCommentSearchResult toCommentSearchResult() =>
-      SearchResultUnionCommentSearchResult.fromJson(_json);
+  factory SearchResult.fromJson(Map<String, Object?> json) =>
+      _$SearchResultFromJson(json);
 }
-
-@JsonSerializable()
-class SearchResultUnionUserSearchResult {
-  final UserSearchResultTypeType type;
-  final User user;
-  final double? score;
-
-  const SearchResultUnionUserSearchResult({
-    required this.type,
-    required this.user,
-    required this.score,
-  });
-
-  factory SearchResultUnionUserSearchResult.fromJson(
-    Map<String, Object?> json,
-  ) => _$SearchResultUnionUserSearchResultFromJson(json);
-
-  Map<String, Object?> toJson() =>
-      _$SearchResultUnionUserSearchResultToJson(this);
-}
-
-@JsonSerializable()
-class SearchResultUnionPostSearchResult {
-  final PostSearchResultTypeType type;
-  final PostModel post;
-  final double? score;
-  final List<String>? highlights;
-
-  const SearchResultUnionPostSearchResult({
-    required this.type,
-    required this.post,
-    required this.score,
-    required this.highlights,
-  });
-
-  factory SearchResultUnionPostSearchResult.fromJson(
-    Map<String, Object?> json,
-  ) => _$SearchResultUnionPostSearchResultFromJson(json);
-
-  Map<String, Object?> toJson() =>
-      _$SearchResultUnionPostSearchResultToJson(this);
-}
-
-@JsonSerializable()
-class SearchResultUnionCommentSearchResult {
-  final CommentSearchResultTypeType type;
-  final Comment comment;
-  final double? score;
-
-  const SearchResultUnionCommentSearchResult({
-    required this.type,
-    required this.comment,
-    required this.score,
-  });
-
-  factory SearchResultUnionCommentSearchResult.fromJson(
-    Map<String, Object?> json,
-  ) => _$SearchResultUnionCommentSearchResultFromJson(json);
-
-  Map<String, Object?> toJson() =>
-      _$SearchResultUnionCommentSearchResultToJson(this);
-}
-
-typedef SearchResult = SearchResultUnion?;
 
 @Freezed()
 abstract class UserSearchResult with _$UserSearchResult {
@@ -1098,102 +1038,38 @@ abstract class UserSettingsPrivacy with _$UserSettingsPrivacy {
       _$UserSettingsPrivacyFromJson(json);
 }
 
-class PaymentResponseDetailsDetailsUnion {
-  final Map<String, dynamic> _json;
+@Freezed(unionKey: 'paymentType')
+sealed class PaymentResponseDetailsDetails
+    with _$PaymentResponseDetailsDetails {
+  @FreezedUnionValue('credit_card')
+  const factory PaymentResponseDetailsDetails.creditCard({
+    required String cardNumber,
+    required int expiryMonth,
+    required int expiryYear,
+    required String cvv,
+    required double amount,
+    String? cardholderName,
+  }) = PaymentResponseDetailsDetailsCreditCard;
 
-  const PaymentResponseDetailsDetailsUnion(this._json);
+  @FreezedUnionValue('bank_transfer')
+  const factory PaymentResponseDetailsDetails.bankTransfer({
+    required String accountNumber,
+    required String routingNumber,
+    required double amount,
+    String? accountHolder,
+    String? reference,
+  }) = PaymentResponseDetailsDetailsBankTransfer;
 
-  factory PaymentResponseDetailsDetailsUnion.fromJson(
-    Map<String, dynamic> json,
-  ) => PaymentResponseDetailsDetailsUnion(json);
+  @FreezedUnionValue('crypto')
+  const factory PaymentResponseDetailsDetails.crypto({
+    required String walletAddress,
+    required CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency,
+    required double amount,
+    String? transactionHash,
+  }) = PaymentResponseDetailsDetailsCrypto;
 
-  Map<String, dynamic> toJson() => _json;
-
-  PaymentResponseDetailsDetailsUnionCreditCardPayment toCreditCardPayment() =>
-      PaymentResponseDetailsDetailsUnionCreditCardPayment.fromJson(_json);
-  PaymentResponseDetailsDetailsUnionBankTransferPayment
-  toBankTransferPayment() =>
-      PaymentResponseDetailsDetailsUnionBankTransferPayment.fromJson(_json);
-  PaymentResponseDetailsDetailsUnionCryptoPayment toCryptoPayment() =>
-      PaymentResponseDetailsDetailsUnionCryptoPayment.fromJson(_json);
-}
-
-@JsonSerializable()
-class PaymentResponseDetailsDetailsUnionCreditCardPayment {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
-  final String cardNumber;
-  final int expiryMonth;
-  final int expiryYear;
-  final String cvv;
-  final String? cardholderName;
-  final double amount;
-
-  const PaymentResponseDetailsDetailsUnionCreditCardPayment({
-    required this.paymentType,
-    required this.cardNumber,
-    required this.expiryMonth,
-    required this.expiryYear,
-    required this.cvv,
-    required this.cardholderName,
-    required this.amount,
-  });
-
-  factory PaymentResponseDetailsDetailsUnionCreditCardPayment.fromJson(
-    Map<String, Object?> json,
-  ) => _$PaymentResponseDetailsDetailsUnionCreditCardPaymentFromJson(json);
-
-  Map<String, Object?> toJson() =>
-      _$PaymentResponseDetailsDetailsUnionCreditCardPaymentToJson(this);
-}
-
-@JsonSerializable()
-class PaymentResponseDetailsDetailsUnionBankTransferPayment {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
-  final String accountNumber;
-  final String routingNumber;
-  final String? accountHolder;
-  final double amount;
-  final String? reference;
-
-  const PaymentResponseDetailsDetailsUnionBankTransferPayment({
-    required this.paymentType,
-    required this.accountNumber,
-    required this.routingNumber,
-    required this.accountHolder,
-    required this.amount,
-    required this.reference,
-  });
-
-  factory PaymentResponseDetailsDetailsUnionBankTransferPayment.fromJson(
-    Map<String, Object?> json,
-  ) => _$PaymentResponseDetailsDetailsUnionBankTransferPaymentFromJson(json);
-
-  Map<String, Object?> toJson() =>
-      _$PaymentResponseDetailsDetailsUnionBankTransferPaymentToJson(this);
-}
-
-@JsonSerializable()
-class PaymentResponseDetailsDetailsUnionCryptoPayment {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
-  final String walletAddress;
-  final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
-  final double amount;
-  final String? transactionHash;
-
-  const PaymentResponseDetailsDetailsUnionCryptoPayment({
-    required this.paymentType,
-    required this.walletAddress,
-    required this.cryptocurrency,
-    required this.amount,
-    required this.transactionHash,
-  });
-
-  factory PaymentResponseDetailsDetailsUnionCryptoPayment.fromJson(
-    Map<String, Object?> json,
-  ) => _$PaymentResponseDetailsDetailsUnionCryptoPaymentFromJson(json);
-
-  Map<String, Object?> toJson() =>
-      _$PaymentResponseDetailsDetailsUnionCryptoPaymentToJson(this);
+  factory PaymentResponseDetailsDetails.fromJson(Map<String, Object?> json) =>
+      _$PaymentResponseDetailsDetailsFromJson(json);
 }
 
 @Freezed()

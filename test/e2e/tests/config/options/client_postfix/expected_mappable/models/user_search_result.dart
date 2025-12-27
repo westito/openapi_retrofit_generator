@@ -4,6 +4,7 @@
 
 import 'package:dart_mappable/dart_mappable.dart';
 
+import 'search_result.dart';
 import 'user.dart';
 import 'user_search_result_type_type.dart';
 

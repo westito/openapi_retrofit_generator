@@ -112,8 +112,21 @@ String _generateSSEExtensionMethod(
   required bool dioOptionsParameterByDefault,
 }) {
   // Get the return type for deserialization
-  final returnTypeName = request.returnType?.type ?? 'dynamic';
-  final hasReturnType = request.returnType != null && returnTypeName != 'void';
+  final rawReturnType = request.returnType?.type ?? 'dynamic';
+  // Convert to proper Dart type (e.g., 'string' -> 'String')
+  final returnTypeName = request.returnType?.toSuitableType() ?? 'dynamic';
+  // Check if this is a primitive type that doesn't need fromJson deserialization
+  final isPrimitiveType = const {
+    'String',
+    'int',
+    'double',
+    'bool',
+    'num',
+    'dynamic',
+  }.contains(returnTypeName);
+  // Check if this is a List type
+  final isList = returnTypeName.startsWith('List<');
+  final hasReturnType = request.returnType != null && rawReturnType != 'void';
 
   // Build parameter list for extension method (same as private method)
   final params = <String>[];
@@ -156,8 +169,72 @@ String _generateSSEExtensionMethod(
 
   final sb = StringBuffer();
 
+  // Add description comment if available (same as regular methods)
+  if (request.description != null && request.description!.isNotEmpty) {
+    sb.write(
+      descriptionComment(request.description, tabForFirstLine: true, tab: '  '),
+    );
+  }
+
   if (hasReturnType) {
-    sb.write('''
+    if (isPrimitiveType) {
+      // For primitive types, just return the raw event data
+      if (returnTypeName == 'String') {
+        sb.write('''
+  Stream<String> ${request.name}($paramsStr) {
+    return _${request.name}($callParamsStr)
+        .transform(const LineSplitter())
+        .transform(const SseEventTransformer())
+        .map((event) => event.data);
+  }
+''');
+      } else {
+        // For other primitives (int, double, bool), parse the data
+        sb.write('''
+  Stream<$returnTypeName> ${request.name}($paramsStr) {
+    return _${request.name}($callParamsStr)
+        .transform(const LineSplitter())
+        .transform(const SseEventTransformer())
+        .map((event) => jsonDecode(event.data) as $returnTypeName);
+  }
+''');
+      }
+    } else if (isList) {
+      // For List types, decode JSON as list
+      // Extract inner type for proper casting
+      final innerType = returnTypeName.substring(5, returnTypeName.length - 1);
+      final isPrimitiveInner = const {
+        'String',
+        'int',
+        'double',
+        'bool',
+        'num',
+        'dynamic',
+      }.contains(innerType);
+      if (isPrimitiveInner) {
+        sb.write('''
+  Stream<$returnTypeName> ${request.name}($paramsStr) {
+    return _${request.name}($callParamsStr)
+        .transform(const LineSplitter())
+        .transform(const SseEventTransformer())
+        .map((event) => (jsonDecode(event.data) as List).cast<$innerType>());
+  }
+''');
+      } else {
+        sb.write('''
+  Stream<$returnTypeName> ${request.name}($paramsStr) {
+    return _${request.name}($callParamsStr)
+        .transform(const LineSplitter())
+        .transform(const SseEventTransformer())
+        .map((event) => (jsonDecode(event.data) as List)
+            .map((e) => $innerType.fromJson(e as Map<String, dynamic>))
+            .toList());
+  }
+''');
+      }
+    } else {
+      // For complex types, use fromJson deserialization
+      sb.write('''
   Stream<$returnTypeName> ${request.name}($paramsStr) {
     return _${request.name}($callParamsStr)
         .transform(const LineSplitter())
@@ -167,6 +244,7 @@ String _generateSSEExtensionMethod(
             ));
   }
 ''');
+    }
   } else {
     sb.write('''
   Stream<SseEvent> ${request.name}($paramsStr) {

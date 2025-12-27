@@ -14,7 +14,6 @@ class FamilyMapper extends ClassMapperBase<Family> {
   static FamilyMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = FamilyMapper._());
-      FamilyMembersMembersUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -22,9 +21,11 @@ class FamilyMapper extends ClassMapperBase<Family> {
   @override
   final String id = 'Family';
 
-  static List<FamilyMembersMembersUnion> _$members(Family v) => v.members;
-  static const Field<Family, List<FamilyMembersMembersUnion>> _f$members =
-      Field('members', _$members);
+  static List<FamilyMembersMembers> _$members(Family v) => v.members;
+  static const Field<Family, List<FamilyMembersMembers>> _f$members = Field(
+    'members',
+    _$members,
+  );
 
   @override
   final MappableFields<Family> fields = const {#members: _f$members};
@@ -81,15 +82,11 @@ abstract class FamilyCopyWith<$R, $In extends Family, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<
     $R,
-    FamilyMembersMembersUnion,
-    FamilyMembersMembersUnionCopyWith<
-      $R,
-      FamilyMembersMembersUnion,
-      FamilyMembersMembersUnion
-    >
+    FamilyMembersMembers,
+    ObjectCopyWith<$R, FamilyMembersMembers, FamilyMembersMembers>
   >
   get members;
-  $R call({List<FamilyMembersMembersUnion>? members});
+  $R call({List<FamilyMembersMembers>? members});
   FamilyCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -102,20 +99,16 @@ class _FamilyCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Family, $Out>
   @override
   ListCopyWith<
     $R,
-    FamilyMembersMembersUnion,
-    FamilyMembersMembersUnionCopyWith<
-      $R,
-      FamilyMembersMembersUnion,
-      FamilyMembersMembersUnion
-    >
+    FamilyMembersMembers,
+    ObjectCopyWith<$R, FamilyMembersMembers, FamilyMembersMembers>
   >
   get members => ListCopyWith(
     $value.members,
-    (v, t) => v.copyWith.$chain(t),
+    (v, t) => ObjectCopyWith(v, $identity, t),
     (v) => call(members: v),
   );
   @override
-  $R call({List<FamilyMembersMembersUnion>? members}) =>
+  $R call({List<FamilyMembersMembers>? members}) =>
       $apply(FieldCopyWithData({if (members != null) #members: members}));
   @override
   Family $make(CopyWithData data) =>

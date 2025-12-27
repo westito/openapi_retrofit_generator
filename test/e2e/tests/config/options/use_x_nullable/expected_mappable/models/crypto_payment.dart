@@ -7,6 +7,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'crypto_payment_cryptocurrency_cryptocurrency.dart';
 import 'crypto_payment_payment_type_payment_type.dart';
 import 'payment_request.dart';
+import 'payment_response_details_details.dart';
 
 part 'crypto_payment.mapper.dart';
 

@@ -22,6 +22,7 @@ abstract class SessionsClient {
 }
 
 extension SessionsClientSSE on SessionsClient {
+  /// [id] - Session ID
   Stream<SessionEvent> subscribeEvents({required String id}) {
     return _subscribeEvents(id: id)
         .transform(const LineSplitter())

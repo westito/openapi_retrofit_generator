@@ -5236,7 +5236,7 @@ as String?,
 /// @nodoc
 mixin _$PaymentResponse {
 
- String get transactionId; PaymentResponseStatusStatus get status; double get amount; DateTime? get processedAt; PaymentResponseDetailsDetailsUnion? get details; String get currency;
+ String get transactionId; PaymentResponseStatusStatus get status; double get amount; DateTime? get processedAt; PaymentResponseDetailsDetails? get details; String get currency;
 /// Create a copy of PaymentResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -5269,11 +5269,11 @@ abstract mixin class $PaymentResponseCopyWith<$Res>  {
   factory $PaymentResponseCopyWith(PaymentResponse value, $Res Function(PaymentResponse) _then) = _$PaymentResponseCopyWithImpl;
 @useResult
 $Res call({
- String transactionId, PaymentResponseStatusStatus status, double amount, DateTime? processedAt, PaymentResponseDetailsDetailsUnion? details, String currency
+ String transactionId, PaymentResponseStatusStatus status, double amount, DateTime? processedAt, PaymentResponseDetailsDetails? details, String currency
 });
 
 
-
+$PaymentResponseDetailsDetailsCopyWith<$Res>? get details;
 
 }
 /// @nodoc
@@ -5293,11 +5293,23 @@ as String,status: null == status ? _self.status : status // ignore: cast_nullabl
 as PaymentResponseStatusStatus,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as double,processedAt: freezed == processedAt ? _self.processedAt : processedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
-as PaymentResponseDetailsDetailsUnion?,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as PaymentResponseDetailsDetails?,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
+/// Create a copy of PaymentResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PaymentResponseDetailsDetailsCopyWith<$Res>? get details {
+    if (_self.details == null) {
+    return null;
+  }
 
+  return $PaymentResponseDetailsDetailsCopyWith<$Res>(_self.details!, (value) {
+    return _then(_self.copyWith(details: value));
+  });
+}
 }
 
 
@@ -5379,7 +5391,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String transactionId,  PaymentResponseStatusStatus status,  double amount,  DateTime? processedAt,  PaymentResponseDetailsDetailsUnion? details,  String currency)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String transactionId,  PaymentResponseStatusStatus status,  double amount,  DateTime? processedAt,  PaymentResponseDetailsDetails? details,  String currency)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PaymentResponse() when $default != null:
 return $default(_that.transactionId,_that.status,_that.amount,_that.processedAt,_that.details,_that.currency);case _:
@@ -5400,7 +5412,7 @@ return $default(_that.transactionId,_that.status,_that.amount,_that.processedAt,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String transactionId,  PaymentResponseStatusStatus status,  double amount,  DateTime? processedAt,  PaymentResponseDetailsDetailsUnion? details,  String currency)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String transactionId,  PaymentResponseStatusStatus status,  double amount,  DateTime? processedAt,  PaymentResponseDetailsDetails? details,  String currency)  $default,) {final _that = this;
 switch (_that) {
 case _PaymentResponse():
 return $default(_that.transactionId,_that.status,_that.amount,_that.processedAt,_that.details,_that.currency);case _:
@@ -5420,7 +5432,7 @@ return $default(_that.transactionId,_that.status,_that.amount,_that.processedAt,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String transactionId,  PaymentResponseStatusStatus status,  double amount,  DateTime? processedAt,  PaymentResponseDetailsDetailsUnion? details,  String currency)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String transactionId,  PaymentResponseStatusStatus status,  double amount,  DateTime? processedAt,  PaymentResponseDetailsDetails? details,  String currency)?  $default,) {final _that = this;
 switch (_that) {
 case _PaymentResponse() when $default != null:
 return $default(_that.transactionId,_that.status,_that.amount,_that.processedAt,_that.details,_that.currency);case _:
@@ -5442,7 +5454,7 @@ class _PaymentResponse implements PaymentResponse {
 @override final  PaymentResponseStatusStatus status;
 @override final  double amount;
 @override final  DateTime? processedAt;
-@override final  PaymentResponseDetailsDetailsUnion? details;
+@override final  PaymentResponseDetailsDetails? details;
 @override@JsonKey() final  String currency;
 
 /// Create a copy of PaymentResponse
@@ -5478,11 +5490,11 @@ abstract mixin class _$PaymentResponseCopyWith<$Res> implements $PaymentResponse
   factory _$PaymentResponseCopyWith(_PaymentResponse value, $Res Function(_PaymentResponse) _then) = __$PaymentResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String transactionId, PaymentResponseStatusStatus status, double amount, DateTime? processedAt, PaymentResponseDetailsDetailsUnion? details, String currency
+ String transactionId, PaymentResponseStatusStatus status, double amount, DateTime? processedAt, PaymentResponseDetailsDetails? details, String currency
 });
 
 
-
+@override $PaymentResponseDetailsDetailsCopyWith<$Res>? get details;
 
 }
 /// @nodoc
@@ -5502,12 +5514,513 @@ as String,status: null == status ? _self.status : status // ignore: cast_nullabl
 as PaymentResponseStatusStatus,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
 as double,processedAt: freezed == processedAt ? _self.processedAt : processedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,details: freezed == details ? _self.details : details // ignore: cast_nullable_to_non_nullable
-as PaymentResponseDetailsDetailsUnion?,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
+as PaymentResponseDetailsDetails?,currency: null == currency ? _self.currency : currency // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
 
+/// Create a copy of PaymentResponse
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PaymentResponseDetailsDetailsCopyWith<$Res>? get details {
+    if (_self.details == null) {
+    return null;
+  }
 
+  return $PaymentResponseDetailsDetailsCopyWith<$Res>(_self.details!, (value) {
+    return _then(_self.copyWith(details: value));
+  });
+}
+}
+
+SearchResult _$SearchResultFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['type']) {
+                  case 'user':
+          return SearchResultUser.fromJson(
+            json
+          );
+                case 'post':
+          return SearchResultPost.fromJson(
+            json
+          );
+                case 'comment':
+          return SearchResultComment.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'type',
+  'SearchResult',
+  'Invalid union type "${json['type']}"!'
+);
+        }
+      
+}
+
+/// @nodoc
+mixin _$SearchResult {
+
+ double? get score;
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SearchResultCopyWith<SearchResult> get copyWith => _$SearchResultCopyWithImpl<SearchResult>(this as SearchResult, _$identity);
+
+  /// Serializes this SearchResult to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResult&&(identical(other.score, score) || other.score == score));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,score);
+
+@override
+String toString() {
+  return 'SearchResult(score: $score)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SearchResultCopyWith<$Res>  {
+  factory $SearchResultCopyWith(SearchResult value, $Res Function(SearchResult) _then) = _$SearchResultCopyWithImpl;
+@useResult
+$Res call({
+ double? score
+});
+
+
+
+
+}
+/// @nodoc
+class _$SearchResultCopyWithImpl<$Res>
+    implements $SearchResultCopyWith<$Res> {
+  _$SearchResultCopyWithImpl(this._self, this._then);
+
+  final SearchResult _self;
+  final $Res Function(SearchResult) _then;
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? score = freezed,}) {
+  return _then(_self.copyWith(
+score: freezed == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [SearchResult].
+extension SearchResultPatterns on SearchResult {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( SearchResultUser value)?  user,TResult Function( SearchResultPost value)?  post,TResult Function( SearchResultComment value)?  comment,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case SearchResultUser() when user != null:
+return user(_that);case SearchResultPost() when post != null:
+return post(_that);case SearchResultComment() when comment != null:
+return comment(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( SearchResultUser value)  user,required TResult Function( SearchResultPost value)  post,required TResult Function( SearchResultComment value)  comment,}){
+final _that = this;
+switch (_that) {
+case SearchResultUser():
+return user(_that);case SearchResultPost():
+return post(_that);case SearchResultComment():
+return comment(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( SearchResultUser value)?  user,TResult? Function( SearchResultPost value)?  post,TResult? Function( SearchResultComment value)?  comment,}){
+final _that = this;
+switch (_that) {
+case SearchResultUser() when user != null:
+return user(_that);case SearchResultPost() when post != null:
+return post(_that);case SearchResultComment() when comment != null:
+return comment(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( User user,  double? score)?  user,TResult Function( PostModel post,  double? score,  List<String>? highlights)?  post,TResult Function( Comment comment,  double? score)?  comment,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case SearchResultUser() when user != null:
+return user(_that.user,_that.score);case SearchResultPost() when post != null:
+return post(_that.post,_that.score,_that.highlights);case SearchResultComment() when comment != null:
+return comment(_that.comment,_that.score);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( User user,  double? score)  user,required TResult Function( PostModel post,  double? score,  List<String>? highlights)  post,required TResult Function( Comment comment,  double? score)  comment,}) {final _that = this;
+switch (_that) {
+case SearchResultUser():
+return user(_that.user,_that.score);case SearchResultPost():
+return post(_that.post,_that.score,_that.highlights);case SearchResultComment():
+return comment(_that.comment,_that.score);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( User user,  double? score)?  user,TResult? Function( PostModel post,  double? score,  List<String>? highlights)?  post,TResult? Function( Comment comment,  double? score)?  comment,}) {final _that = this;
+switch (_that) {
+case SearchResultUser() when user != null:
+return user(_that.user,_that.score);case SearchResultPost() when post != null:
+return post(_that.post,_that.score,_that.highlights);case SearchResultComment() when comment != null:
+return comment(_that.comment,_that.score);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class SearchResultUser implements SearchResult {
+  const SearchResultUser({required this.user, this.score, final  String? $type}): $type = $type ?? 'user';
+  factory SearchResultUser.fromJson(Map<String, dynamic> json) => _$SearchResultUserFromJson(json);
+
+ final  User user;
+@override final  double? score;
+
+@JsonKey(name: 'type')
+final String $type;
+
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SearchResultUserCopyWith<SearchResultUser> get copyWith => _$SearchResultUserCopyWithImpl<SearchResultUser>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$SearchResultUserToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResultUser&&(identical(other.user, user) || other.user == user)&&(identical(other.score, score) || other.score == score));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,user,score);
+
+@override
+String toString() {
+  return 'SearchResult.user(user: $user, score: $score)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SearchResultUserCopyWith<$Res> implements $SearchResultCopyWith<$Res> {
+  factory $SearchResultUserCopyWith(SearchResultUser value, $Res Function(SearchResultUser) _then) = _$SearchResultUserCopyWithImpl;
+@override @useResult
+$Res call({
+ User user, double? score
+});
+
+
+$UserCopyWith<$Res> get user;
+
+}
+/// @nodoc
+class _$SearchResultUserCopyWithImpl<$Res>
+    implements $SearchResultUserCopyWith<$Res> {
+  _$SearchResultUserCopyWithImpl(this._self, this._then);
+
+  final SearchResultUser _self;
+  final $Res Function(SearchResultUser) _then;
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? score = freezed,}) {
+  return _then(SearchResultUser(
+user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as User,score: freezed == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res> get user {
+  
+  return $UserCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class SearchResultPost implements SearchResult {
+  const SearchResultPost({required this.post, this.score, final  List<String>? highlights, final  String? $type}): _highlights = highlights,$type = $type ?? 'post';
+  factory SearchResultPost.fromJson(Map<String, dynamic> json) => _$SearchResultPostFromJson(json);
+
+ final  PostModel post;
+@override final  double? score;
+ final  List<String>? _highlights;
+ List<String>? get highlights {
+  final value = _highlights;
+  if (value == null) return null;
+  if (_highlights is EqualUnmodifiableListView) return _highlights;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+
+@JsonKey(name: 'type')
+final String $type;
+
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SearchResultPostCopyWith<SearchResultPost> get copyWith => _$SearchResultPostCopyWithImpl<SearchResultPost>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$SearchResultPostToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResultPost&&(identical(other.post, post) || other.post == post)&&(identical(other.score, score) || other.score == score)&&const DeepCollectionEquality().equals(other._highlights, _highlights));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,post,score,const DeepCollectionEquality().hash(_highlights));
+
+@override
+String toString() {
+  return 'SearchResult.post(post: $post, score: $score, highlights: $highlights)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SearchResultPostCopyWith<$Res> implements $SearchResultCopyWith<$Res> {
+  factory $SearchResultPostCopyWith(SearchResultPost value, $Res Function(SearchResultPost) _then) = _$SearchResultPostCopyWithImpl;
+@override @useResult
+$Res call({
+ PostModel post, double? score, List<String>? highlights
+});
+
+
+$PostModelCopyWith<$Res> get post;
+
+}
+/// @nodoc
+class _$SearchResultPostCopyWithImpl<$Res>
+    implements $SearchResultPostCopyWith<$Res> {
+  _$SearchResultPostCopyWithImpl(this._self, this._then);
+
+  final SearchResultPost _self;
+  final $Res Function(SearchResultPost) _then;
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? post = null,Object? score = freezed,Object? highlights = freezed,}) {
+  return _then(SearchResultPost(
+post: null == post ? _self.post : post // ignore: cast_nullable_to_non_nullable
+as PostModel,score: freezed == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
+as double?,highlights: freezed == highlights ? _self._highlights : highlights // ignore: cast_nullable_to_non_nullable
+as List<String>?,
+  ));
+}
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PostModelCopyWith<$Res> get post {
+  
+  return $PostModelCopyWith<$Res>(_self.post, (value) {
+    return _then(_self.copyWith(post: value));
+  });
+}
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class SearchResultComment implements SearchResult {
+  const SearchResultComment({required this.comment, this.score, final  String? $type}): $type = $type ?? 'comment';
+  factory SearchResultComment.fromJson(Map<String, dynamic> json) => _$SearchResultCommentFromJson(json);
+
+ final  Comment comment;
+@override final  double? score;
+
+@JsonKey(name: 'type')
+final String $type;
+
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SearchResultCommentCopyWith<SearchResultComment> get copyWith => _$SearchResultCommentCopyWithImpl<SearchResultComment>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$SearchResultCommentToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResultComment&&(identical(other.comment, comment) || other.comment == comment)&&(identical(other.score, score) || other.score == score));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,comment,score);
+
+@override
+String toString() {
+  return 'SearchResult.comment(comment: $comment, score: $score)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SearchResultCommentCopyWith<$Res> implements $SearchResultCopyWith<$Res> {
+  factory $SearchResultCommentCopyWith(SearchResultComment value, $Res Function(SearchResultComment) _then) = _$SearchResultCommentCopyWithImpl;
+@override @useResult
+$Res call({
+ Comment comment, double? score
+});
+
+
+$CommentCopyWith<$Res> get comment;
+
+}
+/// @nodoc
+class _$SearchResultCommentCopyWithImpl<$Res>
+    implements $SearchResultCommentCopyWith<$Res> {
+  _$SearchResultCommentCopyWithImpl(this._self, this._then);
+
+  final SearchResultComment _self;
+  final $Res Function(SearchResultComment) _then;
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? comment = null,Object? score = freezed,}) {
+  return _then(SearchResultComment(
+comment: null == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+as Comment,score: freezed == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
+as double?,
+  ));
+}
+
+/// Create a copy of SearchResult
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$CommentCopyWith<$Res> get comment {
+  
+  return $CommentCopyWith<$Res>(_self.comment, (value) {
+    return _then(_self.copyWith(comment: value));
+  });
+}
 }
 
 
@@ -12496,6 +13009,476 @@ class __$UserSettingsPrivacyCopyWithImpl<$Res>
 profileVisibility: null == profileVisibility ? _self.profileVisibility : profileVisibility // ignore: cast_nullable_to_non_nullable
 as UserSettingsPrivacyProfileVisibilityProfileVisibility,showEmail: null == showEmail ? _self.showEmail : showEmail // ignore: cast_nullable_to_non_nullable
 as bool,
+  ));
+}
+
+
+}
+
+PaymentResponseDetailsDetails _$PaymentResponseDetailsDetailsFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['paymentType']) {
+                  case 'credit_card':
+          return PaymentResponseDetailsDetailsCreditCard.fromJson(
+            json
+          );
+                case 'bank_transfer':
+          return PaymentResponseDetailsDetailsBankTransfer.fromJson(
+            json
+          );
+                case 'crypto':
+          return PaymentResponseDetailsDetailsCrypto.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'paymentType',
+  'PaymentResponseDetailsDetails',
+  'Invalid union type "${json['paymentType']}"!'
+);
+        }
+      
+}
+
+/// @nodoc
+mixin _$PaymentResponseDetailsDetails {
+
+ double get amount;
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaymentResponseDetailsDetailsCopyWith<PaymentResponseDetailsDetails> get copyWith => _$PaymentResponseDetailsDetailsCopyWithImpl<PaymentResponseDetailsDetails>(this as PaymentResponseDetailsDetails, _$identity);
+
+  /// Serializes this PaymentResponseDetailsDetails to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentResponseDetailsDetails&&(identical(other.amount, amount) || other.amount == amount));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,amount);
+
+@override
+String toString() {
+  return 'PaymentResponseDetailsDetails(amount: $amount)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaymentResponseDetailsDetailsCopyWith<$Res>  {
+  factory $PaymentResponseDetailsDetailsCopyWith(PaymentResponseDetailsDetails value, $Res Function(PaymentResponseDetailsDetails) _then) = _$PaymentResponseDetailsDetailsCopyWithImpl;
+@useResult
+$Res call({
+ double amount
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaymentResponseDetailsDetailsCopyWithImpl<$Res>
+    implements $PaymentResponseDetailsDetailsCopyWith<$Res> {
+  _$PaymentResponseDetailsDetailsCopyWithImpl(this._self, this._then);
+
+  final PaymentResponseDetailsDetails _self;
+  final $Res Function(PaymentResponseDetailsDetails) _then;
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? amount = null,}) {
+  return _then(_self.copyWith(
+amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [PaymentResponseDetailsDetails].
+extension PaymentResponseDetailsDetailsPatterns on PaymentResponseDetailsDetails {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( PaymentResponseDetailsDetailsCreditCard value)?  creditCard,TResult Function( PaymentResponseDetailsDetailsBankTransfer value)?  bankTransfer,TResult Function( PaymentResponseDetailsDetailsCrypto value)?  crypto,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case PaymentResponseDetailsDetailsCreditCard() when creditCard != null:
+return creditCard(_that);case PaymentResponseDetailsDetailsBankTransfer() when bankTransfer != null:
+return bankTransfer(_that);case PaymentResponseDetailsDetailsCrypto() when crypto != null:
+return crypto(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( PaymentResponseDetailsDetailsCreditCard value)  creditCard,required TResult Function( PaymentResponseDetailsDetailsBankTransfer value)  bankTransfer,required TResult Function( PaymentResponseDetailsDetailsCrypto value)  crypto,}){
+final _that = this;
+switch (_that) {
+case PaymentResponseDetailsDetailsCreditCard():
+return creditCard(_that);case PaymentResponseDetailsDetailsBankTransfer():
+return bankTransfer(_that);case PaymentResponseDetailsDetailsCrypto():
+return crypto(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( PaymentResponseDetailsDetailsCreditCard value)?  creditCard,TResult? Function( PaymentResponseDetailsDetailsBankTransfer value)?  bankTransfer,TResult? Function( PaymentResponseDetailsDetailsCrypto value)?  crypto,}){
+final _that = this;
+switch (_that) {
+case PaymentResponseDetailsDetailsCreditCard() when creditCard != null:
+return creditCard(_that);case PaymentResponseDetailsDetailsBankTransfer() when bankTransfer != null:
+return bankTransfer(_that);case PaymentResponseDetailsDetailsCrypto() when crypto != null:
+return crypto(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( String cardNumber,  int expiryMonth,  int expiryYear,  String cvv,  double amount,  String? cardholderName)?  creditCard,TResult Function( String accountNumber,  String routingNumber,  double amount,  String? accountHolder,  String? reference)?  bankTransfer,TResult Function( String walletAddress,  CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency,  double amount,  String? transactionHash)?  crypto,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case PaymentResponseDetailsDetailsCreditCard() when creditCard != null:
+return creditCard(_that.cardNumber,_that.expiryMonth,_that.expiryYear,_that.cvv,_that.amount,_that.cardholderName);case PaymentResponseDetailsDetailsBankTransfer() when bankTransfer != null:
+return bankTransfer(_that.accountNumber,_that.routingNumber,_that.amount,_that.accountHolder,_that.reference);case PaymentResponseDetailsDetailsCrypto() when crypto != null:
+return crypto(_that.walletAddress,_that.cryptocurrency,_that.amount,_that.transactionHash);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( String cardNumber,  int expiryMonth,  int expiryYear,  String cvv,  double amount,  String? cardholderName)  creditCard,required TResult Function( String accountNumber,  String routingNumber,  double amount,  String? accountHolder,  String? reference)  bankTransfer,required TResult Function( String walletAddress,  CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency,  double amount,  String? transactionHash)  crypto,}) {final _that = this;
+switch (_that) {
+case PaymentResponseDetailsDetailsCreditCard():
+return creditCard(_that.cardNumber,_that.expiryMonth,_that.expiryYear,_that.cvv,_that.amount,_that.cardholderName);case PaymentResponseDetailsDetailsBankTransfer():
+return bankTransfer(_that.accountNumber,_that.routingNumber,_that.amount,_that.accountHolder,_that.reference);case PaymentResponseDetailsDetailsCrypto():
+return crypto(_that.walletAddress,_that.cryptocurrency,_that.amount,_that.transactionHash);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( String cardNumber,  int expiryMonth,  int expiryYear,  String cvv,  double amount,  String? cardholderName)?  creditCard,TResult? Function( String accountNumber,  String routingNumber,  double amount,  String? accountHolder,  String? reference)?  bankTransfer,TResult? Function( String walletAddress,  CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency,  double amount,  String? transactionHash)?  crypto,}) {final _that = this;
+switch (_that) {
+case PaymentResponseDetailsDetailsCreditCard() when creditCard != null:
+return creditCard(_that.cardNumber,_that.expiryMonth,_that.expiryYear,_that.cvv,_that.amount,_that.cardholderName);case PaymentResponseDetailsDetailsBankTransfer() when bankTransfer != null:
+return bankTransfer(_that.accountNumber,_that.routingNumber,_that.amount,_that.accountHolder,_that.reference);case PaymentResponseDetailsDetailsCrypto() when crypto != null:
+return crypto(_that.walletAddress,_that.cryptocurrency,_that.amount,_that.transactionHash);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class PaymentResponseDetailsDetailsCreditCard implements PaymentResponseDetailsDetails {
+  const PaymentResponseDetailsDetailsCreditCard({required this.cardNumber, required this.expiryMonth, required this.expiryYear, required this.cvv, required this.amount, this.cardholderName, final  String? $type}): $type = $type ?? 'credit_card';
+  factory PaymentResponseDetailsDetailsCreditCard.fromJson(Map<String, dynamic> json) => _$PaymentResponseDetailsDetailsCreditCardFromJson(json);
+
+ final  String cardNumber;
+ final  int expiryMonth;
+ final  int expiryYear;
+ final  String cvv;
+@override final  double amount;
+ final  String? cardholderName;
+
+@JsonKey(name: 'paymentType')
+final String $type;
+
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaymentResponseDetailsDetailsCreditCardCopyWith<PaymentResponseDetailsDetailsCreditCard> get copyWith => _$PaymentResponseDetailsDetailsCreditCardCopyWithImpl<PaymentResponseDetailsDetailsCreditCard>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PaymentResponseDetailsDetailsCreditCardToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentResponseDetailsDetailsCreditCard&&(identical(other.cardNumber, cardNumber) || other.cardNumber == cardNumber)&&(identical(other.expiryMonth, expiryMonth) || other.expiryMonth == expiryMonth)&&(identical(other.expiryYear, expiryYear) || other.expiryYear == expiryYear)&&(identical(other.cvv, cvv) || other.cvv == cvv)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.cardholderName, cardholderName) || other.cardholderName == cardholderName));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,cardNumber,expiryMonth,expiryYear,cvv,amount,cardholderName);
+
+@override
+String toString() {
+  return 'PaymentResponseDetailsDetails.creditCard(cardNumber: $cardNumber, expiryMonth: $expiryMonth, expiryYear: $expiryYear, cvv: $cvv, amount: $amount, cardholderName: $cardholderName)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaymentResponseDetailsDetailsCreditCardCopyWith<$Res> implements $PaymentResponseDetailsDetailsCopyWith<$Res> {
+  factory $PaymentResponseDetailsDetailsCreditCardCopyWith(PaymentResponseDetailsDetailsCreditCard value, $Res Function(PaymentResponseDetailsDetailsCreditCard) _then) = _$PaymentResponseDetailsDetailsCreditCardCopyWithImpl;
+@override @useResult
+$Res call({
+ String cardNumber, int expiryMonth, int expiryYear, String cvv, double amount, String? cardholderName
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaymentResponseDetailsDetailsCreditCardCopyWithImpl<$Res>
+    implements $PaymentResponseDetailsDetailsCreditCardCopyWith<$Res> {
+  _$PaymentResponseDetailsDetailsCreditCardCopyWithImpl(this._self, this._then);
+
+  final PaymentResponseDetailsDetailsCreditCard _self;
+  final $Res Function(PaymentResponseDetailsDetailsCreditCard) _then;
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? cardNumber = null,Object? expiryMonth = null,Object? expiryYear = null,Object? cvv = null,Object? amount = null,Object? cardholderName = freezed,}) {
+  return _then(PaymentResponseDetailsDetailsCreditCard(
+cardNumber: null == cardNumber ? _self.cardNumber : cardNumber // ignore: cast_nullable_to_non_nullable
+as String,expiryMonth: null == expiryMonth ? _self.expiryMonth : expiryMonth // ignore: cast_nullable_to_non_nullable
+as int,expiryYear: null == expiryYear ? _self.expiryYear : expiryYear // ignore: cast_nullable_to_non_nullable
+as int,cvv: null == cvv ? _self.cvv : cvv // ignore: cast_nullable_to_non_nullable
+as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,cardholderName: freezed == cardholderName ? _self.cardholderName : cardholderName // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class PaymentResponseDetailsDetailsBankTransfer implements PaymentResponseDetailsDetails {
+  const PaymentResponseDetailsDetailsBankTransfer({required this.accountNumber, required this.routingNumber, required this.amount, this.accountHolder, this.reference, final  String? $type}): $type = $type ?? 'bank_transfer';
+  factory PaymentResponseDetailsDetailsBankTransfer.fromJson(Map<String, dynamic> json) => _$PaymentResponseDetailsDetailsBankTransferFromJson(json);
+
+ final  String accountNumber;
+ final  String routingNumber;
+@override final  double amount;
+ final  String? accountHolder;
+ final  String? reference;
+
+@JsonKey(name: 'paymentType')
+final String $type;
+
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaymentResponseDetailsDetailsBankTransferCopyWith<PaymentResponseDetailsDetailsBankTransfer> get copyWith => _$PaymentResponseDetailsDetailsBankTransferCopyWithImpl<PaymentResponseDetailsDetailsBankTransfer>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PaymentResponseDetailsDetailsBankTransferToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentResponseDetailsDetailsBankTransfer&&(identical(other.accountNumber, accountNumber) || other.accountNumber == accountNumber)&&(identical(other.routingNumber, routingNumber) || other.routingNumber == routingNumber)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.accountHolder, accountHolder) || other.accountHolder == accountHolder)&&(identical(other.reference, reference) || other.reference == reference));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,accountNumber,routingNumber,amount,accountHolder,reference);
+
+@override
+String toString() {
+  return 'PaymentResponseDetailsDetails.bankTransfer(accountNumber: $accountNumber, routingNumber: $routingNumber, amount: $amount, accountHolder: $accountHolder, reference: $reference)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaymentResponseDetailsDetailsBankTransferCopyWith<$Res> implements $PaymentResponseDetailsDetailsCopyWith<$Res> {
+  factory $PaymentResponseDetailsDetailsBankTransferCopyWith(PaymentResponseDetailsDetailsBankTransfer value, $Res Function(PaymentResponseDetailsDetailsBankTransfer) _then) = _$PaymentResponseDetailsDetailsBankTransferCopyWithImpl;
+@override @useResult
+$Res call({
+ String accountNumber, String routingNumber, double amount, String? accountHolder, String? reference
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaymentResponseDetailsDetailsBankTransferCopyWithImpl<$Res>
+    implements $PaymentResponseDetailsDetailsBankTransferCopyWith<$Res> {
+  _$PaymentResponseDetailsDetailsBankTransferCopyWithImpl(this._self, this._then);
+
+  final PaymentResponseDetailsDetailsBankTransfer _self;
+  final $Res Function(PaymentResponseDetailsDetailsBankTransfer) _then;
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? accountNumber = null,Object? routingNumber = null,Object? amount = null,Object? accountHolder = freezed,Object? reference = freezed,}) {
+  return _then(PaymentResponseDetailsDetailsBankTransfer(
+accountNumber: null == accountNumber ? _self.accountNumber : accountNumber // ignore: cast_nullable_to_non_nullable
+as String,routingNumber: null == routingNumber ? _self.routingNumber : routingNumber // ignore: cast_nullable_to_non_nullable
+as String,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,accountHolder: freezed == accountHolder ? _self.accountHolder : accountHolder // ignore: cast_nullable_to_non_nullable
+as String?,reference: freezed == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class PaymentResponseDetailsDetailsCrypto implements PaymentResponseDetailsDetails {
+  const PaymentResponseDetailsDetailsCrypto({required this.walletAddress, required this.cryptocurrency, required this.amount, this.transactionHash, final  String? $type}): $type = $type ?? 'crypto';
+  factory PaymentResponseDetailsDetailsCrypto.fromJson(Map<String, dynamic> json) => _$PaymentResponseDetailsDetailsCryptoFromJson(json);
+
+ final  String walletAddress;
+ final  CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
+@override final  double amount;
+ final  String? transactionHash;
+
+@JsonKey(name: 'paymentType')
+final String $type;
+
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PaymentResponseDetailsDetailsCryptoCopyWith<PaymentResponseDetailsDetailsCrypto> get copyWith => _$PaymentResponseDetailsDetailsCryptoCopyWithImpl<PaymentResponseDetailsDetailsCrypto>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PaymentResponseDetailsDetailsCryptoToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PaymentResponseDetailsDetailsCrypto&&(identical(other.walletAddress, walletAddress) || other.walletAddress == walletAddress)&&(identical(other.cryptocurrency, cryptocurrency) || other.cryptocurrency == cryptocurrency)&&(identical(other.amount, amount) || other.amount == amount)&&(identical(other.transactionHash, transactionHash) || other.transactionHash == transactionHash));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,walletAddress,cryptocurrency,amount,transactionHash);
+
+@override
+String toString() {
+  return 'PaymentResponseDetailsDetails.crypto(walletAddress: $walletAddress, cryptocurrency: $cryptocurrency, amount: $amount, transactionHash: $transactionHash)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PaymentResponseDetailsDetailsCryptoCopyWith<$Res> implements $PaymentResponseDetailsDetailsCopyWith<$Res> {
+  factory $PaymentResponseDetailsDetailsCryptoCopyWith(PaymentResponseDetailsDetailsCrypto value, $Res Function(PaymentResponseDetailsDetailsCrypto) _then) = _$PaymentResponseDetailsDetailsCryptoCopyWithImpl;
+@override @useResult
+$Res call({
+ String walletAddress, CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency, double amount, String? transactionHash
+});
+
+
+
+
+}
+/// @nodoc
+class _$PaymentResponseDetailsDetailsCryptoCopyWithImpl<$Res>
+    implements $PaymentResponseDetailsDetailsCryptoCopyWith<$Res> {
+  _$PaymentResponseDetailsDetailsCryptoCopyWithImpl(this._self, this._then);
+
+  final PaymentResponseDetailsDetailsCrypto _self;
+  final $Res Function(PaymentResponseDetailsDetailsCrypto) _then;
+
+/// Create a copy of PaymentResponseDetailsDetails
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? walletAddress = null,Object? cryptocurrency = null,Object? amount = null,Object? transactionHash = freezed,}) {
+  return _then(PaymentResponseDetailsDetailsCrypto(
+walletAddress: null == walletAddress ? _self.walletAddress : walletAddress // ignore: cast_nullable_to_non_nullable
+as String,cryptocurrency: null == cryptocurrency ? _self.cryptocurrency : cryptocurrency // ignore: cast_nullable_to_non_nullable
+as CryptoPaymentCryptocurrencyCryptocurrency,amount: null == amount ? _self.amount : amount // ignore: cast_nullable_to_non_nullable
+as double,transactionHash: freezed == transactionHash ? _self.transactionHash : transactionHash // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

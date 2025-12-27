@@ -17,8 +17,6 @@ class SessionMessagesResponseMapper
       MapperContainer.globals.use(
         _instance = SessionMessagesResponseMapper._(),
       );
-      MessageUnionMapper.ensureInitialized();
-      PartModelUnionMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -26,14 +24,16 @@ class SessionMessagesResponseMapper
   @override
   final String id = 'SessionMessagesResponse';
 
-  static MessageUnion? _$info(SessionMessagesResponse v) => v.info;
-  static const Field<SessionMessagesResponse, MessageUnion> _f$info = Field(
+  static Message _$info(SessionMessagesResponse v) => v.info;
+  static const Field<SessionMessagesResponse, Message> _f$info = Field(
     'info',
     _$info,
   );
-  static List<PartModelUnion?> _$parts(SessionMessagesResponse v) => v.parts;
-  static const Field<SessionMessagesResponse, List<PartModelUnion?>> _f$parts =
-      Field('parts', _$parts);
+  static List<PartModel> _$parts(SessionMessagesResponse v) => v.parts;
+  static const Field<SessionMessagesResponse, List<PartModel>> _f$parts = Field(
+    'parts',
+    _$parts,
+  );
 
   @override
   final MappableFields<SessionMessagesResponse> fields = const {
@@ -118,14 +118,9 @@ abstract class SessionMessagesResponseCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
-  MessageUnionCopyWith<$R, MessageUnion, MessageUnion>? get info;
-  ListCopyWith<
-    $R,
-    PartModelUnion?,
-    PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>?
-  >
+  ListCopyWith<$R, PartModel, ObjectCopyWith<$R, PartModel, PartModel>>
   get parts;
-  $R call({MessageUnion? info, List<PartModelUnion?>? parts});
+  $R call({Message? info, List<PartModel>? parts});
   SessionMessagesResponseCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -141,23 +136,16 @@ class _SessionMessagesResponseCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionMessagesResponse> $mapper =
       SessionMessagesResponseMapper.ensureInitialized();
   @override
-  MessageUnionCopyWith<$R, MessageUnion, MessageUnion>? get info =>
-      $value.info?.copyWith.$chain((v) => call(info: v));
-  @override
-  ListCopyWith<
-    $R,
-    PartModelUnion?,
-    PartModelUnionCopyWith<$R, PartModelUnion, PartModelUnion>?
-  >
+  ListCopyWith<$R, PartModel, ObjectCopyWith<$R, PartModel, PartModel>>
   get parts => ListCopyWith(
     $value.parts,
-    (v, t) => v?.copyWith.$chain(t),
+    (v, t) => ObjectCopyWith(v, $identity, t),
     (v) => call(parts: v),
   );
   @override
-  $R call({Object? info = $none, List<PartModelUnion?>? parts}) => $apply(
+  $R call({Message? info, List<PartModel>? parts}) => $apply(
     FieldCopyWithData({
-      if (info != $none) #info: info,
+      if (info != null) #info: info,
       if (parts != null) #parts: parts,
     }),
   );

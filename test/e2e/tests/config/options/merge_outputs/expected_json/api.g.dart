@@ -493,7 +493,7 @@ PaymentResponse _$PaymentResponseFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['processedAt'] as String),
       details: json['details'] == null
           ? null
-          : PaymentResponseDetailsDetailsUnion.fromJson(
+          : PaymentResponseDetailsDetails.fromJson(
               json['details'] as Map<String, dynamic>,
             ),
       currency: json['currency'] as String? ?? 'USD',
@@ -509,52 +509,50 @@ Map<String, dynamic> _$PaymentResponseToJson(PaymentResponse instance) =>
       'details': instance.details,
     };
 
-SearchResultUnionUserSearchResult _$SearchResultUnionUserSearchResultFromJson(
-  Map<String, dynamic> json,
-) => SearchResultUnionUserSearchResult(
-  type: UserSearchResultTypeType.fromJson(json['type'] as String),
-  user: User.fromJson(json['user'] as Map<String, dynamic>),
-  score: (json['score'] as num?)?.toDouble(),
-);
+Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
+    <String, dynamic>{};
 
-Map<String, dynamic> _$SearchResultUnionUserSearchResultToJson(
-  SearchResultUnionUserSearchResult instance,
-) => <String, dynamic>{
-  'type': instance.type,
-  'user': instance.user,
-  'score': instance.score,
-};
+SearchResultUser _$SearchResultUserFromJson(Map<String, dynamic> json) =>
+    SearchResultUser(
+      type: UserSearchResultTypeType.fromJson(json['type'] as String),
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
+      score: (json['score'] as num?)?.toDouble(),
+    );
 
-SearchResultUnionPostSearchResult _$SearchResultUnionPostSearchResultFromJson(
-  Map<String, dynamic> json,
-) => SearchResultUnionPostSearchResult(
-  type: PostSearchResultTypeType.fromJson(json['type'] as String),
-  post: PostModel.fromJson(json['post'] as Map<String, dynamic>),
-  score: (json['score'] as num?)?.toDouble(),
-  highlights: (json['highlights'] as List<dynamic>?)
-      ?.map((e) => e as String)
-      .toList(),
-);
+Map<String, dynamic> _$SearchResultUserToJson(SearchResultUser instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'user': instance.user,
+      'score': instance.score,
+    };
 
-Map<String, dynamic> _$SearchResultUnionPostSearchResultToJson(
-  SearchResultUnionPostSearchResult instance,
-) => <String, dynamic>{
-  'type': instance.type,
-  'post': instance.post,
-  'score': instance.score,
-  'highlights': instance.highlights,
-};
+SearchResultPost _$SearchResultPostFromJson(Map<String, dynamic> json) =>
+    SearchResultPost(
+      type: PostSearchResultTypeType.fromJson(json['type'] as String),
+      post: PostModel.fromJson(json['post'] as Map<String, dynamic>),
+      score: (json['score'] as num?)?.toDouble(),
+      highlights: (json['highlights'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
 
-SearchResultUnionCommentSearchResult
-_$SearchResultUnionCommentSearchResultFromJson(Map<String, dynamic> json) =>
-    SearchResultUnionCommentSearchResult(
+Map<String, dynamic> _$SearchResultPostToJson(SearchResultPost instance) =>
+    <String, dynamic>{
+      'type': instance.type,
+      'post': instance.post,
+      'score': instance.score,
+      'highlights': instance.highlights,
+    };
+
+SearchResultComment _$SearchResultCommentFromJson(Map<String, dynamic> json) =>
+    SearchResultComment(
       type: CommentSearchResultTypeType.fromJson(json['type'] as String),
       comment: Comment.fromJson(json['comment'] as Map<String, dynamic>),
       score: (json['score'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$SearchResultUnionCommentSearchResultToJson(
-  SearchResultUnionCommentSearchResult instance,
+Map<String, dynamic> _$SearchResultCommentToJson(
+  SearchResultComment instance,
 ) => <String, dynamic>{
   'type': instance.type,
   'comment': instance.comment,
@@ -964,11 +962,7 @@ Map<String, dynamic> _$GetPostResponseToJson(GetPostResponse instance) =>
 SearchResponse _$SearchResponseFromJson(Map<String, dynamic> json) =>
     SearchResponse(
       results: (json['results'] as List<dynamic>?)
-          ?.map(
-            (e) => e == null
-                ? null
-                : SearchResultUnion.fromJson(e as Map<String, dynamic>),
-          )
+          ?.map((e) => SearchResult.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
@@ -1081,24 +1075,26 @@ Map<String, dynamic> _$UserSettingsPrivacyToJson(
   'showEmail': instance.showEmail,
 };
 
-PaymentResponseDetailsDetailsUnionCreditCardPayment
-_$PaymentResponseDetailsDetailsUnionCreditCardPaymentFromJson(
-  Map<String, dynamic> json,
-) => PaymentResponseDetailsDetailsUnionCreditCardPayment(
-  paymentType: CreditCardPaymentPaymentTypePaymentType.fromJson(
-    json['paymentType'] as String,
-  ),
-  cardNumber: json['cardNumber'] as String,
-  expiryMonth: (json['expiryMonth'] as num).toInt(),
-  expiryYear: (json['expiryYear'] as num).toInt(),
-  cvv: json['cvv'] as String,
-  cardholderName: json['cardholderName'] as String?,
-  amount: (json['amount'] as num).toDouble(),
-);
+Map<String, dynamic> _$PaymentResponseDetailsDetailsToJson(
+  PaymentResponseDetailsDetails instance,
+) => <String, dynamic>{};
 
-Map<String, dynamic>
-_$PaymentResponseDetailsDetailsUnionCreditCardPaymentToJson(
-  PaymentResponseDetailsDetailsUnionCreditCardPayment instance,
+PaymentResponseDetailsDetailsCreditCard
+_$PaymentResponseDetailsDetailsCreditCardFromJson(Map<String, dynamic> json) =>
+    PaymentResponseDetailsDetailsCreditCard(
+      paymentType: CreditCardPaymentPaymentTypePaymentType.fromJson(
+        json['paymentType'] as String,
+      ),
+      cardNumber: json['cardNumber'] as String,
+      expiryMonth: (json['expiryMonth'] as num).toInt(),
+      expiryYear: (json['expiryYear'] as num).toInt(),
+      cvv: json['cvv'] as String,
+      cardholderName: json['cardholderName'] as String?,
+      amount: (json['amount'] as num).toDouble(),
+    );
+
+Map<String, dynamic> _$PaymentResponseDetailsDetailsCreditCardToJson(
+  PaymentResponseDetailsDetailsCreditCard instance,
 ) => <String, dynamic>{
   'paymentType': instance.paymentType,
   'cardNumber': instance.cardNumber,
@@ -1109,10 +1105,10 @@ _$PaymentResponseDetailsDetailsUnionCreditCardPaymentToJson(
   'amount': instance.amount,
 };
 
-PaymentResponseDetailsDetailsUnionBankTransferPayment
-_$PaymentResponseDetailsDetailsUnionBankTransferPaymentFromJson(
+PaymentResponseDetailsDetailsBankTransfer
+_$PaymentResponseDetailsDetailsBankTransferFromJson(
   Map<String, dynamic> json,
-) => PaymentResponseDetailsDetailsUnionBankTransferPayment(
+) => PaymentResponseDetailsDetailsBankTransfer(
   paymentType: BankTransferPaymentPaymentTypePaymentType.fromJson(
     json['paymentType'] as String,
   ),
@@ -1123,9 +1119,8 @@ _$PaymentResponseDetailsDetailsUnionBankTransferPaymentFromJson(
   reference: json['reference'] as String?,
 );
 
-Map<String, dynamic>
-_$PaymentResponseDetailsDetailsUnionBankTransferPaymentToJson(
-  PaymentResponseDetailsDetailsUnionBankTransferPayment instance,
+Map<String, dynamic> _$PaymentResponseDetailsDetailsBankTransferToJson(
+  PaymentResponseDetailsDetailsBankTransfer instance,
 ) => <String, dynamic>{
   'paymentType': instance.paymentType,
   'accountNumber': instance.accountNumber,
@@ -1135,23 +1130,22 @@ _$PaymentResponseDetailsDetailsUnionBankTransferPaymentToJson(
   'reference': instance.reference,
 };
 
-PaymentResponseDetailsDetailsUnionCryptoPayment
-_$PaymentResponseDetailsDetailsUnionCryptoPaymentFromJson(
-  Map<String, dynamic> json,
-) => PaymentResponseDetailsDetailsUnionCryptoPayment(
-  paymentType: CryptoPaymentPaymentTypePaymentType.fromJson(
-    json['paymentType'] as String,
-  ),
-  walletAddress: json['walletAddress'] as String,
-  cryptocurrency: CryptoPaymentCryptocurrencyCryptocurrency.fromJson(
-    json['cryptocurrency'] as String,
-  ),
-  amount: (json['amount'] as num).toDouble(),
-  transactionHash: json['transactionHash'] as String?,
-);
+PaymentResponseDetailsDetailsCrypto
+_$PaymentResponseDetailsDetailsCryptoFromJson(Map<String, dynamic> json) =>
+    PaymentResponseDetailsDetailsCrypto(
+      paymentType: CryptoPaymentPaymentTypePaymentType.fromJson(
+        json['paymentType'] as String,
+      ),
+      walletAddress: json['walletAddress'] as String,
+      cryptocurrency: CryptoPaymentCryptocurrencyCryptocurrency.fromJson(
+        json['cryptocurrency'] as String,
+      ),
+      amount: (json['amount'] as num).toDouble(),
+      transactionHash: json['transactionHash'] as String?,
+    );
 
-Map<String, dynamic> _$PaymentResponseDetailsDetailsUnionCryptoPaymentToJson(
-  PaymentResponseDetailsDetailsUnionCryptoPayment instance,
+Map<String, dynamic> _$PaymentResponseDetailsDetailsCryptoToJson(
+  PaymentResponseDetailsDetailsCrypto instance,
 ) => <String, dynamic>{
   'paymentType': instance.paymentType,
   'walletAddress': instance.walletAddress,

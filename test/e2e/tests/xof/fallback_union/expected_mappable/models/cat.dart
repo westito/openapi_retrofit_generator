@@ -5,6 +5,7 @@
 import 'package:dart_mappable/dart_mappable.dart';
 
 import 'cat_type_type.dart';
+import 'family_members_members.dart';
 
 part 'cat.mapper.dart';
 

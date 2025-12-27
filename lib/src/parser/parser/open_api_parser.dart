@@ -1138,9 +1138,9 @@ class OpenApiParser {
           return;
         }
 
-        // Top-level undiscriminated oneOf/anyOf component handling
-        // If the schema defines a oneOf/anyOf without a discriminator, and all
-        // variants are refs or inline objects, synthesize a union component.
+        // Top-level oneOf/anyOf component handling
+        // If the schema defines a oneOf/anyOf, and all variants are refs or
+        // inline objects, synthesize a union component using the schema name directly.
         if (_getUndiscriminatedUnionValues(value)
             case final List<dynamic> unionValues) {
           final description = value[_descriptionConst]?.toString();
@@ -1156,22 +1156,6 @@ class OpenApiParser {
             if (_contextStack.current case final context?) {
               _anchorRegistry.registerInlineSchema(union.name, context);
             }
-            final typedefClass = UniversalComponentClass(
-              name: schemaName,
-              imports: {union.name.toSnake},
-              parameters: {
-                UniversalType(
-                  type: union.name,
-                  name: '',
-                  isRequired: false,
-                  nullable: true,
-                ),
-              },
-              typeDef: true,
-              description: description,
-            );
-            dataClasses.add(typedefClass);
-            _typeRegistry.registerTypedef(schemaName);
             return;
           }
         }
@@ -1972,7 +1956,7 @@ class OpenApiParser {
 
           // Create a base union class for the discriminated types
           final baseClassName =
-              '${additionalName ?? ''} ${name ?? ''} Union'.toPascal;
+              '${additionalName ?? ''} ${name ?? ''}'.toPascal;
           final (newName, description) = protectName(
             baseClassName,
             uniqueIfNull: true,
@@ -2165,8 +2149,8 @@ class OpenApiParser {
                 );
               }
             } else {
-              // For anyOf or oneOf without a discriminator,
-              // we only handle the case when all variants are refs or inline object schemas.
+              // For anyOf or oneOf without an explicit discriminator,
+              // first try to infer a discriminator from common properties with single-value enums
               final areAllRefsOrObjects = _getAreAllRefsOrInlineObjects(
                 otherItems,
               );
@@ -2176,7 +2160,7 @@ class OpenApiParser {
 
               if (areAllRefsOrObjects && isUnion) {
                 final baseClassName =
-                    '${additionalName ?? ''} ${name ?? ''} Union'.toPascal;
+                    '${additionalName ?? ''} ${name ?? ''}'.toPascal;
                 final (newName, description) = protectName(
                   baseClassName,
                   uniqueIfNull: true,
@@ -2184,37 +2168,83 @@ class OpenApiParser {
                 );
 
                 final unionName = newName!.toPascal;
-                final (imports, variantRefToProps) = _getImportsAndProps(
+
+                // Try to infer discriminator from variants with single-value enums
+                final inferredResult = _inferDiscriminatorFromVariants(
                   otherItems,
                   unionName,
                 );
 
-                // Create a union component class marker without discriminator; generators will treat it as a union
-                _objectClasses.add(
-                  UniversalComponentClass(
-                    name: unionName,
-                    imports: imports,
-                    // Parameters here are unused by union factories
-                    parameters: const {},
-                    description: description,
-                    undiscriminatedUnionVariants: variantRefToProps,
-                  ),
-                );
-                // Register in type registry
-                _typeRegistry.registerClass(unionName);
-                // Register inline schema in the anchor registry
-                if (_contextStack.current case final context?) {
-                  _anchorRegistry.registerInlineSchema(unionName, context);
-                }
+                if (inferredResult != null) {
+                  final (inferredDiscriminator, inferredImports) =
+                      inferredResult;
+                  // Successfully inferred discriminator - create discriminated union
+                  final sealedParameters = {
+                    UniversalType(
+                      type: 'String',
+                      name: inferredDiscriminator.propertyName,
+                      isRequired: true,
+                    ),
+                  };
+                  final resolvedSealedParameters =
+                      _resolveParameterNameConflicts(sealedParameters);
+                  _objectClasses.add(
+                    UniversalComponentClass(
+                      name: unionName,
+                      imports: inferredImports,
+                      parameters: resolvedSealedParameters,
+                      discriminator: inferredDiscriminator,
+                      description: description,
+                    ),
+                  );
+                  // Register in type registry
+                  _typeRegistry.registerClass(unionName);
+                  // Register inline schema in the anchor registry
+                  if (_contextStack.current case final context?) {
+                    _anchorRegistry.registerInlineSchema(unionName, context);
+                  }
 
-                ofType = UniversalType(
-                  type: unionName,
-                  isRequired: isRequired,
-                  nullable:
-                      map[_nullableConst].toString().toBool() ??
-                      (root && !isRequired),
-                );
-                ofImport = unionName;
+                  ofType = UniversalType(
+                    type: unionName,
+                    isRequired: isRequired,
+                    nullable:
+                        map[_nullableConst].toString().toBool() ??
+                        (root && !isRequired),
+                  );
+                  ofImport = unionName;
+                } else {
+                  // No discriminator found - fall back to undiscriminated union
+                  final (imports, variantRefToProps) = _getImportsAndProps(
+                    otherItems,
+                    unionName,
+                  );
+
+                  // Create a union component class marker without discriminator
+                  _objectClasses.add(
+                    UniversalComponentClass(
+                      name: unionName,
+                      imports: imports,
+                      parameters: const {},
+                      description: description,
+                      undiscriminatedUnionVariants: variantRefToProps,
+                    ),
+                  );
+                  // Register in type registry
+                  _typeRegistry.registerClass(unionName);
+                  // Register inline schema in the anchor registry
+                  if (_contextStack.current case final context?) {
+                    _anchorRegistry.registerInlineSchema(unionName, context);
+                  }
+
+                  ofType = UniversalType(
+                    type: unionName,
+                    isRequired: isRequired,
+                    nullable:
+                        map[_nullableConst].toString().toBool() ??
+                        (root && !isRequired),
+                  );
+                  ofImport = unionName;
+                }
               } else {
                 // Fallback if we cannot synthesize a proper union
                 ofType = UniversalType(
@@ -2591,6 +2621,254 @@ class OpenApiParser {
     );
   }
 
+  /// Attempts to infer a discriminator from oneOf/anyOf variants by finding
+  /// a common property that exists in all variants with single-value enums.
+  ///
+  /// For example, if all variants have a "type" property with enum: ["connected"],
+  /// enum: ["session_updated"], etc., this will detect "type" as the discriminator
+  /// and build the mapping from enum values to variant names.
+  ///
+  /// Returns null if no discriminator can be inferred, otherwise returns
+  /// the Discriminator and collected imports.
+  (Discriminator, SplayTreeSet<String>)? _inferDiscriminatorFromVariants(
+    List<Map<String, dynamic>> variants,
+    String unionName,
+  ) {
+    if (variants.isEmpty) return null;
+
+    // Collect property info from each variant: propertyName -> (enumValue, variantIndex)
+    // We need to find a property that exists in ALL variants with exactly one enum value
+    final variantPropertyEnums = <int, Map<String, String?>>{};
+
+    for (var i = 0; i < variants.length; i++) {
+      final variant = variants[i];
+      final properties = _getVariantProperties(variant);
+      if (properties == null) return null; // All variants must have properties
+
+      final propEnums = <String, String?>{};
+      for (final entry in properties.entries) {
+        final propName = entry.key;
+        final propSchema = entry.value;
+        if (propSchema is Map<String, dynamic>) {
+          final enumValue = _getSingleEnumValue(propSchema);
+          if (enumValue != null) {
+            propEnums[propName] = enumValue;
+          }
+        }
+      }
+      variantPropertyEnums[i] = propEnums;
+    }
+
+    // Find property names that exist in ALL variants with single-value enums
+    final firstVariantProps = variantPropertyEnums[0]!;
+    String? discriminatorProperty;
+
+    for (final propName in firstVariantProps.keys) {
+      var existsInAll = true;
+      final seenValues = <String>{};
+
+      for (var i = 0; i < variants.length; i++) {
+        final propEnums = variantPropertyEnums[i]!;
+        if (!propEnums.containsKey(propName) || propEnums[propName] == null) {
+          existsInAll = false;
+          break;
+        }
+        seenValues.add(propEnums[propName]!);
+      }
+
+      // All variants must have this property with unique enum values
+      if (existsInAll && seenValues.length == variants.length) {
+        discriminatorProperty = propName;
+        break;
+      }
+    }
+
+    if (discriminatorProperty == null) return null;
+
+    // Build the discriminator mapping and refProperties
+    final mapping = <String, String>{};
+    final refProperties = <String, Set<UniversalType>>{};
+    final imports = SplayTreeSet<String>();
+
+    for (var i = 0; i < variants.length; i++) {
+      final variant = variants[i];
+      final enumValue = variantPropertyEnums[i]![discriminatorProperty]!;
+
+      // For inline objects, use the enum value as part of the variant name
+      // e.g., "connected" -> "SessionEventUnionConnected"
+      // For $ref, use the referenced class name
+      final variantName = variant.containsKey(_refConst)
+          ? _formatRef(variant).toPascal
+          : '$unionName${enumValue.toPascal}';
+
+      mapping[enumValue] = variantName;
+
+      // Parse variant properties for refProperties
+      if (variant.containsKey(_refConst)) {
+        // For $ref, the refProperties will be populated later in _parseDataClasses
+        // by looking up the referenced class
+      } else {
+        // For inline objects, parse properties now
+        // Use a simplified parsing that creates String type for the discriminator
+        // property instead of creating enum types
+        final (
+          parameters,
+          variantImports,
+        ) = _findParametersAndImportsForInferredDiscriminator(
+          variant,
+          discriminatorProperty,
+          additionalName: variantName,
+        );
+        refProperties[variantName] = parameters;
+        imports.addAll(variantImports);
+      }
+    }
+
+    return (
+      (
+        propertyName: discriminatorProperty,
+        discriminatorValueToRefMapping: mapping,
+        refProperties: refProperties,
+      ),
+      imports,
+    );
+  }
+
+  /// Parses parameters from an inline object schema for inferred discriminator unions.
+  /// The discriminator property is treated as a String instead of creating an enum type.
+  (Set<UniversalType>, SplayTreeSet<String>)
+  _findParametersAndImportsForInferredDiscriminator(
+    Map<String, dynamic> map,
+    String discriminatorProperty, {
+    String? additionalName,
+  }) {
+    final parameters = <UniversalType>{};
+    final imports = SplayTreeSet<String>();
+    final requiredParameters =
+        (map[_requiredConst] as List<dynamic>?)?.cast<String>().toSet() ??
+        <String>{};
+
+    if (map.containsKey(_propertiesConst)) {
+      final properties = map[_propertiesConst] as Map<String, dynamic>;
+      for (final entry in properties.entries) {
+        final propertyName = entry.key;
+        final propertyValue = entry.value;
+        if (propertyValue is! Map<String, dynamic>) continue;
+
+        final isRequired = requiredParameters.contains(propertyName);
+
+        // For the discriminator property, use String type directly
+        if (propertyName == discriminatorProperty) {
+          parameters.add(
+            UniversalType(
+              type: 'String',
+              name: propertyName,
+              jsonKey: propertyName,
+              isRequired: isRequired,
+              description: propertyValue[_descriptionConst]?.toString(),
+            ),
+          );
+          continue;
+        }
+
+        // For other properties, use normal type resolution
+        final (:type, :import) = _findType(
+          propertyValue,
+          name: propertyName,
+          isRequired: isRequired,
+          additionalName: additionalName,
+        );
+
+        parameters.add(type);
+        if (import != null) {
+          imports.add(import);
+        }
+      }
+    }
+
+    return (parameters, imports);
+  }
+
+  /// Gets the properties map from a variant schema (handles both inline objects and refs)
+  Map<String, dynamic>? _getVariantProperties(Map<String, dynamic> variant) {
+    if (variant.containsKey(_propertiesConst)) {
+      final props = variant[_propertiesConst];
+      if (props is Map<String, dynamic>) {
+        return props;
+      }
+    }
+
+    // Handle $ref - resolve the reference to get properties
+    if (variant.containsKey(_refConst)) {
+      final refName = _formatRef(variant);
+      final refSchema = _findRefSchema(refName);
+      if (refSchema != null && refSchema.containsKey(_propertiesConst)) {
+        final props = refSchema[_propertiesConst];
+        if (props is Map<String, dynamic>) {
+          return props;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /// Extracts a single enum value from a property schema, if it has exactly one
+  String? _getSingleEnumValue(Map<String, dynamic> propSchema) {
+    if (propSchema.containsKey(_enumConst)) {
+      final enumList = propSchema[_enumConst];
+      if (enumList is List && enumList.length == 1) {
+        return enumList[0].toString();
+      }
+    }
+    return null;
+  }
+
+  /// Gets a name for a variant (either from $ref or generates one for inline objects)
+  String _getVariantName(
+    Map<String, dynamic> variant,
+    String unionName,
+    int index,
+  ) {
+    if (variant.containsKey(_refConst)) {
+      return _formatRef(variant).toPascal;
+    }
+    // For inline objects, generate a name based on union name and index
+    return '${unionName}Variant$index'.toPascal;
+  }
+
+  /// Finds a schema by reference name from definitions/components
+  Map<String, dynamic>? _findRefSchema(String refName) {
+    // Try OpenAPI 3.x path
+    if (_definitionFileContent.containsKey(_componentsConst)) {
+      final components =
+          _definitionFileContent[_componentsConst] as Map<String, dynamic>;
+      if (components.containsKey(_schemasConst)) {
+        final schemas = components[_schemasConst] as Map<String, dynamic>;
+        if (schemas.containsKey(refName)) {
+          final schema = schemas[refName];
+          if (schema is Map<String, dynamic>) {
+            return schema;
+          }
+        }
+      }
+    }
+
+    // Try OpenAPI 2.x (Swagger) path
+    if (_definitionFileContent.containsKey(_definitionsConst)) {
+      final definitions =
+          _definitionFileContent[_definitionsConst] as Map<String, dynamic>;
+      if (definitions.containsKey(refName)) {
+        final schema = definitions[refName];
+        if (schema is Map<String, dynamic>) {
+          return schema;
+        }
+      }
+    }
+
+    return null;
+  }
+
   (
     SplayTreeSet<String> imports,
     Map<String, Set<UniversalType>> variantRefToProps,
@@ -2678,13 +2956,43 @@ class OpenApiParser {
       return null;
     }
 
-    final baseClassName = '$schemaName Union'.toPascal;
+    final baseClassName = schemaName.toPascal;
     final (newName, description) = protectName(
       baseClassName,
       uniqueIfNull: true,
       description: unionDescription,
     );
     final unionName = newName!.toPascal;
+
+    // Try to infer discriminator from variants with single-value enums
+    final inferredResult = _inferDiscriminatorFromVariants(
+      unionVariants,
+      unionName,
+    );
+
+    if (inferredResult != null) {
+      final (inferredDiscriminator, inferredImports) = inferredResult;
+      // Successfully inferred discriminator - create discriminated union
+      final sealedParameters = {
+        UniversalType(
+          type: 'String',
+          name: inferredDiscriminator.propertyName,
+          isRequired: true,
+        ),
+      };
+      final resolvedSealedParameters = _resolveParameterNameConflicts(
+        sealedParameters,
+      );
+      return UniversalComponentClass(
+        name: unionName,
+        imports: inferredImports,
+        parameters: resolvedSealedParameters,
+        discriminator: inferredDiscriminator,
+        description: description,
+      );
+    }
+
+    // No discriminator found - create undiscriminated union
     final (foundImports, variantRefToProps) = _getImportsAndProps(
       unionVariants,
       unionName,

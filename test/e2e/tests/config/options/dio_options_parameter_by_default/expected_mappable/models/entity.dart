@@ -18,34 +18,8 @@ part 'entity.mapper.dart';
 sealed class Entity with EntityMappable {
   const Entity();
 
-  static Entity fromJson(Map<String, dynamic> json) {
-    return EntityUnionDeserializer.tryDeserialize(json);
-  }
-}
-
-extension EntityUnionDeserializer on Entity {
-  static Entity tryDeserialize(
-    Map<String, dynamic> json, {
-    String key = 'entityType',
-    Map<Type, Object?>? mapping,
-  }) {
-    final mappingFallback = const <Type, Object?>{
-      EntityPerson: 'person',
-      EntityOrganization: 'organization',
-    };
-    final value = json[key];
-    final effective = mapping ?? mappingFallback;
-    return switch (value) {
-      _ when value == effective[EntityPerson] => EntityPersonMapper.fromJson(
-        json,
-      ),
-      _ when value == effective[EntityOrganization] =>
-        EntityOrganizationMapper.fromJson(json),
-      _ => throw FormatException(
-        'Unknown discriminator value "${json[key]}" for Entity',
-      ),
-    };
-  }
+  static Entity fromJson(Map<String, dynamic> json) =>
+      EntityMapper.fromJson(json);
 }
 
 @MappableClass(discriminatorValue: 'person')

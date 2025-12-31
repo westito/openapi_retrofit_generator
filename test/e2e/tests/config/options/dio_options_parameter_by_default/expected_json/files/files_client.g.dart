@@ -69,10 +69,10 @@ class _FilesClient implements FilesClient {
   }
 
   @override
-  Stream<Uint8List> downloadFile({
+  Future<HttpResponse<List<int>>> downloadFile({
     required String fileId,
     RequestOptions? options,
-  }) async* {
+  }) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -85,19 +85,20 @@ class _FilesClient implements FilesClient {
     final _options = newOptions.copyWith(
       method: 'GET',
       baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-      responseType: ResponseType.stream,
+      responseType: ResponseType.bytes,
       queryParameters: queryParameters,
       path: '/files/${fileId}/download',
     )..data = _data;
-    final _result = await _dio.fetch<Uint8List>(_options);
-    late Uint8List _value;
+    final _result = await _dio.fetch<List<dynamic>>(_options);
+    late List<int> _value;
     try {
-      _value = _result.data!;
+      _value = _result.data!.cast<int>();
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    yield _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions newRequestOptions(Object? options) {

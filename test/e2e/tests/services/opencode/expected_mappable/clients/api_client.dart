@@ -2,8 +2,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, unused_import, invalid_annotation_target, unnecessary_import
 
-import 'dart:convert';
-import 'package:simple_sse/simple_sse.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:retrofit/retrofit.dart';
 import 'package:retrofit/error_logger.dart';
@@ -521,32 +519,11 @@ abstract class ApiClient {
     @DioOptions() RequestOptions? options,
   });
 
+  /// Get events
   @GET('/event')
-  @DioResponseType(ResponseType.stream)
-  Stream<String> _eventSubscribe({
+  Future<Event> eventSubscribe({
     @Query('directory') String? directory,
     @Extras() Map<String, dynamic>? extras,
     @DioOptions() RequestOptions? options,
   });
-}
-
-extension ApiClientSSE on ApiClient {
-  /// Get events
-  Stream<Event> eventSubscribe({
-    String? directory,
-    Map<String, dynamic>? extras,
-    RequestOptions? options,
-  }) {
-    return _eventSubscribe(
-          directory: directory,
-          extras: extras,
-          options: options,
-        )
-        .transform(const LineSplitter())
-        .transform(const SseEventTransformer())
-        .map(
-          (event) =>
-              Event.fromJson(jsonDecode(event.data) as Map<String, dynamic>),
-        );
-  }
 }

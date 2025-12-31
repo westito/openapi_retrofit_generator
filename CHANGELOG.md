@@ -1,8 +1,5 @@
-## 2.1.0
-- SSE streaming support via `text/event-stream` content type
-- Binary streaming via `application/octet-stream` or `x-streaming: true`
-- Auto-detect discriminator for `oneOf`/`anyOf` from single-value enum properties
-- Simplified union class names (removed "Union" suffix and typedef wrapper)
+## 2.0.3
+- Fix missing `@JsonKey`/`@MappableField` annotation when field names are renamed due to Dart reserved word conflicts in discriminated/undiscriminated union wrapper classes
 
 ## 2.0.2
 - Packages updated

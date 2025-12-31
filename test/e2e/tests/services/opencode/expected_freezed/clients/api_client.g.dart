@@ -1778,11 +1778,11 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Stream<String> _eventSubscribe({
+  Future<Event> eventSubscribe({
     String? directory,
     Map<String, dynamic>? extras,
     RequestOptions? options,
-  }) async* {
+  }) async {
     final _extra = <String, dynamic>{};
     _extra.addAll(extras ?? <String, dynamic>{});
     final queryParameters = <String, dynamic>{r'directory': directory};
@@ -1796,19 +1796,18 @@ class _ApiClient implements ApiClient {
     final _options = newOptions.copyWith(
       method: 'GET',
       baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl),
-      responseType: ResponseType.stream,
       queryParameters: queryParameters,
       path: '/event',
     )..data = _data;
-    final _result = await _dio.fetch<String>(_options);
-    late String _value;
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Event _value;
     try {
-      _value = _result.data!;
+      _value = Event.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    yield _value;
+    return _value;
   }
 
   RequestOptions newRequestOptions(Object? options) {

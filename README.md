@@ -398,7 +398,9 @@ try {
 }
 ```
 
-### Streaming Responses
+### Streaming Responses (Unreleased)
+
+> **Note**: Streaming support requires an unreleased version of retrofit. This feature is not yet available in the current stable version.
 
 The generator supports streaming endpoints for Server-Sent Events (SSE) and binary streaming. Streaming is automatically detected based on:
 

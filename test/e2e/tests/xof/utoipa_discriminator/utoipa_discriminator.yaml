@@ -1,0 +1,83 @@
+openapi: 3.1.0
+info:
+  title: Utoipa Discriminator API
+  version: 1.0.0
+  description: Tests the utoipa pattern where oneOf items are allOf with $ref + discriminator object
+paths: {}
+components:
+  schemas:
+    MessagePartDto:
+      oneOf:
+        - allOf:
+            - $ref: '#/components/schemas/TextPartDto'
+              description: Text content
+            - type: object
+              required:
+                - type
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - Text
+          description: Text content
+        - allOf:
+            - $ref: '#/components/schemas/ReasoningPartDto'
+              description: Reasoning/thinking content
+            - type: object
+              required:
+                - type
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - Reasoning
+          description: Reasoning/thinking content
+        - allOf:
+            - $ref: '#/components/schemas/ToolPartDto'
+              description: Tool call with state machine
+            - type: object
+              required:
+                - type
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - Tool
+          description: Tool call with state machine
+      description: A content part of a message.
+    TextPartDto:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The text content
+      required:
+        - content
+    ReasoningPartDto:
+      type: object
+      properties:
+        reasoning:
+          type: string
+          description: The reasoning content
+      required:
+        - reasoning
+    ToolPartDto:
+      type: object
+      properties:
+        toolName:
+          type: string
+          description: The name of the tool
+        toolArgs:
+          type: object
+          description: The arguments for the tool
+      required:
+        - toolName
+    Message:
+      type: object
+      properties:
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessagePartDto'
+      required:
+        - parts

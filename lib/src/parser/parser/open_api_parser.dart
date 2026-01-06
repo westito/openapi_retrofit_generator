@@ -2160,15 +2160,12 @@ class OpenApiParser {
               }
             } else {
               // For anyOf or oneOf without an explicit discriminator,
-              // first try to infer a discriminator from common properties with single-value enums
-              final areAllRefsOrObjects = _getAreAllRefsOrInlineObjects(
-                otherItems,
-              );
-
+              // first try to detect utoipa pattern (allOf with $ref + discriminator),
+              // then try to infer a discriminator from common properties with single-value enums
               final isUnion =
                   map.containsKey(_oneOfConst) || map.containsKey(_anyOfConst);
 
-              if (areAllRefsOrObjects && isUnion) {
+              if (isUnion) {
                 final baseClassName =
                     '${additionalName ?? ''} ${name ?? ''}'.toPascal;
                 final (newName, description) = protectName(
@@ -2179,20 +2176,19 @@ class OpenApiParser {
 
                 final unionName = newName!.toPascal;
 
-                // Try to infer discriminator from variants with single-value enums
-                final inferredResult = _inferDiscriminatorFromVariants(
+                // First, try to detect utoipa pattern (oneOf with allOf items containing $ref + discriminator object)
+                final utoipaResult = _detectUtoipaDiscriminator(
                   otherItems,
                   unionName,
                 );
 
-                if (inferredResult != null) {
-                  final (inferredDiscriminator, inferredImports) =
-                      inferredResult;
-                  // Successfully inferred discriminator - create discriminated union
+                if (utoipaResult != null) {
+                  final (utoipaDiscriminator, utoipaImports) = utoipaResult;
+                  // Successfully detected utoipa discriminator pattern
                   final sealedParameters = {
                     UniversalType(
                       type: 'String',
-                      name: inferredDiscriminator.propertyName,
+                      name: utoipaDiscriminator.propertyName,
                       isRequired: true,
                     ),
                   };
@@ -2201,9 +2197,9 @@ class OpenApiParser {
                   _objectClasses.add(
                     UniversalComponentClass(
                       name: unionName,
-                      imports: inferredImports,
+                      imports: utoipaImports,
                       parameters: resolvedSealedParameters,
-                      discriminator: inferredDiscriminator,
+                      discriminator: utoipaDiscriminator,
                       description: description,
                     ),
                   );
@@ -2223,40 +2219,104 @@ class OpenApiParser {
                   );
                   ofImport = unionName;
                 } else {
-                  // No discriminator found - fall back to undiscriminated union
-                  final (imports, variantRefToProps) = _getImportsAndProps(
+                  // Try traditional inference
+                  final areAllRefsOrObjects = _getAreAllRefsOrInlineObjects(
                     otherItems,
-                    unionName,
                   );
 
-                  // Create a union component class marker without discriminator
-                  _objectClasses.add(
-                    UniversalComponentClass(
-                      name: unionName,
-                      imports: imports,
-                      parameters: const {},
-                      description: description,
-                      undiscriminatedUnionVariants: variantRefToProps,
-                    ),
-                  );
-                  // Register in type registry
-                  _typeRegistry.registerClass(unionName);
-                  // Register inline schema in the anchor registry
-                  if (_contextStack.current case final context?) {
-                    _anchorRegistry.registerInlineSchema(unionName, context);
+                  if (areAllRefsOrObjects) {
+                    // Try to infer discriminator from variants with single-value enums
+                    final inferredResult = _inferDiscriminatorFromVariants(
+                      otherItems,
+                      unionName,
+                    );
+
+                    if (inferredResult != null) {
+                      final (inferredDiscriminator, inferredImports) =
+                          inferredResult;
+                      // Successfully inferred discriminator - create discriminated union
+                      final sealedParameters = {
+                        UniversalType(
+                          type: 'String',
+                          name: inferredDiscriminator.propertyName,
+                          isRequired: true,
+                        ),
+                      };
+                      final resolvedSealedParameters =
+                          _resolveParameterNameConflicts(sealedParameters);
+                      _objectClasses.add(
+                        UniversalComponentClass(
+                          name: unionName,
+                          imports: inferredImports,
+                          parameters: resolvedSealedParameters,
+                          discriminator: inferredDiscriminator,
+                          description: description,
+                        ),
+                      );
+                      // Register in type registry
+                      _typeRegistry.registerClass(unionName);
+                      // Register inline schema in the anchor registry
+                      if (_contextStack.current case final context?) {
+                        _anchorRegistry.registerInlineSchema(
+                          unionName,
+                          context,
+                        );
+                      }
+
+                      ofType = UniversalType(
+                        type: unionName,
+                        isRequired: isRequired,
+                        nullable:
+                            map[_nullableConst].toString().toBool() ??
+                            (root && !isRequired),
+                      );
+                      ofImport = unionName;
+                    } else {
+                      // No discriminator found - fall back to undiscriminated union
+                      final (imports, variantRefToProps) = _getImportsAndProps(
+                        otherItems,
+                        unionName,
+                      );
+
+                      // Create a union component class marker without discriminator
+                      _objectClasses.add(
+                        UniversalComponentClass(
+                          name: unionName,
+                          imports: imports,
+                          parameters: const {},
+                          description: description,
+                          undiscriminatedUnionVariants: variantRefToProps,
+                        ),
+                      );
+                      // Register in type registry
+                      _typeRegistry.registerClass(unionName);
+                      // Register inline schema in the anchor registry
+                      if (_contextStack.current case final context?) {
+                        _anchorRegistry.registerInlineSchema(
+                          unionName,
+                          context,
+                        );
+                      }
+
+                      ofType = UniversalType(
+                        type: unionName,
+                        isRequired: isRequired,
+                        nullable:
+                            map[_nullableConst].toString().toBool() ??
+                            (root && !isRequired),
+                      );
+                      ofImport = unionName;
+                    }
+                  } else {
+                    // Fallback if we cannot synthesize a proper union
+                    ofType = UniversalType(
+                      type: _objectConst,
+                      isRequired: isRequired,
+                    );
                   }
-
-                  ofType = UniversalType(
-                    type: unionName,
-                    isRequired: isRequired,
-                    nullable:
-                        map[_nullableConst].toString().toBool() ??
-                        (root && !isRequired),
-                  );
-                  ofImport = unionName;
                 }
               } else {
-                // Fallback if we cannot synthesize a proper union
+                // Fallback for non-union types
                 ofType = UniversalType(
                   type: _objectConst,
                   isRequired: isRequired,
@@ -2962,9 +3022,6 @@ class OpenApiParser {
     String? unionDescription,
   ) {
     final unionVariants = filterNullTypes(values);
-    if (!_getAreAllRefsOrInlineObjects(unionVariants)) {
-      return null;
-    }
 
     final baseClassName = schemaName.toPascal;
     final (newName, description) = protectName(
@@ -2973,6 +3030,36 @@ class OpenApiParser {
       description: unionDescription,
     );
     final unionName = newName!.toPascal;
+
+    // First, try to detect utoipa pattern (oneOf with allOf items containing $ref + discriminator object)
+    final utoipaResult = _detectUtoipaDiscriminator(unionVariants, unionName);
+
+    if (utoipaResult != null) {
+      final (utoipaDiscriminator, utoipaImports) = utoipaResult;
+      // Successfully detected utoipa discriminator pattern
+      final sealedParameters = {
+        UniversalType(
+          type: 'String',
+          name: utoipaDiscriminator.propertyName,
+          isRequired: true,
+        ),
+      };
+      final resolvedSealedParameters = _resolveParameterNameConflicts(
+        sealedParameters,
+      );
+      return UniversalComponentClass(
+        name: unionName,
+        imports: utoipaImports,
+        parameters: resolvedSealedParameters,
+        discriminator: utoipaDiscriminator,
+        description: description,
+      );
+    }
+
+    // Fall back to traditional pattern detection
+    if (!_getAreAllRefsOrInlineObjects(unionVariants)) {
+      return null;
+    }
 
     // Try to infer discriminator from variants with single-value enums
     final inferredResult = _inferDiscriminatorFromVariants(
@@ -3029,6 +3116,141 @@ class OpenApiParser {
   /// Check if a type name refers to an enum class
   bool _isEnumType(String typeName) {
     return _typeRegistry.isEnum(typeName);
+  }
+
+  /// Detects if a oneOf schema uses the utoipa pattern where each item is an
+  /// allOf with a $ref and an anonymous discriminator object.
+  ///
+  /// Pattern example:
+  /// ```yaml
+  /// oneOf:
+  ///   - allOf:
+  ///       - $ref: "#/components/schemas/TextPartDto"
+  ///       - type: object
+  ///         properties:
+  ///           type:
+  ///             type: string
+  ///             enum: [Text]
+  /// ```
+  ///
+  /// Returns the discriminator info if detected, otherwise null.
+  (Discriminator, SplayTreeSet<String>)? _detectUtoipaDiscriminator(
+    List<Map<String, dynamic>> variants,
+    String unionName,
+  ) {
+    if (variants.isEmpty) return null;
+
+    String? discriminatorProperty;
+    final mapping = <String, String>{};
+    final refProperties = <String, Set<UniversalType>>{};
+    final imports = SplayTreeSet<String>();
+
+    for (final variant in variants) {
+      // Each variant must be an allOf
+      if (!variant.containsKey(_allOfConst)) {
+        return null;
+      }
+
+      final allOfList = variant[_allOfConst];
+      if (allOfList is! List || allOfList.isEmpty) {
+        return null;
+      }
+
+      // Find the $ref item and the discriminator object in allOf
+      Map<String, dynamic>? refItem;
+      Map<String, dynamic>? discriminatorObj;
+
+      for (final item in allOfList) {
+        if (item is! Map<String, dynamic>) continue;
+
+        if (item.containsKey(_refConst)) {
+          refItem = item;
+        } else if (item.containsKey(_propertiesConst) ||
+            item[_typeConst]?.toString() == _objectConst) {
+          discriminatorObj = item;
+        }
+      }
+
+      // Must have both $ref and discriminator object
+      if (refItem == null || discriminatorObj == null) {
+        return null;
+      }
+
+      // Extract discriminator property from the anonymous object
+      final discriminatorInfo = _extractUtoipaDiscriminatorFromObject(
+        discriminatorObj,
+      );
+      if (discriminatorInfo == null) {
+        return null;
+      }
+
+      final (propName, enumValue) = discriminatorInfo;
+
+      // All variants must have the same discriminator property name
+      if (discriminatorProperty == null) {
+        discriminatorProperty = propName;
+      } else if (discriminatorProperty != propName) {
+        return null;
+      }
+
+      // Get the referenced schema name
+      final refName = _formatRef(refItem);
+
+      // Validate that the reference exists
+      if (!_refExists(refName)) {
+        return null;
+      }
+
+      // Build mapping: enum value -> ref name
+      mapping[enumValue] = refName;
+      imports.add(refName);
+    }
+
+    if (discriminatorProperty == null || mapping.isEmpty) {
+      return null;
+    }
+
+    // Check for duplicate enum values (all must be unique)
+    if (mapping.keys.toSet().length != variants.length) {
+      return null;
+    }
+
+    return (
+      (
+        propertyName: discriminatorProperty,
+        discriminatorValueToRefMapping: mapping,
+        refProperties: refProperties,
+      ),
+      imports,
+    );
+  }
+
+  /// Extracts the discriminator property name and enum value from a utoipa
+  /// discriminator object.
+  ///
+  /// The object should have a single property with a single-value enum.
+  /// Returns (propertyName, enumValue) or null if not valid.
+  (String, String)? _extractUtoipaDiscriminatorFromObject(
+    Map<String, dynamic> obj,
+  ) {
+    final properties = obj[_propertiesConst];
+    if (properties is! Map<String, dynamic>) {
+      return null;
+    }
+
+    // Look for a property with a single-value enum
+    for (final entry in properties.entries) {
+      final propName = entry.key;
+      final propSchema = entry.value;
+      if (propSchema is! Map<String, dynamic>) continue;
+
+      final enumValue = _getSingleEnumValue(propSchema);
+      if (enumValue != null) {
+        return (propName, enumValue);
+      }
+    }
+
+    return null;
   }
 }
 

@@ -1,3 +1,10 @@
+## 2.2.0
+- Support for Rust/utoipa discriminator pattern in `oneOf` schemas
+  - Detects `oneOf` with `allOf` items containing `$ref` + anonymous discriminator object
+  - Automatically extracts discriminator property from inline objects with single-value enums
+  - Generates proper sealed/union classes for utoipa-style OpenAPI specs
+- Code formatting with `dart_style` (page_width: 80, trailing_commas: preserve)
+
 ## 2.1.0
 - SSE streaming support via `text/event-stream` content type
 - Binary streaming via `application/octet-stream` or `x-streaming: true`

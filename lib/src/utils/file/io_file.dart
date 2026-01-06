@@ -1,10 +1,18 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart' as p;
 import 'package:yaml/yaml.dart';
 import 'package:openapi_retrofit_generator/src/config/config_exception.dart';
 import 'package:openapi_retrofit_generator/src/generator/model/generated_file.dart';
+
+/// Dart formatter with page_width: 80 and trailing_commas: preserve
+final _formatter = DartFormatter(
+  languageVersion: DartFormatter.latestLanguageVersion,
+  pageWidth: 80,
+  trailingCommas: TrailingCommas.preserve,
+);
 
 /// Checks if config exists at [filePath]
 /// Config can be a file provided in arguments,
@@ -46,14 +54,24 @@ void writeSchemaToFile(String schemaContent, String filePath) {
   File(p.join(_rootDirectoryPath, filePath)).writeAsStringSync(schemaContent);
 }
 
-/// Creates DTO file
+/// Creates DTO file with formatting
 Future<void> generateFile(
   String outputDirectory,
   GeneratedFile generatedFile,
 ) async {
   final file = File(p.join(outputDirectory, generatedFile.name));
   await file.create(recursive: true);
-  await file.writeAsString(generatedFile.content);
+
+  // Format Dart files, write others as-is
+  String content = generatedFile.content;
+  if (generatedFile.name.endsWith('.dart')) {
+    try {
+      content = _formatter.format(content);
+    } catch (_) {
+      // If formatting fails, write the original content
+    }
+  }
+  await file.writeAsString(content);
 }
 
 /// Validates build.yaml configuration for dart_mappable serializer

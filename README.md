@@ -398,6 +398,63 @@ try {
 }
 ```
 
+### Union Types (oneOf/anyOf)
+
+The generator automatically detects and generates sealed classes for discriminated unions. Multiple patterns are supported:
+
+**Standard OpenAPI discriminator:**
+```yaml
+components:
+  schemas:
+    Pet:
+      oneOf:
+        - $ref: '#/components/schemas/Cat'
+        - $ref: '#/components/schemas/Dog'
+      discriminator:
+        propertyName: type
+        mapping:
+          cat: '#/components/schemas/Cat'
+          dog: '#/components/schemas/Dog'
+```
+
+**Auto-detected discriminator (single-value enums):**
+```yaml
+components:
+  schemas:
+    Cat:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [cat]  # Single-value enum acts as discriminator
+        meowCount:
+          type: integer
+```
+
+**Rust/utoipa pattern (allOf with inline discriminator):**
+```yaml
+components:
+  schemas:
+    MessagePart:
+      oneOf:
+        - allOf:
+            - $ref: '#/components/schemas/TextPart'
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum: [Text]
+        - allOf:
+            - $ref: '#/components/schemas/ToolPart'
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum: [Tool]
+```
+
+All patterns generate proper Dart sealed classes with type-safe deserialization.
+
 ### Streaming Responses
 
 The generator supports streaming endpoints for Server-Sent Events (SSE) and binary streaming. Streaming is automatically detected based on:

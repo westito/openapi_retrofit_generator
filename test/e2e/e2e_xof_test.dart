@@ -171,5 +171,20 @@ void main() {
         buildFolder: buildFolder,
       );
     });
+
+    test('utoipa_discriminator', () async {
+      await e2eTest(
+        'xof/utoipa_discriminator',
+        (outputDirectory, schemaPath, serializer) => OpenApiConfig(
+          outputDirectory: outputDirectory,
+          schemaPath: schemaPath,
+          jsonSerializer: serializer,
+          putClientsInFolder: true,
+          includeIfNull: true,
+        ),
+        schemaFileName: 'utoipa_discriminator.yaml',
+        buildFolder: buildFolder,
+      );
+    });
   });
 }

@@ -67,6 +67,8 @@ class OpenApiParser {
   static const _discriminatorConst = 'discriminator';
   static const _enumConst = 'enum';
   static const _enumNamesConst = 'x-enumNames';
+  static const _enumVarnamesConst = 'x-enum-varnames';
+  static const _enumDescriptionsConst = 'x-enum-descriptions';
   static const _formatConst = 'format';
   static const _formUrlEncodedConst = 'application/x-www-form-urlencoded';
   static const _inConst = 'in';
@@ -1015,20 +1017,40 @@ class OpenApiParser {
         } else if (value.containsKey(_enumConst)) {
           final Set<UniversalEnumItem> items;
           final values = (value[_enumConst] as List).map((e) => '$e');
+          final descriptions = value.containsKey(_enumDescriptionsConst)
+              ? (value[_enumDescriptionsConst] as List).map((e) => '$e')
+              : null;
           if (value.containsKey(_enumNamesConst)) {
             final names = (value[_enumNamesConst] as List).map((e) => '$e');
-            items = protectEnumItemsNamesAndValues(names, values);
+            items = protectEnumItemsNamesAndValues(
+              names,
+              values,
+              descriptions: descriptions,
+            );
+          } else if (value.containsKey(_enumVarnamesConst)) {
+            final names = (value[_enumVarnamesConst] as List).map((e) => '$e');
+            items = protectEnumItemsNamesAndValues(
+              names,
+              values,
+              descriptions: descriptions,
+            );
           } else {
-            items = protectEnumItemsNames(values);
+            items = protectEnumItemsNames(values, descriptions: descriptions);
           }
           final type = value[_typeConst].toString();
+
+          // Resolve default value: look up custom name from items if x-enumNames is used
+          final rawDefaultValue = value[_defaultConst]?.toString();
+          final resolvedDefaultValue =
+              findEnumNameByJsonKey(items, rawDefaultValue) ??
+              protectDefaultValue(rawDefaultValue, isEnum: true);
 
           dataClasses.add(
             _getUniqueEnumClass(
               name: schemaName,
               items: items,
               type: type,
-              defaultValue: value[_defaultConst]?.toString(),
+              defaultValue: resolvedDefaultValue,
               description: value[_descriptionConst]?.toString(),
             ),
           );
@@ -1646,18 +1668,38 @@ class OpenApiParser {
 
       final Set<UniversalEnumItem> items;
       final values = (map[_enumConst] as List).map((e) => '$e');
+      final descriptions = map.containsKey(_enumDescriptionsConst)
+          ? (map[_enumDescriptionsConst] as List).map((e) => '$e')
+          : null;
       if (map.containsKey(_enumNamesConst)) {
         final names = (map[_enumNamesConst] as List).map((e) => '$e');
-        items = protectEnumItemsNamesAndValues(names, values);
+        items = protectEnumItemsNamesAndValues(
+          names,
+          values,
+          descriptions: descriptions,
+        );
+      } else if (map.containsKey(_enumVarnamesConst)) {
+        final names = (map[_enumVarnamesConst] as List).map((e) => '$e');
+        items = protectEnumItemsNamesAndValues(
+          names,
+          values,
+          descriptions: descriptions,
+        );
       } else {
-        items = protectEnumItemsNames(values);
+        items = protectEnumItemsNames(values, descriptions: descriptions);
       }
+
+      // Resolve default value: look up custom name from items if x-enumNames/x-enum-varnames is used
+      final rawDefaultValue = map[_defaultConst]?.toString();
+      final resolvedDefaultValue =
+          findEnumNameByJsonKey(items, rawDefaultValue) ??
+          protectDefaultValue(rawDefaultValue, isEnum: true);
 
       final enumClass = _getUniqueEnumClass(
         name: newName,
         items: items,
         type: map[_typeConst].toString(),
-        defaultValue: protectDefaultValue(map[_defaultConst], isEnum: true),
+        defaultValue: resolvedDefaultValue,
         description: description,
       );
 
@@ -1687,7 +1729,8 @@ class OpenApiParser {
             'Warning: Default value for date/date-time field "${variableName.toCamel}" is not supported and will be ignored.',
           );
         } else {
-          enumDefaultValue = protectDefaultValue(map[_defaultConst]);
+          // Use the already resolved default value from items lookup
+          enumDefaultValue = resolvedDefaultValue;
         }
       }
 

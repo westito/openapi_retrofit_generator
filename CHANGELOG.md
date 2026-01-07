@@ -1,3 +1,8 @@
+## 2.0.4
+- Add support for `x-enum-varnames` extension (OpenAPI Generator style custom enum names)
+- Add support for `x-enum-descriptions` extension (doc comments for enum values)
+- Fix enum default value resolution when using `x-enumNames` or `x-enum-varnames`
+
 ## 2.0.3
 - Fix missing `@JsonKey`/`@MappableField` annotation when field names are renamed due to Dart reserved word conflicts in discriminated/undiscriminated union wrapper classes
 

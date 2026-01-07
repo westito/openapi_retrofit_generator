@@ -177,6 +177,34 @@ void main() {
       );
     });
 
+    test('x_enum_names', () async {
+      await e2eTest(
+        'basic/x_enum_names',
+        (outputDirectory, schemaPath, serializer) => OpenApiConfig(
+          outputDirectory: outputDirectory,
+          schemaPath: schemaPath,
+          jsonSerializer: serializer,
+          putClientsInFolder: true,
+        ),
+        schemaFileName: 'openapi.yaml',
+        buildFolder: buildFolder,
+      );
+    });
+
+    test('x_enum_varnames', () async {
+      await e2eTest(
+        'basic/x_enum_varnames',
+        (outputDirectory, schemaPath, serializer) => OpenApiConfig(
+          outputDirectory: outputDirectory,
+          schemaPath: schemaPath,
+          jsonSerializer: serializer,
+          putClientsInFolder: true,
+        ),
+        schemaFileName: 'openapi.yaml',
+        buildFolder: buildFolder,
+      );
+    });
+
     test('file_download', () async {
       await e2eTest(
         'basic/file_download',

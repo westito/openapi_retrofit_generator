@@ -1,15 +1,11 @@
-## 2.2.0
-- Support for Rust/utoipa discriminator pattern in `oneOf` schemas
-  - Detects `oneOf` with `allOf` items containing `$ref` + anonymous discriminator object
-  - Automatically extracts discriminator property from inline objects with single-value enums
-  - Generates proper sealed/union classes for utoipa-style OpenAPI specs
-- Code formatting with `dart_style` (page_width: 80, trailing_commas: preserve)
+## 2.0.4
+- Add support for Rust `serde(tag = 'discriminator_key')` discriminator pattern of enums
+- Add support for `x-enum-varnames` extension (OpenAPI Generator style custom enum names)
+- Add support for `x-enum-descriptions` extension (doc comments for enum values)
+- Fix enum default value resolution when using `x-enumNames` or `x-enum-varnames`
 
-## 2.1.0
-- SSE streaming support via `text/event-stream` content type
-- Binary streaming via `application/octet-stream` or `x-streaming: true`
-- Auto-detect discriminator for `oneOf`/`anyOf` from single-value enum properties
-- Simplified union class names (removed "Union" suffix and typedef wrapper)
+## 2.0.3
+- Fix missing `@JsonKey`/`@MappableField` annotation when field names are renamed due to Dart reserved word conflicts in discriminated/undiscriminated union wrapper classes
 
 ## 2.0.2
 - Packages updated

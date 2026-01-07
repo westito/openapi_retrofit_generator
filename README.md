@@ -431,7 +431,7 @@ components:
           type: integer
 ```
 
-**Rust/utoipa pattern (allOf with inline discriminator):**
+**Rust Serde pattern (allOf with inline discriminator):**
 ```yaml
 components:
   schemas:

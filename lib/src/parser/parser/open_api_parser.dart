@@ -67,6 +67,8 @@ class OpenApiParser {
   static const _discriminatorConst = 'discriminator';
   static const _enumConst = 'enum';
   static const _enumNamesConst = 'x-enumNames';
+  static const _enumVarnamesConst = 'x-enum-varnames';
+  static const _enumDescriptionsConst = 'x-enum-descriptions';
   static const _formatConst = 'format';
   static const _formUrlEncodedConst = 'application/x-www-form-urlencoded';
   static const _inConst = 'in';
@@ -1096,20 +1098,40 @@ class OpenApiParser {
         } else if (value.containsKey(_enumConst)) {
           final Set<UniversalEnumItem> items;
           final values = (value[_enumConst] as List).map((e) => '$e');
+          final descriptions = value.containsKey(_enumDescriptionsConst)
+              ? (value[_enumDescriptionsConst] as List).map((e) => '$e')
+              : null;
           if (value.containsKey(_enumNamesConst)) {
             final names = (value[_enumNamesConst] as List).map((e) => '$e');
-            items = protectEnumItemsNamesAndValues(names, values);
+            items = protectEnumItemsNamesAndValues(
+              names,
+              values,
+              descriptions: descriptions,
+            );
+          } else if (value.containsKey(_enumVarnamesConst)) {
+            final names = (value[_enumVarnamesConst] as List).map((e) => '$e');
+            items = protectEnumItemsNamesAndValues(
+              names,
+              values,
+              descriptions: descriptions,
+            );
           } else {
-            items = protectEnumItemsNames(values);
+            items = protectEnumItemsNames(values, descriptions: descriptions);
           }
           final type = value[_typeConst].toString();
+
+          // Resolve default value: look up custom name from items if x-enumNames is used
+          final rawDefaultValue = value[_defaultConst]?.toString();
+          final resolvedDefaultValue =
+              findEnumNameByJsonKey(items, rawDefaultValue) ??
+              protectDefaultValue(rawDefaultValue, isEnum: true);
 
           dataClasses.add(
             _getUniqueEnumClass(
               name: schemaName,
               items: items,
               type: type,
-              defaultValue: value[_defaultConst]?.toString(),
+              defaultValue: resolvedDefaultValue,
               description: value[_descriptionConst]?.toString(),
             ),
           );
@@ -1727,18 +1749,38 @@ class OpenApiParser {
 
       final Set<UniversalEnumItem> items;
       final values = (map[_enumConst] as List).map((e) => '$e');
+      final descriptions = map.containsKey(_enumDescriptionsConst)
+          ? (map[_enumDescriptionsConst] as List).map((e) => '$e')
+          : null;
       if (map.containsKey(_enumNamesConst)) {
         final names = (map[_enumNamesConst] as List).map((e) => '$e');
-        items = protectEnumItemsNamesAndValues(names, values);
+        items = protectEnumItemsNamesAndValues(
+          names,
+          values,
+          descriptions: descriptions,
+        );
+      } else if (map.containsKey(_enumVarnamesConst)) {
+        final names = (map[_enumVarnamesConst] as List).map((e) => '$e');
+        items = protectEnumItemsNamesAndValues(
+          names,
+          values,
+          descriptions: descriptions,
+        );
       } else {
-        items = protectEnumItemsNames(values);
+        items = protectEnumItemsNames(values, descriptions: descriptions);
       }
+
+      // Resolve default value: look up custom name from items if x-enumNames/x-enum-varnames is used
+      final rawDefaultValue = map[_defaultConst]?.toString();
+      final resolvedDefaultValue =
+          findEnumNameByJsonKey(items, rawDefaultValue) ??
+          protectDefaultValue(rawDefaultValue, isEnum: true);
 
       final enumClass = _getUniqueEnumClass(
         name: newName,
         items: items,
         type: map[_typeConst].toString(),
-        defaultValue: protectDefaultValue(map[_defaultConst], isEnum: true),
+        defaultValue: resolvedDefaultValue,
         description: description,
       );
 
@@ -1768,7 +1810,8 @@ class OpenApiParser {
             'Warning: Default value for date/date-time field "${variableName.toCamel}" is not supported and will be ignored.',
           );
         } else {
-          enumDefaultValue = protectDefaultValue(map[_defaultConst]);
+          // Use the already resolved default value from items lookup
+          enumDefaultValue = resolvedDefaultValue;
         }
       }
 
@@ -2160,7 +2203,7 @@ class OpenApiParser {
               }
             } else {
               // For anyOf or oneOf without an explicit discriminator,
-              // first try to detect utoipa pattern (allOf with $ref + discriminator),
+              // first try to detect Rust/serde pattern (allOf with $ref + discriminator),
               // then try to infer a discriminator from common properties with single-value enums
               final isUnion =
                   map.containsKey(_oneOfConst) || map.containsKey(_anyOfConst);
@@ -2176,19 +2219,20 @@ class OpenApiParser {
 
                 final unionName = newName!.toPascal;
 
-                // First, try to detect utoipa pattern (oneOf with allOf items containing $ref + discriminator object)
-                final utoipaResult = _detectUtoipaDiscriminator(
+                // First, try to detect Rust/serde pattern (oneOf with allOf items containing $ref + discriminator object)
+                final rustSerdeResult = _detectRustSerdeDiscriminator(
                   otherItems,
                   unionName,
                 );
 
-                if (utoipaResult != null) {
-                  final (utoipaDiscriminator, utoipaImports) = utoipaResult;
-                  // Successfully detected utoipa discriminator pattern
+                if (rustSerdeResult != null) {
+                  final (rustSerdeDiscriminator, rustSerdeImports) =
+                      rustSerdeResult;
+                  // Successfully detected Rust/serde discriminator pattern
                   final sealedParameters = {
                     UniversalType(
                       type: 'String',
-                      name: utoipaDiscriminator.propertyName,
+                      name: rustSerdeDiscriminator.propertyName,
                       isRequired: true,
                     ),
                   };
@@ -2197,9 +2241,9 @@ class OpenApiParser {
                   _objectClasses.add(
                     UniversalComponentClass(
                       name: unionName,
-                      imports: utoipaImports,
+                      imports: rustSerdeImports,
                       parameters: resolvedSealedParameters,
-                      discriminator: utoipaDiscriminator,
+                      discriminator: rustSerdeDiscriminator,
                       description: description,
                     ),
                   );
@@ -3031,16 +3075,19 @@ class OpenApiParser {
     );
     final unionName = newName!.toPascal;
 
-    // First, try to detect utoipa pattern (oneOf with allOf items containing $ref + discriminator object)
-    final utoipaResult = _detectUtoipaDiscriminator(unionVariants, unionName);
+    // First, try to detect Rust/serde pattern (oneOf with allOf items containing $ref + discriminator object)
+    final rustSerdeResult = _detectRustSerdeDiscriminator(
+      unionVariants,
+      unionName,
+    );
 
-    if (utoipaResult != null) {
-      final (utoipaDiscriminator, utoipaImports) = utoipaResult;
-      // Successfully detected utoipa discriminator pattern
+    if (rustSerdeResult != null) {
+      final (rustSerdeDiscriminator, rustSerdeImports) = rustSerdeResult;
+      // Successfully detected Rust/serde discriminator pattern
       final sealedParameters = {
         UniversalType(
           type: 'String',
-          name: utoipaDiscriminator.propertyName,
+          name: rustSerdeDiscriminator.propertyName,
           isRequired: true,
         ),
       };
@@ -3049,9 +3096,9 @@ class OpenApiParser {
       );
       return UniversalComponentClass(
         name: unionName,
-        imports: utoipaImports,
+        imports: rustSerdeImports,
         parameters: resolvedSealedParameters,
-        discriminator: utoipaDiscriminator,
+        discriminator: rustSerdeDiscriminator,
         description: description,
       );
     }
@@ -3118,7 +3165,7 @@ class OpenApiParser {
     return _typeRegistry.isEnum(typeName);
   }
 
-  /// Detects if a oneOf schema uses the utoipa pattern where each item is an
+  /// Detects if a oneOf schema uses the Rust/serde pattern where each item is an
   /// allOf with a $ref and an anonymous discriminator object.
   ///
   /// Pattern example:
@@ -3134,7 +3181,7 @@ class OpenApiParser {
   /// ```
   ///
   /// Returns the discriminator info if detected, otherwise null.
-  (Discriminator, SplayTreeSet<String>)? _detectUtoipaDiscriminator(
+  (Discriminator, SplayTreeSet<String>)? _detectRustSerdeDiscriminator(
     List<Map<String, dynamic>> variants,
     String unionName,
   ) {
@@ -3177,7 +3224,7 @@ class OpenApiParser {
       }
 
       // Extract discriminator property from the anonymous object
-      final discriminatorInfo = _extractUtoipaDiscriminatorFromObject(
+      final discriminatorInfo = _extractRustSerdeDiscriminatorFromObject(
         discriminatorObj,
       );
       if (discriminatorInfo == null) {
@@ -3225,12 +3272,12 @@ class OpenApiParser {
     );
   }
 
-  /// Extracts the discriminator property name and enum value from a utoipa
+  /// Extracts the discriminator property name and enum value from a Rust/serde
   /// discriminator object.
   ///
   /// The object should have a single property with a single-value enum.
   /// Returns (propertyName, enumValue) or null if not valid.
-  (String, String)? _extractUtoipaDiscriminatorFromObject(
+  (String, String)? _extractRustSerdeDiscriminatorFromObject(
     Map<String, dynamic> obj,
   ) {
     final properties = obj[_propertiesConst];

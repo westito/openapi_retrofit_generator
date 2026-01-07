@@ -1,0 +1,91 @@
+openapi: 3.0.3
+info:
+  title: x-enum-varnames Test API
+  version: 1.0.0
+paths:
+  /errors:
+    get:
+      operationId: getErrors
+      tags:
+        - errors
+      parameters:
+        # Anonymous enum in query parameter with x-enum-varnames
+        - in: query
+          name: errorType
+          required: false
+          schema:
+            type: string
+            default: invalid_request
+            enum:
+              - invalid_request
+              - invalid_client
+              - invalid_grant
+            x-enum-varnames:
+              - INVALID_REQUEST
+              - INVALID_CLIENT
+              - INVALID_GRANT
+      responses:
+        "200":
+          description: List of errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    # Class definition enum with x-enum-varnames
+    ErrorCode:
+      type: string
+      default: invalid_scope
+      enum:
+        - invalid_request
+        - invalid_client
+        - invalid_grant
+        - invalid_scope
+        - unauthorized_client
+        - unsupported_grant_type
+      x-enum-descriptions:
+        - 'Request is missing a parameter or contains an unsupported parameter.'
+        - 'Client authentication fails due to an invalid client id or secret.'
+        - 'Authorization code or password is invalid or expired.'
+        - 'Invalid scope for the given access token.'
+        - 'Client is not authorized for requested grant type.'
+        - 'Given grant type is unsupported.'
+      x-enum-varnames:
+        - INVALID_REQUEST
+        - INVALID_CLIENT
+        - INVALID_GRANT
+        - INVALID_SCOPE
+        - UNAUTHORIZED_CLIENT
+        - UNSUPPORTED_GRANT_TYPE
+
+    # Integer enum with x-enum-varnames
+    HttpStatusCode:
+      type: integer
+      default: 400
+      enum:
+        - 400
+        - 401
+        - 403
+        - 404
+        - 500
+      x-enum-varnames:
+        - BAD_REQUEST
+        - UNAUTHORIZED
+        - FORBIDDEN
+        - NOT_FOUND
+        - INTERNAL_SERVER_ERROR
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - error_description
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorCode'
+        error_description:
+          type: string
+        status_code:
+          $ref: '#/components/schemas/HttpStatusCode'

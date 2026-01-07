@@ -172,9 +172,9 @@ void main() {
       );
     });
 
-    test('utoipa_discriminator', () async {
+    test('rust_serde_discriminator', () async {
       await e2eTest(
-        'xof/utoipa_discriminator',
+        'xof/rust_serde_discriminator',
         (outputDirectory, schemaPath, serializer) => OpenApiConfig(
           outputDirectory: outputDirectory,
           schemaPath: schemaPath,
@@ -182,7 +182,7 @@ void main() {
           putClientsInFolder: true,
           includeIfNull: true,
         ),
-        schemaFileName: 'utoipa_discriminator.yaml',
+        schemaFileName: 'rust_serde_discriminator.yaml',
         buildFolder: buildFolder,
       );
     });

@@ -1,8 +1,8 @@
 openapi: 3.1.0
 info:
-  title: Utoipa Discriminator API
+  title: Rust/serde Discriminator API
   version: 1.0.0
-  description: Tests the utoipa pattern where oneOf items are allOf with $ref + discriminator object
+  description: Tests the Rust/serde pattern where oneOf items are allOf with $ref + discriminator object
 paths: {}
 components:
   schemas:

@@ -132,9 +132,13 @@ String? protectDefaultValue(
 }
 
 /// Protect enum items names from incorrect symbols, keywords, etc.
-Set<UniversalEnumItem> protectEnumItemsNames(Iterable<String> names) {
+Set<UniversalEnumItem> protectEnumItemsNames(
+  Iterable<String> names, {
+  Iterable<String>? descriptions,
+}) {
   var counter = 0;
   final items = <UniversalEnumItem>{};
+  final descList = descriptions?.toList();
 
   String uniqueEnumItemName() {
     final newName = 'undefined $counter';
@@ -155,6 +159,7 @@ Set<UniversalEnumItem> protectEnumItemsNames(Iterable<String> names) {
     return name;
   }
 
+  var index = 0;
   for (final name in names) {
     final (newName, renameDescription) = switch (name) {
       '' => (
@@ -175,11 +180,43 @@ Set<UniversalEnumItem> protectEnumItemsNames(Iterable<String> names) {
       ),
       _ => (leadingDashToMinus(name), null),
     };
+    // Use x-enum-descriptions if provided, otherwise use rename description
+    final itemDescription = descList != null && index < descList.length
+        ? descList[index]
+        : renameDescription;
     items.add(
       UniversalEnumItem(
         name: newName,
         jsonKey: name,
-        description: renameDescription,
+        description: itemDescription,
+      ),
+    );
+    index++;
+  }
+
+  return items;
+}
+
+/// Protect enum items names from incorrect symbols, keywords, etc.
+/// Optionally accepts descriptions for each enum item.
+Set<UniversalEnumItem> protectEnumItemsNamesAndValues(
+  Iterable<String> names,
+  Iterable<String> values, {
+  Iterable<String>? descriptions,
+}) {
+  final items = <UniversalEnumItem>{};
+  final nameList = names.toList();
+  final valueList = values.toList();
+  final descList = descriptions?.toList();
+
+  for (var i = 0; i < nameList.length; i++) {
+    items.add(
+      UniversalEnumItem(
+        name: nameList[i],
+        jsonKey: valueList[i],
+        description: descList != null && i < descList.length
+            ? descList[i]
+            : null,
       ),
     );
   }
@@ -187,20 +224,17 @@ Set<UniversalEnumItem> protectEnumItemsNames(Iterable<String> names) {
   return items;
 }
 
-/// Protect enum items names from incorrect symbols, keywords, etc.
-Set<UniversalEnumItem> protectEnumItemsNamesAndValues(
-  Iterable<String> names,
-  Iterable<String> values,
-) {
-  final items = <UniversalEnumItem>{};
-  final nameList = names.toList();
-  final valueList = values.toList();
-
-  for (var i = 0; i < nameList.length; i++) {
-    items.add(UniversalEnumItem(name: nameList[i], jsonKey: valueList[i]));
+/// Find the enum item name by its json key (raw value).
+/// This is used to resolve default values when x-enumNames is used.
+/// Returns null if no matching item is found.
+String? findEnumNameByJsonKey(Set<UniversalEnumItem> items, String? jsonKey) {
+  if (jsonKey == null) return null;
+  for (final item in items) {
+    if (item.jsonKey == jsonKey) {
+      return item.name;
+    }
   }
-
-  return items;
+  return null;
 }
 
 final _nameRegExp = RegExp(r'^[a-zA-Z_-][a-zA-Z\d_-]*$');

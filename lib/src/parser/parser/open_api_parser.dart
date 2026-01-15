@@ -1345,7 +1345,10 @@ class OpenApiParser {
         if (refedClass is! UniversalComponentClass) {
           continue;
         }
-        discriminator.refProperties[ref] = refedClass.parameters;
+        // Filter out the discriminator property from variant parameters
+        discriminator.refProperties[ref] = refedClass.parameters
+            .where((p) => p.name != discriminator.propertyName)
+            .toSet();
         discriminatedOneOfClass.imports.addAll(refedClass.imports);
         discriminatedOneOfClass.imports.add(refedClass.import);
 
@@ -1368,6 +1371,8 @@ class OpenApiParser {
                       .firstWhere((it) => it.value == ref)
                       .key,
                   parentClass: discriminatedOneOfClass.name,
+                  discriminatorPropertyName:
+                      discriminatedOneOfClass.discriminator!.propertyName,
                 ),
         );
       }
@@ -2606,15 +2611,17 @@ class OpenApiParser {
     // YamlScalar/other runtime types. Use defensive .toString() comparisons.
     return otherItems.every((item) {
       final hasRef = item.containsKey(_refConst);
+      final hasAllOf = item.containsKey(_allOfConst);
       final properties = item[_propertiesConst];
       final hasProps =
           properties is Map<String, dynamic> && properties.isNotEmpty;
       final hasExplicitObjectType =
           item[_typeConst]?.toString() == _objectConst;
 
-      // Accept either a $ref, an inline object with explicit type: object,
+      // Accept either a $ref, an allOf composition, an inline object with explicit type: object,
       // or an inline object with properties and no explicit type.
       return hasRef ||
+          hasAllOf ||
           (hasExplicitObjectType && hasProps) ||
           (hasProps && !item.containsKey(_typeConst));
     });
@@ -2808,9 +2815,7 @@ class OpenApiParser {
       final variant = variants[i];
       final enumValue = variantPropertyEnums[i]![discriminatorProperty]!;
 
-      // For inline objects, use the enum value as part of the variant name
-      // e.g., "connected" -> "SessionEventUnionConnected"
-      // For $ref, use the referenced class name
+      // Determine variant name based on structure
       final variantName = variant.containsKey(_refConst)
           ? _formatRef(variant).toPascal
           : '$unionName${enumValue.toPascal}';
@@ -2821,10 +2826,20 @@ class OpenApiParser {
       if (variant.containsKey(_refConst)) {
         // For $ref, the refProperties will be populated later in _parseDataClasses
         // by looking up the referenced class
+      } else if (variant.containsKey(_allOfConst)) {
+        // For allOf variants, parse and merge properties from all items
+        final (
+          parameters,
+          variantImports,
+        ) = _findParametersAndImportsForAllOfVariant(
+          variant[_allOfConst] as List,
+          discriminatorProperty,
+          additionalName: variantName,
+        );
+        refProperties[variantName] = parameters;
+        imports.addAll(variantImports);
       } else {
         // For inline objects, parse properties now
-        // Use a simplified parsing that creates String type for the discriminator
-        // property instead of creating enum types
         final (
           parameters,
           variantImports,
@@ -2846,6 +2861,94 @@ class OpenApiParser {
       ),
       imports,
     );
+  }
+
+  /// Parses parameters from an allOf variant in a union.
+  /// Handles $ref items, inline objects, and nullable oneOf patterns.
+  (Set<UniversalType>, SplayTreeSet<String>)
+  _findParametersAndImportsForAllOfVariant(
+    List<dynamic> allOfItems,
+    String discriminatorProperty, {
+    String? additionalName,
+  }) {
+    final parameters = <UniversalType>{};
+    final imports = SplayTreeSet<String>();
+
+    for (final item in allOfItems) {
+      if (item is! Map<String, dynamic>) continue;
+
+      if (item.containsKey(_refConst)) {
+        // Handle $ref - resolve and get properties from referenced schema
+        final refName = _formatRef(item);
+        final refSchema = _findRefSchema(refName);
+        if (refSchema != null) {
+          final (
+            refParams,
+            refImports,
+          ) = _findParametersAndImportsForInferredDiscriminator(
+            refSchema,
+            discriminatorProperty,
+            additionalName: additionalName,
+          );
+          parameters.addAll(refParams);
+          imports.addAll(refImports);
+          imports.add(refName);
+        }
+      } else if (item.containsKey(_oneOfConst)) {
+        // Handle oneOf with nullable pattern: oneOf: [type: null, $ref: X]
+        // All properties from the $ref should be nullable
+        final oneOfList = item[_oneOfConst] as List;
+        final hasNullType = oneOfList.any(
+          (o) => o is Map<String, dynamic> && o[_typeConst] == 'null',
+        );
+
+        for (final oneOfItem in oneOfList) {
+          if (oneOfItem is! Map<String, dynamic>) continue;
+          if (oneOfItem[_typeConst] == 'null') continue;
+
+          if (oneOfItem.containsKey(_refConst)) {
+            final refName = _formatRef(oneOfItem);
+            final refSchema = _findRefSchema(refName);
+            if (refSchema != null) {
+              final (
+                refParams,
+                refImports,
+              ) = _findParametersAndImportsForInferredDiscriminator(
+                refSchema,
+                discriminatorProperty,
+                additionalName: additionalName,
+              );
+              // If nullable pattern detected, make all properties nullable
+              if (hasNullType) {
+                for (final param in refParams) {
+                  parameters.add(
+                    param.copyWith(isRequired: false, nullable: true),
+                  );
+                }
+              } else {
+                parameters.addAll(refParams);
+              }
+              imports.addAll(refImports);
+              imports.add(refName);
+            }
+          }
+        }
+      } else if (item.containsKey(_propertiesConst)) {
+        // Handle inline object properties
+        final (
+          inlineParams,
+          inlineImports,
+        ) = _findParametersAndImportsForInferredDiscriminator(
+          item,
+          discriminatorProperty,
+          additionalName: additionalName,
+        );
+        parameters.addAll(inlineParams);
+        imports.addAll(inlineImports);
+      }
+    }
+
+    return (parameters, imports);
   }
 
   /// Parses parameters from an inline object schema for inferred discriminator unions.
@@ -2871,17 +2974,8 @@ class OpenApiParser {
 
         final isRequired = requiredParameters.contains(propertyName);
 
-        // For the discriminator property, use String type directly
+        // Skip the discriminator property - it's handled by serialization annotations
         if (propertyName == discriminatorProperty) {
-          parameters.add(
-            UniversalType(
-              type: 'String',
-              name: propertyName,
-              jsonKey: propertyName,
-              isRequired: isRequired,
-              description: propertyValue[_descriptionConst]?.toString(),
-            ),
-          );
           continue;
         }
 
@@ -2903,8 +2997,25 @@ class OpenApiParser {
     return (parameters, imports);
   }
 
-  /// Gets the properties map from a variant schema (handles both inline objects and refs)
+  /// Gets the properties map from a variant schema (handles inline objects, refs, and allOf)
   Map<String, dynamic>? _getVariantProperties(Map<String, dynamic> variant) {
+    // Handle allOf - merge properties from all items
+    if (variant.containsKey(_allOfConst)) {
+      final allOfList = variant[_allOfConst];
+      if (allOfList is List) {
+        final mergedProperties = <String, dynamic>{};
+        for (final item in allOfList) {
+          if (item is Map<String, dynamic>) {
+            final itemProps = _getVariantProperties(item);
+            if (itemProps != null) {
+              mergedProperties.addAll(itemProps);
+            }
+          }
+        }
+        return mergedProperties.isNotEmpty ? mergedProperties : null;
+      }
+    }
+
     if (variant.containsKey(_propertiesConst)) {
       final props = variant[_propertiesConst];
       if (props is Map<String, dynamic>) {

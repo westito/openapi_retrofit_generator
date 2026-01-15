@@ -32,28 +32,25 @@ sealed class FamilyMembersMembers with FamilyMembersMembersMappable {
 @MappableClass(discriminatorValue: 'Cat')
 class FamilyMembersMembersCat extends FamilyMembersMembers
     with FamilyMembersMembersCatMappable {
-  final CatTypeType type;
   final int mewCount;
 
-  const FamilyMembersMembersCat({required this.type, required this.mewCount});
+  const FamilyMembersMembersCat({required this.mewCount});
 }
 
 @MappableClass(discriminatorValue: 'Dog')
 class FamilyMembersMembersDog extends FamilyMembersMembers
     with FamilyMembersMembersDogMappable {
-  final DogTypeType type;
   final String barkSound;
 
-  const FamilyMembersMembersDog({required this.type, required this.barkSound});
+  const FamilyMembersMembersDog({required this.barkSound});
 }
 
 @MappableClass(discriminatorValue: 'Human')
 class FamilyMembersMembersHuman extends FamilyMembersMembers
     with FamilyMembersMembersHumanMappable {
-  final HumanTypeType type;
   final String job;
 
-  const FamilyMembersMembersHuman({required this.type, required this.job});
+  const FamilyMembersMembersHuman({required this.job});
 }
 
 @MappableClass(discriminatorValue: MappableClass.useAsDefault)

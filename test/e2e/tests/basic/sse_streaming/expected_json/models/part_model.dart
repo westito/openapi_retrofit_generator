@@ -47,13 +47,8 @@ extension PartModelUnionDeserializer on PartModel {
 class PartModelText extends PartModel {
   final String id;
   final String text;
-  final String type;
 
-  const PartModelText({
-    required this.id,
-    required this.text,
-    required this.type,
-  });
+  const PartModelText({required this.id, required this.text});
 
   factory PartModelText.fromJson(Map<String, dynamic> json) =>
       _$PartModelTextFromJson(json);
@@ -71,14 +66,12 @@ class PartModelToolUse extends PartModel {
   final String toolCallId;
   @JsonKey(name: 'tool_input')
   final dynamic toolInput;
-  final String type;
 
   const PartModelToolUse({
     required this.id,
     required this.toolName,
     required this.toolCallId,
     required this.toolInput,
-    required this.type,
   });
 
   factory PartModelToolUse.fromJson(Map<String, dynamic> json) =>
@@ -99,7 +92,6 @@ class PartModelToolResult extends PartModel {
   final String toolResult;
   @JsonKey(name: 'is_error')
   final bool isError;
-  final String type;
 
   const PartModelToolResult({
     required this.id,
@@ -107,7 +99,6 @@ class PartModelToolResult extends PartModel {
     required this.toolCallId,
     required this.toolResult,
     required this.isError,
-    required this.type,
   });
 
   factory PartModelToolResult.fromJson(Map<String, dynamic> json) =>

@@ -81,3 +81,73 @@ components:
             $ref: '#/components/schemas/MessagePartDto'
       required:
         - parts
+
+    # Test for allOf with flattening and nullable oneOf patterns
+    SessionEventDto:
+      oneOf:
+        - type: object
+          description: Sent when SSE connection is established.
+          required:
+            - event
+          properties:
+            event:
+              type: string
+              enum:
+                - Connected
+        - allOf:
+            - $ref: '#/components/schemas/SessionStateDto'
+              description: Session state delta.
+            - oneOf:
+                - type: 'null'
+                - $ref: '#/components/schemas/MessageDto'
+            - type: object
+              description: Session state was updated.
+              required:
+                - event
+              properties:
+                event:
+                  type: string
+                  enum:
+                    - SessionUpdated
+          description: Session state was updated (delta - only changed fields present).
+        - type: object
+          description: Session was deleted.
+          required:
+            - session_id
+            - event
+          properties:
+            event:
+              type: string
+              enum:
+                - SessionDeleted
+            session_id:
+              type: integer
+              format: int64
+              description: ID of deleted session.
+      description: Server-sent event for a session
+
+    SessionStateDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Session ID
+        name:
+          type: string
+          description: Session name
+      required:
+        - id
+
+    MessageDto:
+      type: object
+      properties:
+        content:
+          type: string
+          description: Message content
+        role:
+          type: string
+          description: Message role
+      required:
+        - content
+        - role

@@ -4,10 +4,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'cat_type_type.dart';
-import 'dog_type_type.dart';
-import 'human_type_type.dart';
-
 part 'family_members_members.g.dart';
 
 @JsonSerializable(createFactory: false)
@@ -49,10 +45,9 @@ extension FamilyMembersMembersUnionDeserializer on FamilyMembersMembers {
 
 @JsonSerializable()
 class FamilyMembersMembersCat extends FamilyMembersMembers {
-  final CatTypeType type;
   final int mewCount;
 
-  const FamilyMembersMembersCat({required this.type, required this.mewCount});
+  const FamilyMembersMembersCat({required this.mewCount});
 
   factory FamilyMembersMembersCat.fromJson(Map<String, dynamic> json) =>
       _$FamilyMembersMembersCatFromJson(json);
@@ -63,10 +58,9 @@ class FamilyMembersMembersCat extends FamilyMembersMembers {
 
 @JsonSerializable()
 class FamilyMembersMembersDog extends FamilyMembersMembers {
-  final DogTypeType type;
   final String barkSound;
 
-  const FamilyMembersMembersDog({required this.type, required this.barkSound});
+  const FamilyMembersMembersDog({required this.barkSound});
 
   factory FamilyMembersMembersDog.fromJson(Map<String, dynamic> json) =>
       _$FamilyMembersMembersDogFromJson(json);
@@ -77,10 +71,9 @@ class FamilyMembersMembersDog extends FamilyMembersMembers {
 
 @JsonSerializable()
 class FamilyMembersMembersHuman extends FamilyMembersMembers {
-  final HumanTypeType type;
   final String job;
 
-  const FamilyMembersMembersHuman({required this.type, required this.job});
+  const FamilyMembersMembersHuman({required this.job});
 
   factory FamilyMembersMembersHuman.fromJson(Map<String, dynamic> json) =>
       _$FamilyMembersMembersHumanFromJson(json);

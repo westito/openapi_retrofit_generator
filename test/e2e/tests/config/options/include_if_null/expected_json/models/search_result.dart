@@ -4,11 +4,8 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'user_search_result_type_type.dart';
 import 'user.dart';
-import 'post_search_result_type_type.dart';
 import 'post_model.dart';
-import 'comment_search_result_type_type.dart';
 import 'comment.dart';
 
 part 'search_result.g.dart';
@@ -54,15 +51,10 @@ extension SearchResultUnionDeserializer on SearchResult {
 
 @JsonSerializable()
 class SearchResultUser extends SearchResult {
-  final UserSearchResultTypeType type;
   final User user;
   final double? score;
 
-  const SearchResultUser({
-    required this.type,
-    required this.user,
-    required this.score,
-  });
+  const SearchResultUser({required this.user, required this.score});
 
   factory SearchResultUser.fromJson(Map<String, dynamic> json) =>
       _$SearchResultUserFromJson(json);
@@ -73,13 +65,11 @@ class SearchResultUser extends SearchResult {
 
 @JsonSerializable()
 class SearchResultPost extends SearchResult {
-  final PostSearchResultTypeType type;
   final PostModel post;
   final double? score;
   final List<String>? highlights;
 
   const SearchResultPost({
-    required this.type,
     required this.post,
     required this.score,
     required this.highlights,
@@ -94,15 +84,10 @@ class SearchResultPost extends SearchResult {
 
 @JsonSerializable()
 class SearchResultComment extends SearchResult {
-  final CommentSearchResultTypeType type;
   final Comment comment;
   final double? score;
 
-  const SearchResultComment({
-    required this.type,
-    required this.comment,
-    required this.score,
-  });
+  const SearchResultComment({required this.comment, required this.score});
 
   factory SearchResultComment.fromJson(Map<String, dynamic> json) =>
       _$SearchResultCommentFromJson(json);

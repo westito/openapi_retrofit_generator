@@ -724,7 +724,6 @@ extension PaymentRequestUnionDeserializer on PaymentRequest {
 
 @JsonSerializable()
 class PaymentRequestCreditCard extends PaymentRequest {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -733,7 +732,6 @@ class PaymentRequestCreditCard extends PaymentRequest {
   final double amount;
 
   const PaymentRequestCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
@@ -751,7 +749,6 @@ class PaymentRequestCreditCard extends PaymentRequest {
 
 @JsonSerializable()
 class PaymentRequestBankTransfer extends PaymentRequest {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -759,7 +756,6 @@ class PaymentRequestBankTransfer extends PaymentRequest {
   final String? reference;
 
   const PaymentRequestBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
     required this.accountHolder,
@@ -776,14 +772,12 @@ class PaymentRequestBankTransfer extends PaymentRequest {
 
 @JsonSerializable()
 class PaymentRequestCrypto extends PaymentRequest {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentRequestCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,
@@ -934,15 +928,10 @@ extension SearchResultUnionDeserializer on SearchResult {
 
 @JsonSerializable()
 class SearchResultUser extends SearchResult {
-  final UserSearchResultTypeType type;
   final User user;
   final double? score;
 
-  const SearchResultUser({
-    required this.type,
-    required this.user,
-    required this.score,
-  });
+  const SearchResultUser({required this.user, required this.score});
 
   factory SearchResultUser.fromJson(Map<String, dynamic> json) =>
       _$SearchResultUserFromJson(json);
@@ -953,13 +942,11 @@ class SearchResultUser extends SearchResult {
 
 @JsonSerializable()
 class SearchResultPost extends SearchResult {
-  final PostSearchResultTypeType type;
   final PostModel post;
   final double? score;
   final List<String>? highlights;
 
   const SearchResultPost({
-    required this.type,
     required this.post,
     required this.score,
     required this.highlights,
@@ -974,15 +961,10 @@ class SearchResultPost extends SearchResult {
 
 @JsonSerializable()
 class SearchResultComment extends SearchResult {
-  final CommentSearchResultTypeType type;
   final Comment comment;
   final double? score;
 
-  const SearchResultComment({
-    required this.type,
-    required this.comment,
-    required this.score,
-  });
+  const SearchResultComment({required this.comment, required this.score});
 
   factory SearchResultComment.fromJson(Map<String, dynamic> json) =>
       _$SearchResultCommentFromJson(json);
@@ -1079,7 +1061,6 @@ extension EntityUnionDeserializer on Entity {
 @JsonSerializable()
 class EntityPerson extends Entity {
   final String id;
-  final PersonEntityEntityTypeEntityType? entityType;
   final String? name;
   final String? description;
   final DateTime createdAt;
@@ -1091,7 +1072,6 @@ class EntityPerson extends Entity {
 
   const EntityPerson({
     required this.id,
-    required this.entityType,
     required this.name,
     required this.description,
     required this.createdAt,
@@ -1112,7 +1092,6 @@ class EntityPerson extends Entity {
 @JsonSerializable()
 class EntityOrganization extends Entity {
   final String id;
-  final OrganizationEntityEntityTypeEntityType? entityType;
   final String? name;
   final String? description;
   final DateTime createdAt;
@@ -1125,7 +1104,6 @@ class EntityOrganization extends Entity {
 
   const EntityOrganization({
     required this.id,
-    required this.entityType,
     required this.name,
     required this.description,
     required this.createdAt,
@@ -1591,7 +1569,6 @@ extension PaymentResponseDetailsDetailsUnionDeserializer
 @JsonSerializable()
 class PaymentResponseDetailsDetailsCreditCard
     extends PaymentResponseDetailsDetails {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -1600,7 +1577,6 @@ class PaymentResponseDetailsDetailsCreditCard
   final double amount;
 
   const PaymentResponseDetailsDetailsCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
@@ -1621,7 +1597,6 @@ class PaymentResponseDetailsDetailsCreditCard
 @JsonSerializable()
 class PaymentResponseDetailsDetailsBankTransfer
     extends PaymentResponseDetailsDetails {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -1629,7 +1604,6 @@ class PaymentResponseDetailsDetailsBankTransfer
   final String? reference;
 
   const PaymentResponseDetailsDetailsBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
     required this.accountHolder,
@@ -1649,14 +1623,12 @@ class PaymentResponseDetailsDetailsBankTransfer
 @JsonSerializable()
 class PaymentResponseDetailsDetailsCrypto
     extends PaymentResponseDetailsDetails {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentResponseDetailsDetailsCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,

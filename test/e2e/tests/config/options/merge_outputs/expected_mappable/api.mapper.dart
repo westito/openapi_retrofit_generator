@@ -4086,7 +4086,6 @@ class PaymentRequestCreditCardMapper
         _instance = PaymentRequestCreditCardMapper._(),
       );
       PaymentRequestMapper.ensureInitialized().addSubMapper(_instance!);
-      CreditCardPaymentPaymentTypePaymentTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -4094,14 +4093,6 @@ class PaymentRequestCreditCardMapper
   @override
   final String id = 'PaymentRequestCreditCard';
 
-  static CreditCardPaymentPaymentTypePaymentType _$paymentType(
-    PaymentRequestCreditCard v,
-  ) => v.paymentType;
-  static const Field<
-    PaymentRequestCreditCard,
-    CreditCardPaymentPaymentTypePaymentType
-  >
-  _f$paymentType = Field('paymentType', _$paymentType);
   static String _$cardNumber(PaymentRequestCreditCard v) => v.cardNumber;
   static const Field<PaymentRequestCreditCard, String> _f$cardNumber = Field(
     'cardNumber',
@@ -4125,7 +4116,7 @@ class PaymentRequestCreditCardMapper
   static String? _$cardholderName(PaymentRequestCreditCard v) =>
       v.cardholderName;
   static const Field<PaymentRequestCreditCard, String> _f$cardholderName =
-      Field('cardholderName', _$cardholderName);
+      Field('cardholderName', _$cardholderName, opt: true);
   static double _$amount(PaymentRequestCreditCard v) => v.amount;
   static const Field<PaymentRequestCreditCard, double> _f$amount = Field(
     'amount',
@@ -4134,7 +4125,6 @@ class PaymentRequestCreditCardMapper
 
   @override
   final MappableFields<PaymentRequestCreditCard> fields = const {
-    #paymentType: _f$paymentType,
     #cardNumber: _f$cardNumber,
     #expiryMonth: _f$expiryMonth,
     #expiryYear: _f$expiryYear,
@@ -4153,7 +4143,6 @@ class PaymentRequestCreditCardMapper
 
   static PaymentRequestCreditCard _instantiate(DecodingData data) {
     return PaymentRequestCreditCard(
-      paymentType: data.dec(_f$paymentType),
       cardNumber: data.dec(_f$cardNumber),
       expiryMonth: data.dec(_f$expiryMonth),
       expiryYear: data.dec(_f$expiryYear),
@@ -4235,7 +4224,6 @@ abstract class PaymentRequestCreditCardCopyWith<
     implements PaymentRequestCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    CreditCardPaymentPaymentTypePaymentType? paymentType,
     String? cardNumber,
     int? expiryMonth,
     int? expiryYear,
@@ -4259,7 +4247,6 @@ class _PaymentRequestCreditCardCopyWithImpl<$R, $Out>
       PaymentRequestCreditCardMapper.ensureInitialized();
   @override
   $R call({
-    CreditCardPaymentPaymentTypePaymentType? paymentType,
     String? cardNumber,
     int? expiryMonth,
     int? expiryYear,
@@ -4268,7 +4255,6 @@ class _PaymentRequestCreditCardCopyWithImpl<$R, $Out>
     double? amount,
   }) => $apply(
     FieldCopyWithData({
-      if (paymentType != null) #paymentType: paymentType,
       if (cardNumber != null) #cardNumber: cardNumber,
       if (expiryMonth != null) #expiryMonth: expiryMonth,
       if (expiryYear != null) #expiryYear: expiryYear,
@@ -4279,7 +4265,6 @@ class _PaymentRequestCreditCardCopyWithImpl<$R, $Out>
   );
   @override
   PaymentRequestCreditCard $make(CopyWithData data) => PaymentRequestCreditCard(
-    paymentType: data.get(#paymentType, or: $value.paymentType),
     cardNumber: data.get(#cardNumber, or: $value.cardNumber),
     expiryMonth: data.get(#expiryMonth, or: $value.expiryMonth),
     expiryYear: data.get(#expiryYear, or: $value.expiryYear),
@@ -4305,7 +4290,6 @@ class PaymentRequestBankTransferMapper
         _instance = PaymentRequestBankTransferMapper._(),
       );
       PaymentRequestMapper.ensureInitialized().addSubMapper(_instance!);
-      BankTransferPaymentPaymentTypePaymentTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -4313,14 +4297,6 @@ class PaymentRequestBankTransferMapper
   @override
   final String id = 'PaymentRequestBankTransfer';
 
-  static BankTransferPaymentPaymentTypePaymentType _$paymentType(
-    PaymentRequestBankTransfer v,
-  ) => v.paymentType;
-  static const Field<
-    PaymentRequestBankTransfer,
-    BankTransferPaymentPaymentTypePaymentType
-  >
-  _f$paymentType = Field('paymentType', _$paymentType);
   static String _$accountNumber(PaymentRequestBankTransfer v) =>
       v.accountNumber;
   static const Field<PaymentRequestBankTransfer, String> _f$accountNumber =
@@ -4332,7 +4308,7 @@ class PaymentRequestBankTransferMapper
   static String? _$accountHolder(PaymentRequestBankTransfer v) =>
       v.accountHolder;
   static const Field<PaymentRequestBankTransfer, String> _f$accountHolder =
-      Field('accountHolder', _$accountHolder);
+      Field('accountHolder', _$accountHolder, opt: true);
   static double _$amount(PaymentRequestBankTransfer v) => v.amount;
   static const Field<PaymentRequestBankTransfer, double> _f$amount = Field(
     'amount',
@@ -4342,11 +4318,11 @@ class PaymentRequestBankTransferMapper
   static const Field<PaymentRequestBankTransfer, String> _f$reference = Field(
     'reference',
     _$reference,
+    opt: true,
   );
 
   @override
   final MappableFields<PaymentRequestBankTransfer> fields = const {
-    #paymentType: _f$paymentType,
     #accountNumber: _f$accountNumber,
     #routingNumber: _f$routingNumber,
     #accountHolder: _f$accountHolder,
@@ -4364,7 +4340,6 @@ class PaymentRequestBankTransferMapper
 
   static PaymentRequestBankTransfer _instantiate(DecodingData data) {
     return PaymentRequestBankTransfer(
-      paymentType: data.dec(_f$paymentType),
       accountNumber: data.dec(_f$accountNumber),
       routingNumber: data.dec(_f$routingNumber),
       accountHolder: data.dec(_f$accountHolder),
@@ -4449,7 +4424,6 @@ abstract class PaymentRequestBankTransferCopyWith<
     implements PaymentRequestCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    BankTransferPaymentPaymentTypePaymentType? paymentType,
     String? accountNumber,
     String? routingNumber,
     String? accountHolder,
@@ -4476,7 +4450,6 @@ class _PaymentRequestBankTransferCopyWithImpl<$R, $Out>
       PaymentRequestBankTransferMapper.ensureInitialized();
   @override
   $R call({
-    BankTransferPaymentPaymentTypePaymentType? paymentType,
     String? accountNumber,
     String? routingNumber,
     Object? accountHolder = $none,
@@ -4484,7 +4457,6 @@ class _PaymentRequestBankTransferCopyWithImpl<$R, $Out>
     Object? reference = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (paymentType != null) #paymentType: paymentType,
       if (accountNumber != null) #accountNumber: accountNumber,
       if (routingNumber != null) #routingNumber: routingNumber,
       if (accountHolder != $none) #accountHolder: accountHolder,
@@ -4495,7 +4467,6 @@ class _PaymentRequestBankTransferCopyWithImpl<$R, $Out>
   @override
   PaymentRequestBankTransfer $make(CopyWithData data) =>
       PaymentRequestBankTransfer(
-        paymentType: data.get(#paymentType, or: $value.paymentType),
         accountNumber: data.get(#accountNumber, or: $value.accountNumber),
         routingNumber: data.get(#routingNumber, or: $value.routingNumber),
         accountHolder: data.get(#accountHolder, or: $value.accountHolder),
@@ -4518,7 +4489,6 @@ class PaymentRequestCryptoMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PaymentRequestCryptoMapper._());
       PaymentRequestMapper.ensureInitialized().addSubMapper(_instance!);
-      CryptoPaymentPaymentTypePaymentTypeMapper.ensureInitialized();
       CryptoPaymentCryptocurrencyCryptocurrencyMapper.ensureInitialized();
     }
     return _instance!;
@@ -4527,11 +4497,6 @@ class PaymentRequestCryptoMapper
   @override
   final String id = 'PaymentRequestCrypto';
 
-  static CryptoPaymentPaymentTypePaymentType _$paymentType(
-    PaymentRequestCrypto v,
-  ) => v.paymentType;
-  static const Field<PaymentRequestCrypto, CryptoPaymentPaymentTypePaymentType>
-  _f$paymentType = Field('paymentType', _$paymentType);
   static String _$walletAddress(PaymentRequestCrypto v) => v.walletAddress;
   static const Field<PaymentRequestCrypto, String> _f$walletAddress = Field(
     'walletAddress',
@@ -4554,11 +4519,11 @@ class PaymentRequestCryptoMapper
   static const Field<PaymentRequestCrypto, String> _f$transactionHash = Field(
     'transactionHash',
     _$transactionHash,
+    opt: true,
   );
 
   @override
   final MappableFields<PaymentRequestCrypto> fields = const {
-    #paymentType: _f$paymentType,
     #walletAddress: _f$walletAddress,
     #cryptocurrency: _f$cryptocurrency,
     #amount: _f$amount,
@@ -4575,7 +4540,6 @@ class PaymentRequestCryptoMapper
 
   static PaymentRequestCrypto _instantiate(DecodingData data) {
     return PaymentRequestCrypto(
-      paymentType: data.dec(_f$paymentType),
       walletAddress: data.dec(_f$walletAddress),
       cryptocurrency: data.dec(_f$cryptocurrency),
       amount: data.dec(_f$amount),
@@ -4655,7 +4619,6 @@ abstract class PaymentRequestCryptoCopyWith<
     implements PaymentRequestCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    CryptoPaymentPaymentTypePaymentType? paymentType,
     String? walletAddress,
     CryptoPaymentCryptocurrencyCryptocurrency? cryptocurrency,
     double? amount,
@@ -4676,14 +4639,12 @@ class _PaymentRequestCryptoCopyWithImpl<$R, $Out>
       PaymentRequestCryptoMapper.ensureInitialized();
   @override
   $R call({
-    CryptoPaymentPaymentTypePaymentType? paymentType,
     String? walletAddress,
     CryptoPaymentCryptocurrencyCryptocurrency? cryptocurrency,
     double? amount,
     Object? transactionHash = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (paymentType != null) #paymentType: paymentType,
       if (walletAddress != null) #walletAddress: walletAddress,
       if (cryptocurrency != null) #cryptocurrency: cryptocurrency,
       if (amount != null) #amount: amount,
@@ -4692,7 +4653,6 @@ class _PaymentRequestCryptoCopyWithImpl<$R, $Out>
   );
   @override
   PaymentRequestCrypto $make(CopyWithData data) => PaymentRequestCrypto(
-    paymentType: data.get(#paymentType, or: $value.paymentType),
     walletAddress: data.get(#walletAddress, or: $value.walletAddress),
     cryptocurrency: data.get(#cryptocurrency, or: $value.cryptocurrency),
     amount: data.get(#amount, or: $value.amount),
@@ -5553,7 +5513,6 @@ class PaymentResponseDetailsDetailsCreditCardMapper
       PaymentResponseDetailsDetailsMapper.ensureInitialized().addSubMapper(
         _instance!,
       );
-      CreditCardPaymentPaymentTypePaymentTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -5561,14 +5520,6 @@ class PaymentResponseDetailsDetailsCreditCardMapper
   @override
   final String id = 'PaymentResponseDetailsDetailsCreditCard';
 
-  static CreditCardPaymentPaymentTypePaymentType _$paymentType(
-    PaymentResponseDetailsDetailsCreditCard v,
-  ) => v.paymentType;
-  static const Field<
-    PaymentResponseDetailsDetailsCreditCard,
-    CreditCardPaymentPaymentTypePaymentType
-  >
-  _f$paymentType = Field('paymentType', _$paymentType);
   static String _$cardNumber(PaymentResponseDetailsDetailsCreditCard v) =>
       v.cardNumber;
   static const Field<PaymentResponseDetailsDetailsCreditCard, String>
@@ -5587,14 +5538,13 @@ class PaymentResponseDetailsDetailsCreditCardMapper
   static String? _$cardholderName(PaymentResponseDetailsDetailsCreditCard v) =>
       v.cardholderName;
   static const Field<PaymentResponseDetailsDetailsCreditCard, String>
-  _f$cardholderName = Field('cardholderName', _$cardholderName);
+  _f$cardholderName = Field('cardholderName', _$cardholderName, opt: true);
   static double _$amount(PaymentResponseDetailsDetailsCreditCard v) => v.amount;
   static const Field<PaymentResponseDetailsDetailsCreditCard, double>
   _f$amount = Field('amount', _$amount);
 
   @override
   final MappableFields<PaymentResponseDetailsDetailsCreditCard> fields = const {
-    #paymentType: _f$paymentType,
     #cardNumber: _f$cardNumber,
     #expiryMonth: _f$expiryMonth,
     #expiryYear: _f$expiryYear,
@@ -5615,7 +5565,6 @@ class PaymentResponseDetailsDetailsCreditCardMapper
     DecodingData data,
   ) {
     return PaymentResponseDetailsDetailsCreditCard(
-      paymentType: data.dec(_f$paymentType),
       cardNumber: data.dec(_f$cardNumber),
       expiryMonth: data.dec(_f$expiryMonth),
       expiryYear: data.dec(_f$expiryYear),
@@ -5710,7 +5659,6 @@ abstract class PaymentResponseDetailsDetailsCreditCardCopyWith<
     implements PaymentResponseDetailsDetailsCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    CreditCardPaymentPaymentTypePaymentType? paymentType,
     String? cardNumber,
     int? expiryMonth,
     int? expiryYear,
@@ -5741,7 +5689,6 @@ class _PaymentResponseDetailsDetailsCreditCardCopyWithImpl<$R, $Out>
       PaymentResponseDetailsDetailsCreditCardMapper.ensureInitialized();
   @override
   $R call({
-    CreditCardPaymentPaymentTypePaymentType? paymentType,
     String? cardNumber,
     int? expiryMonth,
     int? expiryYear,
@@ -5750,7 +5697,6 @@ class _PaymentResponseDetailsDetailsCreditCardCopyWithImpl<$R, $Out>
     double? amount,
   }) => $apply(
     FieldCopyWithData({
-      if (paymentType != null) #paymentType: paymentType,
       if (cardNumber != null) #cardNumber: cardNumber,
       if (expiryMonth != null) #expiryMonth: expiryMonth,
       if (expiryYear != null) #expiryYear: expiryYear,
@@ -5762,7 +5708,6 @@ class _PaymentResponseDetailsDetailsCreditCardCopyWithImpl<$R, $Out>
   @override
   PaymentResponseDetailsDetailsCreditCard $make(CopyWithData data) =>
       PaymentResponseDetailsDetailsCreditCard(
-        paymentType: data.get(#paymentType, or: $value.paymentType),
         cardNumber: data.get(#cardNumber, or: $value.cardNumber),
         expiryMonth: data.get(#expiryMonth, or: $value.expiryMonth),
         expiryYear: data.get(#expiryYear, or: $value.expiryYear),
@@ -5798,7 +5743,6 @@ class PaymentResponseDetailsDetailsBankTransferMapper
       PaymentResponseDetailsDetailsMapper.ensureInitialized().addSubMapper(
         _instance!,
       );
-      BankTransferPaymentPaymentTypePaymentTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -5806,14 +5750,6 @@ class PaymentResponseDetailsDetailsBankTransferMapper
   @override
   final String id = 'PaymentResponseDetailsDetailsBankTransfer';
 
-  static BankTransferPaymentPaymentTypePaymentType _$paymentType(
-    PaymentResponseDetailsDetailsBankTransfer v,
-  ) => v.paymentType;
-  static const Field<
-    PaymentResponseDetailsDetailsBankTransfer,
-    BankTransferPaymentPaymentTypePaymentType
-  >
-  _f$paymentType = Field('paymentType', _$paymentType);
   static String _$accountNumber(PaymentResponseDetailsDetailsBankTransfer v) =>
       v.accountNumber;
   static const Field<PaymentResponseDetailsDetailsBankTransfer, String>
@@ -5825,7 +5761,7 @@ class PaymentResponseDetailsDetailsBankTransferMapper
   static String? _$accountHolder(PaymentResponseDetailsDetailsBankTransfer v) =>
       v.accountHolder;
   static const Field<PaymentResponseDetailsDetailsBankTransfer, String>
-  _f$accountHolder = Field('accountHolder', _$accountHolder);
+  _f$accountHolder = Field('accountHolder', _$accountHolder, opt: true);
   static double _$amount(PaymentResponseDetailsDetailsBankTransfer v) =>
       v.amount;
   static const Field<PaymentResponseDetailsDetailsBankTransfer, double>
@@ -5833,12 +5769,11 @@ class PaymentResponseDetailsDetailsBankTransferMapper
   static String? _$reference(PaymentResponseDetailsDetailsBankTransfer v) =>
       v.reference;
   static const Field<PaymentResponseDetailsDetailsBankTransfer, String>
-  _f$reference = Field('reference', _$reference);
+  _f$reference = Field('reference', _$reference, opt: true);
 
   @override
   final MappableFields<PaymentResponseDetailsDetailsBankTransfer> fields =
       const {
-        #paymentType: _f$paymentType,
         #accountNumber: _f$accountNumber,
         #routingNumber: _f$routingNumber,
         #accountHolder: _f$accountHolder,
@@ -5858,7 +5793,6 @@ class PaymentResponseDetailsDetailsBankTransferMapper
     DecodingData data,
   ) {
     return PaymentResponseDetailsDetailsBankTransfer(
-      paymentType: data.dec(_f$paymentType),
       accountNumber: data.dec(_f$accountNumber),
       routingNumber: data.dec(_f$routingNumber),
       accountHolder: data.dec(_f$accountHolder),
@@ -5956,7 +5890,6 @@ abstract class PaymentResponseDetailsDetailsBankTransferCopyWith<
     implements PaymentResponseDetailsDetailsCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    BankTransferPaymentPaymentTypePaymentType? paymentType,
     String? accountNumber,
     String? routingNumber,
     String? accountHolder,
@@ -5987,7 +5920,6 @@ class _PaymentResponseDetailsDetailsBankTransferCopyWithImpl<$R, $Out>
   $mapper = PaymentResponseDetailsDetailsBankTransferMapper.ensureInitialized();
   @override
   $R call({
-    BankTransferPaymentPaymentTypePaymentType? paymentType,
     String? accountNumber,
     String? routingNumber,
     Object? accountHolder = $none,
@@ -5995,7 +5927,6 @@ class _PaymentResponseDetailsDetailsBankTransferCopyWithImpl<$R, $Out>
     Object? reference = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (paymentType != null) #paymentType: paymentType,
       if (accountNumber != null) #accountNumber: accountNumber,
       if (routingNumber != null) #routingNumber: routingNumber,
       if (accountHolder != $none) #accountHolder: accountHolder,
@@ -6006,7 +5937,6 @@ class _PaymentResponseDetailsDetailsBankTransferCopyWithImpl<$R, $Out>
   @override
   PaymentResponseDetailsDetailsBankTransfer $make(CopyWithData data) =>
       PaymentResponseDetailsDetailsBankTransfer(
-        paymentType: data.get(#paymentType, or: $value.paymentType),
         accountNumber: data.get(#accountNumber, or: $value.accountNumber),
         routingNumber: data.get(#routingNumber, or: $value.routingNumber),
         accountHolder: data.get(#accountHolder, or: $value.accountHolder),
@@ -6041,7 +5971,6 @@ class PaymentResponseDetailsDetailsCryptoMapper
       PaymentResponseDetailsDetailsMapper.ensureInitialized().addSubMapper(
         _instance!,
       );
-      CryptoPaymentPaymentTypePaymentTypeMapper.ensureInitialized();
       CryptoPaymentCryptocurrencyCryptocurrencyMapper.ensureInitialized();
     }
     return _instance!;
@@ -6050,14 +5979,6 @@ class PaymentResponseDetailsDetailsCryptoMapper
   @override
   final String id = 'PaymentResponseDetailsDetailsCrypto';
 
-  static CryptoPaymentPaymentTypePaymentType _$paymentType(
-    PaymentResponseDetailsDetailsCrypto v,
-  ) => v.paymentType;
-  static const Field<
-    PaymentResponseDetailsDetailsCrypto,
-    CryptoPaymentPaymentTypePaymentType
-  >
-  _f$paymentType = Field('paymentType', _$paymentType);
   static String _$walletAddress(PaymentResponseDetailsDetailsCrypto v) =>
       v.walletAddress;
   static const Field<PaymentResponseDetailsDetailsCrypto, String>
@@ -6076,11 +5997,10 @@ class PaymentResponseDetailsDetailsCryptoMapper
   static String? _$transactionHash(PaymentResponseDetailsDetailsCrypto v) =>
       v.transactionHash;
   static const Field<PaymentResponseDetailsDetailsCrypto, String>
-  _f$transactionHash = Field('transactionHash', _$transactionHash);
+  _f$transactionHash = Field('transactionHash', _$transactionHash, opt: true);
 
   @override
   final MappableFields<PaymentResponseDetailsDetailsCrypto> fields = const {
-    #paymentType: _f$paymentType,
     #walletAddress: _f$walletAddress,
     #cryptocurrency: _f$cryptocurrency,
     #amount: _f$amount,
@@ -6097,7 +6017,6 @@ class PaymentResponseDetailsDetailsCryptoMapper
 
   static PaymentResponseDetailsDetailsCrypto _instantiate(DecodingData data) {
     return PaymentResponseDetailsDetailsCrypto(
-      paymentType: data.dec(_f$paymentType),
       walletAddress: data.dec(_f$walletAddress),
       cryptocurrency: data.dec(_f$cryptocurrency),
       amount: data.dec(_f$amount),
@@ -6188,7 +6107,6 @@ abstract class PaymentResponseDetailsDetailsCryptoCopyWith<
     implements PaymentResponseDetailsDetailsCopyWith<$R, $In, $Out> {
   @override
   $R call({
-    CryptoPaymentPaymentTypePaymentType? paymentType,
     String? walletAddress,
     CryptoPaymentCryptocurrencyCryptocurrency? cryptocurrency,
     double? amount,
@@ -6217,14 +6135,12 @@ class _PaymentResponseDetailsDetailsCryptoCopyWithImpl<$R, $Out>
       PaymentResponseDetailsDetailsCryptoMapper.ensureInitialized();
   @override
   $R call({
-    CryptoPaymentPaymentTypePaymentType? paymentType,
     String? walletAddress,
     CryptoPaymentCryptocurrencyCryptocurrency? cryptocurrency,
     double? amount,
     Object? transactionHash = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (paymentType != null) #paymentType: paymentType,
       if (walletAddress != null) #walletAddress: walletAddress,
       if (cryptocurrency != null) #cryptocurrency: cryptocurrency,
       if (amount != null) #amount: amount,
@@ -6234,7 +6150,6 @@ class _PaymentResponseDetailsDetailsCryptoCopyWithImpl<$R, $Out>
   @override
   PaymentResponseDetailsDetailsCrypto $make(CopyWithData data) =>
       PaymentResponseDetailsDetailsCrypto(
-        paymentType: data.get(#paymentType, or: $value.paymentType),
         walletAddress: data.get(#walletAddress, or: $value.walletAddress),
         cryptocurrency: data.get(#cryptocurrency, or: $value.cryptocurrency),
         amount: data.get(#amount, or: $value.amount),
@@ -6315,7 +6230,6 @@ class SearchResultUserMapper extends SubClassMapperBase<SearchResultUser> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SearchResultUserMapper._());
       SearchResultMapper.ensureInitialized().addSubMapper(_instance!);
-      UserSearchResultTypeTypeMapper.ensureInitialized();
       UserMapper.ensureInitialized();
     }
     return _instance!;
@@ -6324,20 +6238,17 @@ class SearchResultUserMapper extends SubClassMapperBase<SearchResultUser> {
   @override
   final String id = 'SearchResultUser';
 
-  static UserSearchResultTypeType _$type(SearchResultUser v) => v.type;
-  static const Field<SearchResultUser, UserSearchResultTypeType> _f$type =
-      Field('type', _$type);
   static User _$user(SearchResultUser v) => v.user;
   static const Field<SearchResultUser, User> _f$user = Field('user', _$user);
   static double? _$score(SearchResultUser v) => v.score;
   static const Field<SearchResultUser, double> _f$score = Field(
     'score',
     _$score,
+    opt: true,
   );
 
   @override
   final MappableFields<SearchResultUser> fields = const {
-    #type: _f$type,
     #user: _f$user,
     #score: _f$score,
   };
@@ -6351,11 +6262,7 @@ class SearchResultUserMapper extends SubClassMapperBase<SearchResultUser> {
       SearchResultMapper.ensureInitialized();
 
   static SearchResultUser _instantiate(DecodingData data) {
-    return SearchResultUser(
-      type: data.dec(_f$type),
-      user: data.dec(_f$user),
-      score: data.dec(_f$score),
-    );
+    return SearchResultUser(user: data.dec(_f$user), score: data.dec(_f$score));
   }
 
   @override
@@ -6422,7 +6329,7 @@ abstract class SearchResultUserCopyWith<$R, $In extends SearchResultUser, $Out>
     implements SearchResultCopyWith<$R, $In, $Out> {
   UserCopyWith<$R, User, User> get user;
   @override
-  $R call({UserSearchResultTypeType? type, User? user, double? score});
+  $R call({User? user, double? score});
   SearchResultUserCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -6440,20 +6347,14 @@ class _SearchResultUserCopyWithImpl<$R, $Out>
   UserCopyWith<$R, User, User> get user =>
       $value.user.copyWith.$chain((v) => call(user: v));
   @override
-  $R call({
-    UserSearchResultTypeType? type,
-    User? user,
-    Object? score = $none,
-  }) => $apply(
+  $R call({User? user, Object? score = $none}) => $apply(
     FieldCopyWithData({
-      if (type != null) #type: type,
       if (user != null) #user: user,
       if (score != $none) #score: score,
     }),
   );
   @override
   SearchResultUser $make(CopyWithData data) => SearchResultUser(
-    type: data.get(#type, or: $value.type),
     user: data.get(#user, or: $value.user),
     score: data.get(#score, or: $value.score),
   );
@@ -6472,7 +6373,6 @@ class SearchResultPostMapper extends SubClassMapperBase<SearchResultPost> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SearchResultPostMapper._());
       SearchResultMapper.ensureInitialized().addSubMapper(_instance!);
-      PostSearchResultTypeTypeMapper.ensureInitialized();
       PostModelMapper.ensureInitialized();
     }
     return _instance!;
@@ -6481,9 +6381,6 @@ class SearchResultPostMapper extends SubClassMapperBase<SearchResultPost> {
   @override
   final String id = 'SearchResultPost';
 
-  static PostSearchResultTypeType _$type(SearchResultPost v) => v.type;
-  static const Field<SearchResultPost, PostSearchResultTypeType> _f$type =
-      Field('type', _$type);
   static PostModel _$post(SearchResultPost v) => v.post;
   static const Field<SearchResultPost, PostModel> _f$post = Field(
     'post',
@@ -6493,16 +6390,17 @@ class SearchResultPostMapper extends SubClassMapperBase<SearchResultPost> {
   static const Field<SearchResultPost, double> _f$score = Field(
     'score',
     _$score,
+    opt: true,
   );
   static List<String>? _$highlights(SearchResultPost v) => v.highlights;
   static const Field<SearchResultPost, List<String>> _f$highlights = Field(
     'highlights',
     _$highlights,
+    opt: true,
   );
 
   @override
   final MappableFields<SearchResultPost> fields = const {
-    #type: _f$type,
     #post: _f$post,
     #score: _f$score,
     #highlights: _f$highlights,
@@ -6518,7 +6416,6 @@ class SearchResultPostMapper extends SubClassMapperBase<SearchResultPost> {
 
   static SearchResultPost _instantiate(DecodingData data) {
     return SearchResultPost(
-      type: data.dec(_f$type),
       post: data.dec(_f$post),
       score: data.dec(_f$score),
       highlights: data.dec(_f$highlights),
@@ -6590,12 +6487,7 @@ abstract class SearchResultPostCopyWith<$R, $In extends SearchResultPost, $Out>
   PostModelCopyWith<$R, PostModel, PostModel> get post;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get highlights;
   @override
-  $R call({
-    PostSearchResultTypeType? type,
-    PostModel? post,
-    double? score,
-    List<String>? highlights,
-  });
+  $R call({PostModel? post, double? score, List<String>? highlights});
   SearchResultPostCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -6623,13 +6515,11 @@ class _SearchResultPostCopyWithImpl<$R, $Out>
       : null;
   @override
   $R call({
-    PostSearchResultTypeType? type,
     PostModel? post,
     Object? score = $none,
     Object? highlights = $none,
   }) => $apply(
     FieldCopyWithData({
-      if (type != null) #type: type,
       if (post != null) #post: post,
       if (score != $none) #score: score,
       if (highlights != $none) #highlights: highlights,
@@ -6637,7 +6527,6 @@ class _SearchResultPostCopyWithImpl<$R, $Out>
   );
   @override
   SearchResultPost $make(CopyWithData data) => SearchResultPost(
-    type: data.get(#type, or: $value.type),
     post: data.get(#post, or: $value.post),
     score: data.get(#score, or: $value.score),
     highlights: data.get(#highlights, or: $value.highlights),
@@ -6658,7 +6547,6 @@ class SearchResultCommentMapper
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SearchResultCommentMapper._());
       SearchResultMapper.ensureInitialized().addSubMapper(_instance!);
-      CommentSearchResultTypeTypeMapper.ensureInitialized();
       CommentMapper.ensureInitialized();
     }
     return _instance!;
@@ -6667,9 +6555,6 @@ class SearchResultCommentMapper
   @override
   final String id = 'SearchResultComment';
 
-  static CommentSearchResultTypeType _$type(SearchResultComment v) => v.type;
-  static const Field<SearchResultComment, CommentSearchResultTypeType> _f$type =
-      Field('type', _$type);
   static Comment _$comment(SearchResultComment v) => v.comment;
   static const Field<SearchResultComment, Comment> _f$comment = Field(
     'comment',
@@ -6679,11 +6564,11 @@ class SearchResultCommentMapper
   static const Field<SearchResultComment, double> _f$score = Field(
     'score',
     _$score,
+    opt: true,
   );
 
   @override
   final MappableFields<SearchResultComment> fields = const {
-    #type: _f$type,
     #comment: _f$comment,
     #score: _f$score,
   };
@@ -6698,7 +6583,6 @@ class SearchResultCommentMapper
 
   static SearchResultComment _instantiate(DecodingData data) {
     return SearchResultComment(
-      type: data.dec(_f$type),
       comment: data.dec(_f$comment),
       score: data.dec(_f$score),
     );
@@ -6776,7 +6660,7 @@ abstract class SearchResultCommentCopyWith<
     implements SearchResultCopyWith<$R, $In, $Out> {
   CommentCopyWith<$R, Comment, Comment> get comment;
   @override
-  $R call({CommentSearchResultTypeType? type, Comment? comment, double? score});
+  $R call({Comment? comment, double? score});
   SearchResultCommentCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -6794,20 +6678,14 @@ class _SearchResultCommentCopyWithImpl<$R, $Out>
   CommentCopyWith<$R, Comment, Comment> get comment =>
       $value.comment.copyWith.$chain((v) => call(comment: v));
   @override
-  $R call({
-    CommentSearchResultTypeType? type,
-    Comment? comment,
-    Object? score = $none,
-  }) => $apply(
+  $R call({Comment? comment, Object? score = $none}) => $apply(
     FieldCopyWithData({
-      if (type != null) #type: type,
       if (comment != null) #comment: comment,
       if (score != $none) #score: score,
     }),
   );
   @override
   SearchResultComment $make(CopyWithData data) => SearchResultComment(
-    type: data.get(#type, or: $value.type),
     comment: data.get(#comment, or: $value.comment),
     score: data.get(#score, or: $value.score),
   );
@@ -7361,7 +7239,6 @@ class EntityPersonMapper extends SubClassMapperBase<EntityPerson> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = EntityPersonMapper._());
       EntityMapper.ensureInitialized().addSubMapper(_instance!);
-      PersonEntityEntityTypeEntityTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -7371,16 +7248,17 @@ class EntityPersonMapper extends SubClassMapperBase<EntityPerson> {
 
   static String _$id(EntityPerson v) => v.id;
   static const Field<EntityPerson, String> _f$id = Field('id', _$id);
-  static PersonEntityEntityTypeEntityType? _$entityType(EntityPerson v) =>
-      v.entityType;
-  static const Field<EntityPerson, PersonEntityEntityTypeEntityType>
-  _f$entityType = Field('entityType', _$entityType);
   static String? _$name(EntityPerson v) => v.name;
-  static const Field<EntityPerson, String> _f$name = Field('name', _$name);
+  static const Field<EntityPerson, String> _f$name = Field(
+    'name',
+    _$name,
+    opt: true,
+  );
   static String? _$description(EntityPerson v) => v.description;
   static const Field<EntityPerson, String> _f$description = Field(
     'description',
     _$description,
+    opt: true,
   );
   static DateTime _$createdAt(EntityPerson v) => v.createdAt;
   static const Field<EntityPerson, DateTime> _f$createdAt = Field(
@@ -7391,6 +7269,7 @@ class EntityPersonMapper extends SubClassMapperBase<EntityPerson> {
   static const Field<EntityPerson, DateTime> _f$updatedAt = Field(
     'updatedAt',
     _$updatedAt,
+    opt: true,
   );
   static DateTime _$dateOfBirth(EntityPerson v) => v.dateOfBirth;
   static const Field<EntityPerson, DateTime> _f$dateOfBirth = Field(
@@ -7401,21 +7280,22 @@ class EntityPersonMapper extends SubClassMapperBase<EntityPerson> {
   static const Field<EntityPerson, String> _f$nationality = Field(
     'nationality',
     _$nationality,
+    opt: true,
   );
   static String? _$occupation(EntityPerson v) => v.occupation;
   static const Field<EntityPerson, String> _f$occupation = Field(
     'occupation',
     _$occupation,
+    opt: true,
   );
   static Map<String, String>? _$socialProfiles(EntityPerson v) =>
       v.socialProfiles;
   static const Field<EntityPerson, Map<String, String>> _f$socialProfiles =
-      Field('socialProfiles', _$socialProfiles);
+      Field('socialProfiles', _$socialProfiles, opt: true);
 
   @override
   final MappableFields<EntityPerson> fields = const {
     #id: _f$id,
-    #entityType: _f$entityType,
     #name: _f$name,
     #description: _f$description,
     #createdAt: _f$createdAt,
@@ -7436,7 +7316,6 @@ class EntityPersonMapper extends SubClassMapperBase<EntityPerson> {
   static EntityPerson _instantiate(DecodingData data) {
     return EntityPerson(
       id: data.dec(_f$id),
-      entityType: data.dec(_f$entityType),
       name: data.dec(_f$name),
       description: data.dec(_f$description),
       createdAt: data.dec(_f$createdAt),
@@ -7515,7 +7394,6 @@ abstract class EntityPersonCopyWith<$R, $In extends EntityPerson, $Out>
   @override
   $R call({
     String? id,
-    PersonEntityEntityTypeEntityType? entityType,
     String? name,
     String? description,
     DateTime? createdAt,
@@ -7548,7 +7426,6 @@ class _EntityPersonCopyWithImpl<$R, $Out>
   @override
   $R call({
     String? id,
-    Object? entityType = $none,
     Object? name = $none,
     Object? description = $none,
     DateTime? createdAt,
@@ -7560,7 +7437,6 @@ class _EntityPersonCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
-      if (entityType != $none) #entityType: entityType,
       if (name != $none) #name: name,
       if (description != $none) #description: description,
       if (createdAt != null) #createdAt: createdAt,
@@ -7574,7 +7450,6 @@ class _EntityPersonCopyWithImpl<$R, $Out>
   @override
   EntityPerson $make(CopyWithData data) => EntityPerson(
     id: data.get(#id, or: $value.id),
-    entityType: data.get(#entityType, or: $value.entityType),
     name: data.get(#name, or: $value.name),
     description: data.get(#description, or: $value.description),
     createdAt: data.get(#createdAt, or: $value.createdAt),
@@ -7599,7 +7474,6 @@ class EntityOrganizationMapper extends SubClassMapperBase<EntityOrganization> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = EntityOrganizationMapper._());
       EntityMapper.ensureInitialized().addSubMapper(_instance!);
-      OrganizationEntityEntityTypeEntityTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -7609,20 +7483,17 @@ class EntityOrganizationMapper extends SubClassMapperBase<EntityOrganization> {
 
   static String _$id(EntityOrganization v) => v.id;
   static const Field<EntityOrganization, String> _f$id = Field('id', _$id);
-  static OrganizationEntityEntityTypeEntityType? _$entityType(
-    EntityOrganization v,
-  ) => v.entityType;
-  static const Field<EntityOrganization, OrganizationEntityEntityTypeEntityType>
-  _f$entityType = Field('entityType', _$entityType);
   static String? _$name(EntityOrganization v) => v.name;
   static const Field<EntityOrganization, String> _f$name = Field(
     'name',
     _$name,
+    opt: true,
   );
   static String? _$description(EntityOrganization v) => v.description;
   static const Field<EntityOrganization, String> _f$description = Field(
     'description',
     _$description,
+    opt: true,
   );
   static DateTime _$createdAt(EntityOrganization v) => v.createdAt;
   static const Field<EntityOrganization, DateTime> _f$createdAt = Field(
@@ -7633,6 +7504,7 @@ class EntityOrganizationMapper extends SubClassMapperBase<EntityOrganization> {
   static const Field<EntityOrganization, DateTime> _f$updatedAt = Field(
     'updatedAt',
     _$updatedAt,
+    opt: true,
   );
   static String _$registrationNumber(EntityOrganization v) =>
       v.registrationNumber;
@@ -7644,27 +7516,30 @@ class EntityOrganizationMapper extends SubClassMapperBase<EntityOrganization> {
   static const Field<EntityOrganization, DateTime> _f$foundedDate = Field(
     'foundedDate',
     _$foundedDate,
+    opt: true,
   );
   static String? _$industry(EntityOrganization v) => v.industry;
   static const Field<EntityOrganization, String> _f$industry = Field(
     'industry',
     _$industry,
+    opt: true,
   );
   static int? _$employeeCount(EntityOrganization v) => v.employeeCount;
   static const Field<EntityOrganization, int> _f$employeeCount = Field(
     'employeeCount',
     _$employeeCount,
+    opt: true,
   );
   static double? _$revenue(EntityOrganization v) => v.revenue;
   static const Field<EntityOrganization, double> _f$revenue = Field(
     'revenue',
     _$revenue,
+    opt: true,
   );
 
   @override
   final MappableFields<EntityOrganization> fields = const {
     #id: _f$id,
-    #entityType: _f$entityType,
     #name: _f$name,
     #description: _f$description,
     #createdAt: _f$createdAt,
@@ -7686,7 +7561,6 @@ class EntityOrganizationMapper extends SubClassMapperBase<EntityOrganization> {
   static EntityOrganization _instantiate(DecodingData data) {
     return EntityOrganization(
       id: data.dec(_f$id),
-      entityType: data.dec(_f$entityType),
       name: data.dec(_f$name),
       description: data.dec(_f$description),
       createdAt: data.dec(_f$createdAt),
@@ -7773,7 +7647,6 @@ abstract class EntityOrganizationCopyWith<
   @override
   $R call({
     String? id,
-    OrganizationEntityEntityTypeEntityType? entityType,
     String? name,
     String? description,
     DateTime? createdAt,
@@ -7800,7 +7673,6 @@ class _EntityOrganizationCopyWithImpl<$R, $Out>
   @override
   $R call({
     String? id,
-    Object? entityType = $none,
     Object? name = $none,
     Object? description = $none,
     DateTime? createdAt,
@@ -7813,7 +7685,6 @@ class _EntityOrganizationCopyWithImpl<$R, $Out>
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
-      if (entityType != $none) #entityType: entityType,
       if (name != $none) #name: name,
       if (description != $none) #description: description,
       if (createdAt != null) #createdAt: createdAt,
@@ -7828,7 +7699,6 @@ class _EntityOrganizationCopyWithImpl<$R, $Out>
   @override
   EntityOrganization $make(CopyWithData data) => EntityOrganization(
     id: data.get(#id, or: $value.id),
-    entityType: data.get(#entityType, or: $value.entityType),
     name: data.get(#name, or: $value.name),
     description: data.get(#description, or: $value.description),
     createdAt: data.get(#createdAt, or: $value.createdAt),

@@ -143,9 +143,14 @@ String _generateVariantWrapperClasses(
         )
         .join('\n');
 
-    // Generate constructor parameters
+    // Generate constructor parameters with proper required handling
     final constructorParams = properties
-        .map((prop) => '${indentation(4)}required this.${prop.name},')
+        .map((prop) {
+          final requiredPrefix = prop.isRequired && prop.defaultValue == null
+              ? 'required '
+              : '';
+          return '${indentation(4)}${requiredPrefix}this.${prop.name}${getDefaultValue(prop)},';
+        })
         .join('\n');
 
     // Handle empty properties case
@@ -169,10 +174,14 @@ $constructorSignature
 }
 
 String getParameters(UniversalComponentClass dataClass) {
-  // if this class has discriminated values, don't populate the discriminator field
-  // in the parent class
+  // Filter out discriminator property from:
+  // 1. Parent union classes (has discriminator)
+  // 2. Variant classes (has discriminatorValue)
+  final discriminatorPropertyName =
+      dataClass.discriminator?.propertyName ??
+      dataClass.discriminatorValue?.discriminatorPropertyName;
   final parameters = dataClass.parameters
-      .where((it) => it.name != dataClass.discriminator?.propertyName)
+      .where((it) => it.name != discriminatorPropertyName)
       .toList();
   if (parameters.isNotEmpty) {
     return '{\n${_parametersToString(parameters)}\n${indentation(2)}}';
@@ -185,10 +194,14 @@ String getFields(
   UniversalComponentClass dataClass, {
   bool isSimpleDataClass = false,
 }) {
-  // if this class has discriminated values, don't populate the discriminator field
-  // in the parent class
+  // Filter out discriminator property from:
+  // 1. Parent union classes (has discriminator)
+  // 2. Variant classes (has discriminatorValue)
+  final discriminatorPropertyName =
+      dataClass.discriminator?.propertyName ??
+      dataClass.discriminatorValue?.discriminatorPropertyName;
   final parameters = dataClass.parameters
-      .where((it) => it.name != dataClass.discriminator?.propertyName)
+      .where((it) => it.name != discriminatorPropertyName)
       .toList();
   if (parameters.isNotEmpty) {
     return '${_fieldsToString(parameters)}\n';
@@ -497,9 +510,14 @@ String _generateDiscriminatedWrapperClasses(
         )
         .join('\n');
 
-    // Generate constructor parameters
+    // Generate constructor parameters with proper required handling
     final constructorParams = filteredProperties
-        .map((prop) => '${indentation(4)}required this.${prop.name},')
+        .map((prop) {
+          final requiredPrefix = prop.isRequired && prop.defaultValue == null
+              ? 'required '
+              : '';
+          return '${indentation(4)}${requiredPrefix}this.${prop.name}${getDefaultValue(prop)},';
+        })
         .join('\n');
 
     // Handle empty properties case

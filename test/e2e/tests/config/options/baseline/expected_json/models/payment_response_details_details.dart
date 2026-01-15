@@ -4,9 +4,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'credit_card_payment_payment_type_payment_type.dart';
-import 'bank_transfer_payment_payment_type_payment_type.dart';
-import 'crypto_payment_payment_type_payment_type.dart';
 import 'crypto_payment_cryptocurrency_cryptocurrency.dart';
 
 part 'payment_response_details_details.g.dart';
@@ -52,7 +49,6 @@ extension PaymentResponseDetailsDetailsUnionDeserializer
 @JsonSerializable()
 class PaymentResponseDetailsDetailsCreditCard
     extends PaymentResponseDetailsDetails {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -61,7 +57,6 @@ class PaymentResponseDetailsDetailsCreditCard
   final double amount;
 
   const PaymentResponseDetailsDetailsCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
@@ -82,7 +77,6 @@ class PaymentResponseDetailsDetailsCreditCard
 @JsonSerializable()
 class PaymentResponseDetailsDetailsBankTransfer
     extends PaymentResponseDetailsDetails {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -90,7 +84,6 @@ class PaymentResponseDetailsDetailsBankTransfer
   final String? reference;
 
   const PaymentResponseDetailsDetailsBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
     required this.accountHolder,
@@ -110,14 +103,12 @@ class PaymentResponseDetailsDetailsBankTransfer
 @JsonSerializable()
 class PaymentResponseDetailsDetailsCrypto
     extends PaymentResponseDetailsDetails {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentResponseDetailsDetailsCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,

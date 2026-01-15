@@ -341,9 +341,6 @@ Map<String, dynamic> _$PaymentRequestToJson(PaymentRequest instance) =>
 PaymentRequestCreditCard _$PaymentRequestCreditCardFromJson(
   Map<String, dynamic> json,
 ) => PaymentRequestCreditCard(
-  paymentType: CreditCardPaymentPaymentTypePaymentType.fromJson(
-    json['paymentType'] as String,
-  ),
   cardNumber: json['cardNumber'] as String,
   expiryMonth: (json['expiryMonth'] as num).toInt(),
   expiryYear: (json['expiryYear'] as num).toInt(),
@@ -355,7 +352,6 @@ PaymentRequestCreditCard _$PaymentRequestCreditCardFromJson(
 Map<String, dynamic> _$PaymentRequestCreditCardToJson(
   PaymentRequestCreditCard instance,
 ) => <String, dynamic>{
-  'paymentType': instance.paymentType,
   'cardNumber': instance.cardNumber,
   'expiryMonth': instance.expiryMonth,
   'expiryYear': instance.expiryYear,
@@ -367,9 +363,6 @@ Map<String, dynamic> _$PaymentRequestCreditCardToJson(
 PaymentRequestBankTransfer _$PaymentRequestBankTransferFromJson(
   Map<String, dynamic> json,
 ) => PaymentRequestBankTransfer(
-  paymentType: BankTransferPaymentPaymentTypePaymentType.fromJson(
-    json['paymentType'] as String,
-  ),
   accountNumber: json['accountNumber'] as String,
   routingNumber: json['routingNumber'] as String,
   accountHolder: json['accountHolder'] as String?,
@@ -380,7 +373,6 @@ PaymentRequestBankTransfer _$PaymentRequestBankTransferFromJson(
 Map<String, dynamic> _$PaymentRequestBankTransferToJson(
   PaymentRequestBankTransfer instance,
 ) => <String, dynamic>{
-  'paymentType': instance.paymentType,
   'accountNumber': instance.accountNumber,
   'routingNumber': instance.routingNumber,
   'accountHolder': instance.accountHolder,
@@ -391,9 +383,6 @@ Map<String, dynamic> _$PaymentRequestBankTransferToJson(
 PaymentRequestCrypto _$PaymentRequestCryptoFromJson(
   Map<String, dynamic> json,
 ) => PaymentRequestCrypto(
-  paymentType: CryptoPaymentPaymentTypePaymentType.fromJson(
-    json['paymentType'] as String,
-  ),
   walletAddress: json['walletAddress'] as String,
   cryptocurrency: CryptoPaymentCryptocurrencyCryptocurrency.fromJson(
     json['cryptocurrency'] as String,
@@ -405,7 +394,6 @@ PaymentRequestCrypto _$PaymentRequestCryptoFromJson(
 Map<String, dynamic> _$PaymentRequestCryptoToJson(
   PaymentRequestCrypto instance,
 ) => <String, dynamic>{
-  'paymentType': instance.paymentType,
   'walletAddress': instance.walletAddress,
   'cryptocurrency': instance.cryptocurrency,
   'amount': instance.amount,
@@ -512,21 +500,15 @@ Map<String, dynamic> _$SearchResultToJson(SearchResult instance) =>
 
 SearchResultUser _$SearchResultUserFromJson(Map<String, dynamic> json) =>
     SearchResultUser(
-      type: UserSearchResultTypeType.fromJson(json['type'] as String),
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       score: (json['score'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$SearchResultUserToJson(SearchResultUser instance) =>
-    <String, dynamic>{
-      'type': instance.type,
-      'user': instance.user,
-      'score': instance.score,
-    };
+    <String, dynamic>{'user': instance.user, 'score': instance.score};
 
 SearchResultPost _$SearchResultPostFromJson(Map<String, dynamic> json) =>
     SearchResultPost(
-      type: PostSearchResultTypeType.fromJson(json['type'] as String),
       post: PostModel.fromJson(json['post'] as Map<String, dynamic>),
       score: (json['score'] as num?)?.toDouble(),
       highlights: (json['highlights'] as List<dynamic>?)
@@ -536,7 +518,6 @@ SearchResultPost _$SearchResultPostFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$SearchResultPostToJson(SearchResultPost instance) =>
     <String, dynamic>{
-      'type': instance.type,
       'post': instance.post,
       'score': instance.score,
       'highlights': instance.highlights,
@@ -544,18 +525,13 @@ Map<String, dynamic> _$SearchResultPostToJson(SearchResultPost instance) =>
 
 SearchResultComment _$SearchResultCommentFromJson(Map<String, dynamic> json) =>
     SearchResultComment(
-      type: CommentSearchResultTypeType.fromJson(json['type'] as String),
       comment: Comment.fromJson(json['comment'] as Map<String, dynamic>),
       score: (json['score'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$SearchResultCommentToJson(
   SearchResultComment instance,
-) => <String, dynamic>{
-  'type': instance.type,
-  'comment': instance.comment,
-  'score': instance.score,
-};
+) => <String, dynamic>{'comment': instance.comment, 'score': instance.score};
 
 UserSearchResult _$UserSearchResultFromJson(Map<String, dynamic> json) =>
     UserSearchResult(
@@ -608,9 +584,6 @@ Map<String, dynamic> _$EntityToJson(Entity instance) => <String, dynamic>{};
 
 EntityPerson _$EntityPersonFromJson(Map<String, dynamic> json) => EntityPerson(
   id: json['id'] as String,
-  entityType: json['entityType'] == null
-      ? null
-      : PersonEntityEntityTypeEntityType.fromJson(json['entityType'] as String),
   name: json['name'] as String?,
   description: json['description'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
@@ -628,7 +601,6 @@ EntityPerson _$EntityPersonFromJson(Map<String, dynamic> json) => EntityPerson(
 Map<String, dynamic> _$EntityPersonToJson(EntityPerson instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'entityType': instance.entityType,
       'name': instance.name,
       'description': instance.description,
       'createdAt': instance.createdAt.toIso8601String(),
@@ -642,11 +614,6 @@ Map<String, dynamic> _$EntityPersonToJson(EntityPerson instance) =>
 EntityOrganization _$EntityOrganizationFromJson(Map<String, dynamic> json) =>
     EntityOrganization(
       id: json['id'] as String,
-      entityType: json['entityType'] == null
-          ? null
-          : OrganizationEntityEntityTypeEntityType.fromJson(
-              json['entityType'] as String,
-            ),
       name: json['name'] as String?,
       description: json['description'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -665,7 +632,6 @@ EntityOrganization _$EntityOrganizationFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$EntityOrganizationToJson(EntityOrganization instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'entityType': instance.entityType,
       'name': instance.name,
       'description': instance.description,
       'createdAt': instance.createdAt.toIso8601String(),
@@ -1072,9 +1038,6 @@ Map<String, dynamic> _$PaymentResponseDetailsDetailsToJson(
 PaymentResponseDetailsDetailsCreditCard
 _$PaymentResponseDetailsDetailsCreditCardFromJson(Map<String, dynamic> json) =>
     PaymentResponseDetailsDetailsCreditCard(
-      paymentType: CreditCardPaymentPaymentTypePaymentType.fromJson(
-        json['paymentType'] as String,
-      ),
       cardNumber: json['cardNumber'] as String,
       expiryMonth: (json['expiryMonth'] as num).toInt(),
       expiryYear: (json['expiryYear'] as num).toInt(),
@@ -1086,7 +1049,6 @@ _$PaymentResponseDetailsDetailsCreditCardFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PaymentResponseDetailsDetailsCreditCardToJson(
   PaymentResponseDetailsDetailsCreditCard instance,
 ) => <String, dynamic>{
-  'paymentType': instance.paymentType,
   'cardNumber': instance.cardNumber,
   'expiryMonth': instance.expiryMonth,
   'expiryYear': instance.expiryYear,
@@ -1099,9 +1061,6 @@ PaymentResponseDetailsDetailsBankTransfer
 _$PaymentResponseDetailsDetailsBankTransferFromJson(
   Map<String, dynamic> json,
 ) => PaymentResponseDetailsDetailsBankTransfer(
-  paymentType: BankTransferPaymentPaymentTypePaymentType.fromJson(
-    json['paymentType'] as String,
-  ),
   accountNumber: json['accountNumber'] as String,
   routingNumber: json['routingNumber'] as String,
   accountHolder: json['accountHolder'] as String?,
@@ -1112,7 +1071,6 @@ _$PaymentResponseDetailsDetailsBankTransferFromJson(
 Map<String, dynamic> _$PaymentResponseDetailsDetailsBankTransferToJson(
   PaymentResponseDetailsDetailsBankTransfer instance,
 ) => <String, dynamic>{
-  'paymentType': instance.paymentType,
   'accountNumber': instance.accountNumber,
   'routingNumber': instance.routingNumber,
   'accountHolder': instance.accountHolder,
@@ -1123,9 +1081,6 @@ Map<String, dynamic> _$PaymentResponseDetailsDetailsBankTransferToJson(
 PaymentResponseDetailsDetailsCrypto
 _$PaymentResponseDetailsDetailsCryptoFromJson(Map<String, dynamic> json) =>
     PaymentResponseDetailsDetailsCrypto(
-      paymentType: CryptoPaymentPaymentTypePaymentType.fromJson(
-        json['paymentType'] as String,
-      ),
       walletAddress: json['walletAddress'] as String,
       cryptocurrency: CryptoPaymentCryptocurrencyCryptocurrency.fromJson(
         json['cryptocurrency'] as String,
@@ -1137,7 +1092,6 @@ _$PaymentResponseDetailsDetailsCryptoFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PaymentResponseDetailsDetailsCryptoToJson(
   PaymentResponseDetailsDetailsCrypto instance,
 ) => <String, dynamic>{
-  'paymentType': instance.paymentType,
   'walletAddress': instance.walletAddress,
   'cryptocurrency': instance.cryptocurrency,
   'amount': instance.amount,

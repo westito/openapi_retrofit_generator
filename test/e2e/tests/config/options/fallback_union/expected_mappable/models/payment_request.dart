@@ -33,7 +33,6 @@ sealed class PaymentRequest with PaymentRequestMappable {
 @MappableClass(discriminatorValue: 'credit_card')
 class PaymentRequestCreditCard extends PaymentRequest
     with PaymentRequestCreditCardMappable {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -42,12 +41,11 @@ class PaymentRequestCreditCard extends PaymentRequest
   final double amount;
 
   const PaymentRequestCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
     required this.cvv,
-    required this.cardholderName,
+    this.cardholderName,
     required this.amount,
   });
 }
@@ -55,7 +53,6 @@ class PaymentRequestCreditCard extends PaymentRequest
 @MappableClass(discriminatorValue: 'bank_transfer')
 class PaymentRequestBankTransfer extends PaymentRequest
     with PaymentRequestBankTransferMappable {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -63,30 +60,27 @@ class PaymentRequestBankTransfer extends PaymentRequest
   final String? reference;
 
   const PaymentRequestBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
-    required this.accountHolder,
+    this.accountHolder,
     required this.amount,
-    required this.reference,
+    this.reference,
   });
 }
 
 @MappableClass(discriminatorValue: 'crypto')
 class PaymentRequestCrypto extends PaymentRequest
     with PaymentRequestCryptoMappable {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentRequestCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,
-    required this.transactionHash,
+    this.transactionHash,
   });
 }
 

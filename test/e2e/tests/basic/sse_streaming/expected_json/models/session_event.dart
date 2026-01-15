@@ -74,9 +74,7 @@ extension SessionEventUnionDeserializer on SessionEvent {
 
 @JsonSerializable()
 class SessionEventConnected extends SessionEvent {
-  final String type;
-
-  const SessionEventConnected({required this.type});
+  const SessionEventConnected();
 
   factory SessionEventConnected.fromJson(Map<String, dynamic> json) =>
       _$SessionEventConnectedFromJson(json);
@@ -88,9 +86,8 @@ class SessionEventConnected extends SessionEvent {
 @JsonSerializable()
 class SessionEventSessionUpdated extends SessionEvent {
   final Session session;
-  final String type;
 
-  const SessionEventSessionUpdated({required this.session, required this.type});
+  const SessionEventSessionUpdated({required this.session});
 
   factory SessionEventSessionUpdated.fromJson(Map<String, dynamic> json) =>
       _$SessionEventSessionUpdatedFromJson(json);
@@ -103,12 +100,8 @@ class SessionEventSessionUpdated extends SessionEvent {
 class SessionEventSessionDeleted extends SessionEvent {
   @JsonKey(name: 'session_id')
   final String sessionId;
-  final String type;
 
-  const SessionEventSessionDeleted({
-    required this.sessionId,
-    required this.type,
-  });
+  const SessionEventSessionDeleted({required this.sessionId});
 
   factory SessionEventSessionDeleted.fromJson(Map<String, dynamic> json) =>
       _$SessionEventSessionDeletedFromJson(json);
@@ -120,9 +113,8 @@ class SessionEventSessionDeleted extends SessionEvent {
 @JsonSerializable()
 class SessionEventMessageCreated extends SessionEvent {
   final Message message;
-  final String type;
 
-  const SessionEventMessageCreated({required this.message, required this.type});
+  const SessionEventMessageCreated({required this.message});
 
   factory SessionEventMessageCreated.fromJson(Map<String, dynamic> json) =>
       _$SessionEventMessageCreatedFromJson(json);
@@ -134,9 +126,8 @@ class SessionEventMessageCreated extends SessionEvent {
 @JsonSerializable()
 class SessionEventMessageUpdated extends SessionEvent {
   final Message message;
-  final String type;
 
-  const SessionEventMessageUpdated({required this.message, required this.type});
+  const SessionEventMessageUpdated({required this.message});
 
   factory SessionEventMessageUpdated.fromJson(Map<String, dynamic> json) =>
       _$SessionEventMessageUpdatedFromJson(json);
@@ -149,12 +140,8 @@ class SessionEventMessageUpdated extends SessionEvent {
 class SessionEventMessageRemoved extends SessionEvent {
   @JsonKey(name: 'message_id')
   final String messageId;
-  final String type;
 
-  const SessionEventMessageRemoved({
-    required this.messageId,
-    required this.type,
-  });
+  const SessionEventMessageRemoved({required this.messageId});
 
   factory SessionEventMessageRemoved.fromJson(Map<String, dynamic> json) =>
       _$SessionEventMessageRemovedFromJson(json);
@@ -169,12 +156,10 @@ class SessionEventPartUpdated extends SessionEvent {
   final String messageId;
   @JsonKey(name: 'part')
   final PartModel partField;
-  final String type;
 
   const SessionEventPartUpdated({
     required this.messageId,
     required this.partField,
-    required this.type,
   });
 
   factory SessionEventPartUpdated.fromJson(Map<String, dynamic> json) =>
@@ -190,12 +175,10 @@ class SessionEventPartRemoved extends SessionEvent {
   final String messageId;
   @JsonKey(name: 'part_id')
   final String partId;
-  final String type;
 
   const SessionEventPartRemoved({
     required this.messageId,
     required this.partId,
-    required this.type,
   });
 
   factory SessionEventPartRemoved.fromJson(Map<String, dynamic> json) =>
@@ -207,9 +190,7 @@ class SessionEventPartRemoved extends SessionEvent {
 
 @JsonSerializable()
 class SessionEventProcessingStarted extends SessionEvent {
-  final String type;
-
-  const SessionEventProcessingStarted({required this.type});
+  const SessionEventProcessingStarted();
 
   factory SessionEventProcessingStarted.fromJson(Map<String, dynamic> json) =>
       _$SessionEventProcessingStartedFromJson(json);
@@ -221,12 +202,8 @@ class SessionEventProcessingStarted extends SessionEvent {
 @JsonSerializable()
 class SessionEventProcessingFinished extends SessionEvent {
   final String? error;
-  final String type;
 
-  const SessionEventProcessingFinished({
-    required this.error,
-    required this.type,
-  });
+  const SessionEventProcessingFinished({required this.error});
 
   factory SessionEventProcessingFinished.fromJson(Map<String, dynamic> json) =>
       _$SessionEventProcessingFinishedFromJson(json);
@@ -238,9 +215,8 @@ class SessionEventProcessingFinished extends SessionEvent {
 @JsonSerializable()
 class SessionEventError extends SessionEvent {
   final String message;
-  final String type;
 
-  const SessionEventError({required this.message, required this.type});
+  const SessionEventError({required this.message});
 
   factory SessionEventError.fromJson(Map<String, dynamic> json) =>
       _$SessionEventErrorFromJson(json);

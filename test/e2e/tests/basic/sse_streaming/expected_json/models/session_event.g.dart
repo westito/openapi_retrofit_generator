@@ -11,73 +11,63 @@ Map<String, dynamic> _$SessionEventToJson(SessionEvent instance) =>
 
 SessionEventConnected _$SessionEventConnectedFromJson(
   Map<String, dynamic> json,
-) => SessionEventConnected(type: json['type'] as String);
+) => SessionEventConnected();
 
 Map<String, dynamic> _$SessionEventConnectedToJson(
   SessionEventConnected instance,
-) => <String, dynamic>{'type': instance.type};
+) => <String, dynamic>{};
 
 SessionEventSessionUpdated _$SessionEventSessionUpdatedFromJson(
   Map<String, dynamic> json,
 ) => SessionEventSessionUpdated(
   session: Session.fromJson(json['session'] as Map<String, dynamic>),
-  type: json['type'] as String,
 );
 
 Map<String, dynamic> _$SessionEventSessionUpdatedToJson(
   SessionEventSessionUpdated instance,
-) => <String, dynamic>{'session': instance.session, 'type': instance.type};
+) => <String, dynamic>{'session': instance.session};
 
 SessionEventSessionDeleted _$SessionEventSessionDeletedFromJson(
   Map<String, dynamic> json,
-) => SessionEventSessionDeleted(
-  sessionId: json['session_id'] as String,
-  type: json['type'] as String,
-);
+) => SessionEventSessionDeleted(sessionId: json['session_id'] as String);
 
 Map<String, dynamic> _$SessionEventSessionDeletedToJson(
   SessionEventSessionDeleted instance,
-) => <String, dynamic>{'session_id': instance.sessionId, 'type': instance.type};
+) => <String, dynamic>{'session_id': instance.sessionId};
 
 SessionEventMessageCreated _$SessionEventMessageCreatedFromJson(
   Map<String, dynamic> json,
 ) => SessionEventMessageCreated(
   message: Message.fromJson(json['message'] as Map<String, dynamic>),
-  type: json['type'] as String,
 );
 
 Map<String, dynamic> _$SessionEventMessageCreatedToJson(
   SessionEventMessageCreated instance,
-) => <String, dynamic>{'message': instance.message, 'type': instance.type};
+) => <String, dynamic>{'message': instance.message};
 
 SessionEventMessageUpdated _$SessionEventMessageUpdatedFromJson(
   Map<String, dynamic> json,
 ) => SessionEventMessageUpdated(
   message: Message.fromJson(json['message'] as Map<String, dynamic>),
-  type: json['type'] as String,
 );
 
 Map<String, dynamic> _$SessionEventMessageUpdatedToJson(
   SessionEventMessageUpdated instance,
-) => <String, dynamic>{'message': instance.message, 'type': instance.type};
+) => <String, dynamic>{'message': instance.message};
 
 SessionEventMessageRemoved _$SessionEventMessageRemovedFromJson(
   Map<String, dynamic> json,
-) => SessionEventMessageRemoved(
-  messageId: json['message_id'] as String,
-  type: json['type'] as String,
-);
+) => SessionEventMessageRemoved(messageId: json['message_id'] as String);
 
 Map<String, dynamic> _$SessionEventMessageRemovedToJson(
   SessionEventMessageRemoved instance,
-) => <String, dynamic>{'message_id': instance.messageId, 'type': instance.type};
+) => <String, dynamic>{'message_id': instance.messageId};
 
 SessionEventPartUpdated _$SessionEventPartUpdatedFromJson(
   Map<String, dynamic> json,
 ) => SessionEventPartUpdated(
   messageId: json['message_id'] as String,
   partField: PartModel.fromJson(json['part'] as Map<String, dynamic>),
-  type: json['type'] as String,
 );
 
 Map<String, dynamic> _$SessionEventPartUpdatedToJson(
@@ -85,7 +75,6 @@ Map<String, dynamic> _$SessionEventPartUpdatedToJson(
 ) => <String, dynamic>{
   'message_id': instance.messageId,
   'part': instance.partField,
-  'type': instance.type,
 };
 
 SessionEventPartRemoved _$SessionEventPartRemovedFromJson(
@@ -93,7 +82,6 @@ SessionEventPartRemoved _$SessionEventPartRemovedFromJson(
 ) => SessionEventPartRemoved(
   messageId: json['message_id'] as String,
   partId: json['part_id'] as String,
-  type: json['type'] as String,
 );
 
 Map<String, dynamic> _$SessionEventPartRemovedToJson(
@@ -101,33 +89,26 @@ Map<String, dynamic> _$SessionEventPartRemovedToJson(
 ) => <String, dynamic>{
   'message_id': instance.messageId,
   'part_id': instance.partId,
-  'type': instance.type,
 };
 
 SessionEventProcessingStarted _$SessionEventProcessingStartedFromJson(
   Map<String, dynamic> json,
-) => SessionEventProcessingStarted(type: json['type'] as String);
+) => SessionEventProcessingStarted();
 
 Map<String, dynamic> _$SessionEventProcessingStartedToJson(
   SessionEventProcessingStarted instance,
-) => <String, dynamic>{'type': instance.type};
+) => <String, dynamic>{};
 
 SessionEventProcessingFinished _$SessionEventProcessingFinishedFromJson(
   Map<String, dynamic> json,
-) => SessionEventProcessingFinished(
-  error: json['error'] as String?,
-  type: json['type'] as String,
-);
+) => SessionEventProcessingFinished(error: json['error'] as String?);
 
 Map<String, dynamic> _$SessionEventProcessingFinishedToJson(
   SessionEventProcessingFinished instance,
-) => <String, dynamic>{'error': instance.error, 'type': instance.type};
+) => <String, dynamic>{'error': instance.error};
 
 SessionEventError _$SessionEventErrorFromJson(Map<String, dynamic> json) =>
-    SessionEventError(
-      message: json['message'] as String,
-      type: json['type'] as String,
-    );
+    SessionEventError(message: json['message'] as String);
 
 Map<String, dynamic> _$SessionEventErrorToJson(SessionEventError instance) =>
-    <String, dynamic>{'message': instance.message, 'type': instance.type};
+    <String, dynamic>{'message': instance.message};

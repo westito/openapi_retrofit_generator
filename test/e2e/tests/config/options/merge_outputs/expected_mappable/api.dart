@@ -657,7 +657,6 @@ sealed class PaymentRequest with PaymentRequestMappable {
 @MappableClass(discriminatorValue: 'credit_card')
 class PaymentRequestCreditCard extends PaymentRequest
     with PaymentRequestCreditCardMappable {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -666,12 +665,11 @@ class PaymentRequestCreditCard extends PaymentRequest
   final double amount;
 
   const PaymentRequestCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
     required this.cvv,
-    required this.cardholderName,
+    this.cardholderName,
     required this.amount,
   });
 }
@@ -679,7 +677,6 @@ class PaymentRequestCreditCard extends PaymentRequest
 @MappableClass(discriminatorValue: 'bank_transfer')
 class PaymentRequestBankTransfer extends PaymentRequest
     with PaymentRequestBankTransferMappable {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -687,30 +684,27 @@ class PaymentRequestBankTransfer extends PaymentRequest
   final String? reference;
 
   const PaymentRequestBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
-    required this.accountHolder,
+    this.accountHolder,
     required this.amount,
-    required this.reference,
+    this.reference,
   });
 }
 
 @MappableClass(discriminatorValue: 'crypto')
 class PaymentRequestCrypto extends PaymentRequest
     with PaymentRequestCryptoMappable {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentRequestCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,
-    required this.transactionHash,
+    this.transactionHash,
   });
 }
 
@@ -815,44 +809,28 @@ sealed class SearchResult with SearchResultMappable {
 
 @MappableClass(discriminatorValue: 'user')
 class SearchResultUser extends SearchResult with SearchResultUserMappable {
-  final UserSearchResultTypeType type;
   final User user;
   final double? score;
 
-  const SearchResultUser({
-    required this.type,
-    required this.user,
-    required this.score,
-  });
+  const SearchResultUser({required this.user, this.score});
 }
 
 @MappableClass(discriminatorValue: 'post')
 class SearchResultPost extends SearchResult with SearchResultPostMappable {
-  final PostSearchResultTypeType type;
   final PostModel post;
   final double? score;
   final List<String>? highlights;
 
-  const SearchResultPost({
-    required this.type,
-    required this.post,
-    required this.score,
-    required this.highlights,
-  });
+  const SearchResultPost({required this.post, this.score, this.highlights});
 }
 
 @MappableClass(discriminatorValue: 'comment')
 class SearchResultComment extends SearchResult
     with SearchResultCommentMappable {
-  final CommentSearchResultTypeType type;
   final Comment comment;
   final double? score;
 
-  const SearchResultComment({
-    required this.type,
-    required this.comment,
-    required this.score,
-  });
+  const SearchResultComment({required this.comment, this.score});
 }
 
 @MappableClass()
@@ -915,7 +893,6 @@ sealed class Entity with EntityMappable {
 @MappableClass(discriminatorValue: 'person')
 class EntityPerson extends Entity with EntityPersonMappable {
   final String id;
-  final PersonEntityEntityTypeEntityType? entityType;
   final String? name;
   final String? description;
   final DateTime createdAt;
@@ -927,22 +904,20 @@ class EntityPerson extends Entity with EntityPersonMappable {
 
   const EntityPerson({
     required this.id,
-    required this.entityType,
-    required this.name,
-    required this.description,
+    this.name,
+    this.description,
     required this.createdAt,
-    required this.updatedAt,
+    this.updatedAt,
     required this.dateOfBirth,
-    required this.nationality,
-    required this.occupation,
-    required this.socialProfiles,
+    this.nationality,
+    this.occupation,
+    this.socialProfiles,
   });
 }
 
 @MappableClass(discriminatorValue: 'organization')
 class EntityOrganization extends Entity with EntityOrganizationMappable {
   final String id;
-  final OrganizationEntityEntityTypeEntityType? entityType;
   final String? name;
   final String? description;
   final DateTime createdAt;
@@ -955,16 +930,15 @@ class EntityOrganization extends Entity with EntityOrganizationMappable {
 
   const EntityOrganization({
     required this.id,
-    required this.entityType,
-    required this.name,
-    required this.description,
+    this.name,
+    this.description,
     required this.createdAt,
-    required this.updatedAt,
+    this.updatedAt,
     required this.registrationNumber,
-    required this.foundedDate,
-    required this.industry,
-    required this.employeeCount,
-    required this.revenue,
+    this.foundedDate,
+    this.industry,
+    this.employeeCount,
+    this.revenue,
   });
 }
 
@@ -1349,7 +1323,6 @@ sealed class PaymentResponseDetailsDetails
 class PaymentResponseDetailsDetailsCreditCard
     extends PaymentResponseDetailsDetails
     with PaymentResponseDetailsDetailsCreditCardMappable {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -1358,12 +1331,11 @@ class PaymentResponseDetailsDetailsCreditCard
   final double amount;
 
   const PaymentResponseDetailsDetailsCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
     required this.cvv,
-    required this.cardholderName,
+    this.cardholderName,
     required this.amount,
   });
 }
@@ -1372,7 +1344,6 @@ class PaymentResponseDetailsDetailsCreditCard
 class PaymentResponseDetailsDetailsBankTransfer
     extends PaymentResponseDetailsDetails
     with PaymentResponseDetailsDetailsBankTransferMappable {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -1380,30 +1351,27 @@ class PaymentResponseDetailsDetailsBankTransfer
   final String? reference;
 
   const PaymentResponseDetailsDetailsBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
-    required this.accountHolder,
+    this.accountHolder,
     required this.amount,
-    required this.reference,
+    this.reference,
   });
 }
 
 @MappableClass(discriminatorValue: 'crypto')
 class PaymentResponseDetailsDetailsCrypto extends PaymentResponseDetailsDetails
     with PaymentResponseDetailsDetailsCryptoMappable {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentResponseDetailsDetailsCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,
-    required this.transactionHash,
+    this.transactionHash,
   });
 }
 

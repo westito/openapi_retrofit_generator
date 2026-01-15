@@ -4,9 +4,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'credit_card_payment_payment_type_payment_type.dart';
-import 'bank_transfer_payment_payment_type_payment_type.dart';
-import 'crypto_payment_payment_type_payment_type.dart';
 import 'crypto_payment_cryptocurrency_cryptocurrency.dart';
 
 part 'payment_request.g.dart';
@@ -50,7 +47,6 @@ extension PaymentRequestUnionDeserializer on PaymentRequest {
 
 @JsonSerializable()
 class PaymentRequestCreditCard extends PaymentRequest {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -59,7 +55,6 @@ class PaymentRequestCreditCard extends PaymentRequest {
   final double amount;
 
   const PaymentRequestCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
@@ -77,7 +72,6 @@ class PaymentRequestCreditCard extends PaymentRequest {
 
 @JsonSerializable()
 class PaymentRequestBankTransfer extends PaymentRequest {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -85,7 +79,6 @@ class PaymentRequestBankTransfer extends PaymentRequest {
   final String? reference;
 
   const PaymentRequestBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
     required this.accountHolder,
@@ -102,14 +95,12 @@ class PaymentRequestBankTransfer extends PaymentRequest {
 
 @JsonSerializable()
 class PaymentRequestCrypto extends PaymentRequest {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentRequestCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,

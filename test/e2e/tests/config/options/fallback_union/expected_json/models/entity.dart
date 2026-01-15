@@ -4,9 +4,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
 
-import 'person_entity_entity_type_entity_type.dart';
-import 'organization_entity_entity_type_entity_type.dart';
-
 part 'entity.g.dart';
 
 @JsonSerializable(createFactory: false)
@@ -43,7 +40,6 @@ extension EntityUnionDeserializer on Entity {
 @JsonSerializable()
 class EntityPerson extends Entity {
   final String id;
-  final PersonEntityEntityTypeEntityType? entityType;
   final String? name;
   final String? description;
   final DateTime createdAt;
@@ -55,7 +51,6 @@ class EntityPerson extends Entity {
 
   const EntityPerson({
     required this.id,
-    required this.entityType,
     required this.name,
     required this.description,
     required this.createdAt,
@@ -76,7 +71,6 @@ class EntityPerson extends Entity {
 @JsonSerializable()
 class EntityOrganization extends Entity {
   final String id;
-  final OrganizationEntityEntityTypeEntityType? entityType;
   final String? name;
   final String? description;
   final DateTime createdAt;
@@ -89,7 +83,6 @@ class EntityOrganization extends Entity {
 
   const EntityOrganization({
     required this.id,
-    required this.entityType,
     required this.name,
     required this.description,
     required this.createdAt,

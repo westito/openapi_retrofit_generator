@@ -35,7 +35,6 @@ sealed class PaymentResponseDetailsDetails
 class PaymentResponseDetailsDetailsCreditCard
     extends PaymentResponseDetailsDetails
     with PaymentResponseDetailsDetailsCreditCardMappable {
-  final CreditCardPaymentPaymentTypePaymentType paymentType;
   final String cardNumber;
   final int expiryMonth;
   final int expiryYear;
@@ -44,12 +43,11 @@ class PaymentResponseDetailsDetailsCreditCard
   final double amount;
 
   const PaymentResponseDetailsDetailsCreditCard({
-    required this.paymentType,
     required this.cardNumber,
     required this.expiryMonth,
     required this.expiryYear,
     required this.cvv,
-    required this.cardholderName,
+    this.cardholderName,
     required this.amount,
   });
 }
@@ -58,7 +56,6 @@ class PaymentResponseDetailsDetailsCreditCard
 class PaymentResponseDetailsDetailsBankTransfer
     extends PaymentResponseDetailsDetails
     with PaymentResponseDetailsDetailsBankTransferMappable {
-  final BankTransferPaymentPaymentTypePaymentType paymentType;
   final String accountNumber;
   final String routingNumber;
   final String? accountHolder;
@@ -66,29 +63,26 @@ class PaymentResponseDetailsDetailsBankTransfer
   final String? reference;
 
   const PaymentResponseDetailsDetailsBankTransfer({
-    required this.paymentType,
     required this.accountNumber,
     required this.routingNumber,
-    required this.accountHolder,
+    this.accountHolder,
     required this.amount,
-    required this.reference,
+    this.reference,
   });
 }
 
 @MappableClass(discriminatorValue: 'crypto')
 class PaymentResponseDetailsDetailsCrypto extends PaymentResponseDetailsDetails
     with PaymentResponseDetailsDetailsCryptoMappable {
-  final CryptoPaymentPaymentTypePaymentType paymentType;
   final String walletAddress;
   final CryptoPaymentCryptocurrencyCryptocurrency cryptocurrency;
   final double amount;
   final String? transactionHash;
 
   const PaymentResponseDetailsDetailsCrypto({
-    required this.paymentType,
     required this.walletAddress,
     required this.cryptocurrency,
     required this.amount,
-    required this.transactionHash,
+    this.transactionHash,
   });
 }

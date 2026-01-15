@@ -12,11 +12,14 @@ typedef Discriminator = ({
 });
 
 typedef DiscriminatorValue = ({
-  /// The name of the property that is used to discriminate the oneOf variants
+  /// The value of the discriminator property for this variant
   String propertyValue,
 
-  /// -
+  /// The name of the parent union class
   String parentClass,
+
+  /// The name of the discriminator property (e.g., "type") to filter from variant parameters
+  String discriminatorPropertyName,
 });
 
 /// Universal template for containing information about component

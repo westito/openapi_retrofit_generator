@@ -10,10 +10,6 @@ Map<String, dynamic> _$EntityToJson(Entity instance) => <String, dynamic>{};
 
 EntityPerson _$EntityPersonFromJson(Map<String, dynamic> json) => EntityPerson(
   id: json['id'] as String,
-  entityType: $enumDecodeNullable(
-    _$PersonEntityEntityTypeEntityTypeEnumMap,
-    json['entityType'],
-  ),
   name: json['name'] as String?,
   description: json['description'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
@@ -31,7 +27,6 @@ EntityPerson _$EntityPersonFromJson(Map<String, dynamic> json) => EntityPerson(
 Map<String, dynamic> _$EntityPersonToJson(EntityPerson instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'entityType': instance.entityType,
       'name': instance.name,
       'description': instance.description,
       'createdAt': instance.createdAt.toIso8601String(),
@@ -42,17 +37,9 @@ Map<String, dynamic> _$EntityPersonToJson(EntityPerson instance) =>
       'socialProfiles': instance.socialProfiles,
     };
 
-const _$PersonEntityEntityTypeEntityTypeEnumMap = {
-  PersonEntityEntityTypeEntityType.person: 'person',
-};
-
 EntityOrganization _$EntityOrganizationFromJson(Map<String, dynamic> json) =>
     EntityOrganization(
       id: json['id'] as String,
-      entityType: $enumDecodeNullable(
-        _$OrganizationEntityEntityTypeEntityTypeEnumMap,
-        json['entityType'],
-      ),
       name: json['name'] as String?,
       description: json['description'] as String?,
       createdAt: DateTime.parse(json['createdAt'] as String),
@@ -71,7 +58,6 @@ EntityOrganization _$EntityOrganizationFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$EntityOrganizationToJson(EntityOrganization instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'entityType': instance.entityType,
       'name': instance.name,
       'description': instance.description,
       'createdAt': instance.createdAt.toIso8601String(),
@@ -82,7 +68,3 @@ Map<String, dynamic> _$EntityOrganizationToJson(EntityOrganization instance) =>
       'employeeCount': instance.employeeCount,
       'revenue': instance.revenue,
     };
-
-const _$OrganizationEntityEntityTypeEntityTypeEnumMap = {
-  OrganizationEntityEntityTypeEntityType.organization: 'organization',
-};

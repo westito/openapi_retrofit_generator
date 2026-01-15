@@ -82,7 +82,6 @@ class FamilyMembersMembersCatMapper
         _instance = FamilyMembersMembersCatMapper._(),
       );
       FamilyMembersMembersMapper.ensureInitialized().addSubMapper(_instance!);
-      CatTypeTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -90,11 +89,6 @@ class FamilyMembersMembersCatMapper
   @override
   final String id = 'FamilyMembersMembersCat';
 
-  static CatTypeType _$type(FamilyMembersMembersCat v) => v.type;
-  static const Field<FamilyMembersMembersCat, CatTypeType> _f$type = Field(
-    'type',
-    _$type,
-  );
   static int _$mewCount(FamilyMembersMembersCat v) => v.mewCount;
   static const Field<FamilyMembersMembersCat, int> _f$mewCount = Field(
     'mewCount',
@@ -103,7 +97,6 @@ class FamilyMembersMembersCatMapper
 
   @override
   final MappableFields<FamilyMembersMembersCat> fields = const {
-    #type: _f$type,
     #mewCount: _f$mewCount,
   };
 
@@ -116,10 +109,7 @@ class FamilyMembersMembersCatMapper
       FamilyMembersMembersMapper.ensureInitialized();
 
   static FamilyMembersMembersCat _instantiate(DecodingData data) {
-    return FamilyMembersMembersCat(
-      type: data.dec(_f$type),
-      mewCount: data.dec(_f$mewCount),
-    );
+    return FamilyMembersMembersCat(mewCount: data.dec(_f$mewCount));
   }
 
   @override
@@ -193,7 +183,7 @@ abstract class FamilyMembersMembersCatCopyWith<
 >
     implements FamilyMembersMembersCopyWith<$R, $In, $Out> {
   @override
-  $R call({CatTypeType? type, int? mewCount});
+  $R call({int? mewCount});
   FamilyMembersMembersCatCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -209,15 +199,10 @@ class _FamilyMembersMembersCatCopyWithImpl<$R, $Out>
   late final ClassMapperBase<FamilyMembersMembersCat> $mapper =
       FamilyMembersMembersCatMapper.ensureInitialized();
   @override
-  $R call({CatTypeType? type, int? mewCount}) => $apply(
-    FieldCopyWithData({
-      if (type != null) #type: type,
-      if (mewCount != null) #mewCount: mewCount,
-    }),
-  );
+  $R call({int? mewCount}) =>
+      $apply(FieldCopyWithData({if (mewCount != null) #mewCount: mewCount}));
   @override
   FamilyMembersMembersCat $make(CopyWithData data) => FamilyMembersMembersCat(
-    type: data.get(#type, or: $value.type),
     mewCount: data.get(#mewCount, or: $value.mewCount),
   );
 
@@ -238,7 +223,6 @@ class FamilyMembersMembersDogMapper
         _instance = FamilyMembersMembersDogMapper._(),
       );
       FamilyMembersMembersMapper.ensureInitialized().addSubMapper(_instance!);
-      DogTypeTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -246,11 +230,6 @@ class FamilyMembersMembersDogMapper
   @override
   final String id = 'FamilyMembersMembersDog';
 
-  static DogTypeType _$type(FamilyMembersMembersDog v) => v.type;
-  static const Field<FamilyMembersMembersDog, DogTypeType> _f$type = Field(
-    'type',
-    _$type,
-  );
   static String _$barkSound(FamilyMembersMembersDog v) => v.barkSound;
   static const Field<FamilyMembersMembersDog, String> _f$barkSound = Field(
     'barkSound',
@@ -259,7 +238,6 @@ class FamilyMembersMembersDogMapper
 
   @override
   final MappableFields<FamilyMembersMembersDog> fields = const {
-    #type: _f$type,
     #barkSound: _f$barkSound,
   };
 
@@ -272,10 +250,7 @@ class FamilyMembersMembersDogMapper
       FamilyMembersMembersMapper.ensureInitialized();
 
   static FamilyMembersMembersDog _instantiate(DecodingData data) {
-    return FamilyMembersMembersDog(
-      type: data.dec(_f$type),
-      barkSound: data.dec(_f$barkSound),
-    );
+    return FamilyMembersMembersDog(barkSound: data.dec(_f$barkSound));
   }
 
   @override
@@ -349,7 +324,7 @@ abstract class FamilyMembersMembersDogCopyWith<
 >
     implements FamilyMembersMembersCopyWith<$R, $In, $Out> {
   @override
-  $R call({DogTypeType? type, String? barkSound});
+  $R call({String? barkSound});
   FamilyMembersMembersDogCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -365,15 +340,10 @@ class _FamilyMembersMembersDogCopyWithImpl<$R, $Out>
   late final ClassMapperBase<FamilyMembersMembersDog> $mapper =
       FamilyMembersMembersDogMapper.ensureInitialized();
   @override
-  $R call({DogTypeType? type, String? barkSound}) => $apply(
-    FieldCopyWithData({
-      if (type != null) #type: type,
-      if (barkSound != null) #barkSound: barkSound,
-    }),
-  );
+  $R call({String? barkSound}) =>
+      $apply(FieldCopyWithData({if (barkSound != null) #barkSound: barkSound}));
   @override
   FamilyMembersMembersDog $make(CopyWithData data) => FamilyMembersMembersDog(
-    type: data.get(#type, or: $value.type),
     barkSound: data.get(#barkSound, or: $value.barkSound),
   );
 
@@ -394,7 +364,6 @@ class FamilyMembersMembersHumanMapper
         _instance = FamilyMembersMembersHumanMapper._(),
       );
       FamilyMembersMembersMapper.ensureInitialized().addSubMapper(_instance!);
-      HumanTypeTypeMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -402,11 +371,6 @@ class FamilyMembersMembersHumanMapper
   @override
   final String id = 'FamilyMembersMembersHuman';
 
-  static HumanTypeType _$type(FamilyMembersMembersHuman v) => v.type;
-  static const Field<FamilyMembersMembersHuman, HumanTypeType> _f$type = Field(
-    'type',
-    _$type,
-  );
   static String _$job(FamilyMembersMembersHuman v) => v.job;
   static const Field<FamilyMembersMembersHuman, String> _f$job = Field(
     'job',
@@ -414,10 +378,7 @@ class FamilyMembersMembersHumanMapper
   );
 
   @override
-  final MappableFields<FamilyMembersMembersHuman> fields = const {
-    #type: _f$type,
-    #job: _f$job,
-  };
+  final MappableFields<FamilyMembersMembersHuman> fields = const {#job: _f$job};
 
   @override
   final String discriminatorKey = 'type';
@@ -428,10 +389,7 @@ class FamilyMembersMembersHumanMapper
       FamilyMembersMembersMapper.ensureInitialized();
 
   static FamilyMembersMembersHuman _instantiate(DecodingData data) {
-    return FamilyMembersMembersHuman(
-      type: data.dec(_f$type),
-      job: data.dec(_f$job),
-    );
+    return FamilyMembersMembersHuman(job: data.dec(_f$job));
   }
 
   @override
@@ -509,7 +467,7 @@ abstract class FamilyMembersMembersHumanCopyWith<
 >
     implements FamilyMembersMembersCopyWith<$R, $In, $Out> {
   @override
-  $R call({HumanTypeType? type, String? job});
+  $R call({String? job});
   FamilyMembersMembersHumanCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -525,18 +483,11 @@ class _FamilyMembersMembersHumanCopyWithImpl<$R, $Out>
   late final ClassMapperBase<FamilyMembersMembersHuman> $mapper =
       FamilyMembersMembersHumanMapper.ensureInitialized();
   @override
-  $R call({HumanTypeType? type, String? job}) => $apply(
-    FieldCopyWithData({
-      if (type != null) #type: type,
-      if (job != null) #job: job,
-    }),
-  );
+  $R call({String? job}) =>
+      $apply(FieldCopyWithData({if (job != null) #job: job}));
   @override
   FamilyMembersMembersHuman $make(CopyWithData data) =>
-      FamilyMembersMembersHuman(
-        type: data.get(#type, or: $value.type),
-        job: data.get(#job, or: $value.job),
-      );
+      FamilyMembersMembersHuman(job: data.get(#job, or: $value.job));
 
   @override
   FamilyMembersMembersHumanCopyWith<$R2, FamilyMembersMembersHuman, $Out2>

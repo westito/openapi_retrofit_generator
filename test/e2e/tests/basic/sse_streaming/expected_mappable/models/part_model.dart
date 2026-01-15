@@ -21,13 +21,8 @@ sealed class PartModel with PartModelMappable {
 class PartModelText extends PartModel with PartModelTextMappable {
   final String id;
   final String text;
-  final String type;
 
-  const PartModelText({
-    required this.id,
-    required this.text,
-    required this.type,
-  });
+  const PartModelText({required this.id, required this.text});
 }
 
 @MappableClass(discriminatorValue: 'tool_use')
@@ -39,14 +34,12 @@ class PartModelToolUse extends PartModel with PartModelToolUseMappable {
   final String toolCallId;
   @MappableField(key: 'tool_input')
   final dynamic toolInput;
-  final String type;
 
   const PartModelToolUse({
     required this.id,
     required this.toolName,
     required this.toolCallId,
     required this.toolInput,
-    required this.type,
   });
 }
 
@@ -61,7 +54,6 @@ class PartModelToolResult extends PartModel with PartModelToolResultMappable {
   final String toolResult;
   @MappableField(key: 'is_error')
   final bool isError;
-  final String type;
 
   const PartModelToolResult({
     required this.id,
@@ -69,6 +61,5 @@ class PartModelToolResult extends PartModel with PartModelToolResultMappable {
     required this.toolCallId,
     required this.toolResult,
     required this.isError,
-    required this.type,
   });
 }

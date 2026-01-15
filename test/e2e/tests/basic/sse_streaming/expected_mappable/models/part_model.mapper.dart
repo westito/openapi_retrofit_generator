@@ -78,14 +78,11 @@ class PartModelTextMapper extends SubClassMapperBase<PartModelText> {
   static const Field<PartModelText, String> _f$id = Field('id', _$id);
   static String _$text(PartModelText v) => v.text;
   static const Field<PartModelText, String> _f$text = Field('text', _$text);
-  static String _$type(PartModelText v) => v.type;
-  static const Field<PartModelText, String> _f$type = Field('type', _$type);
 
   @override
   final MappableFields<PartModelText> fields = const {
     #id: _f$id,
     #text: _f$text,
-    #type: _f$type,
   };
 
   @override
@@ -96,11 +93,7 @@ class PartModelTextMapper extends SubClassMapperBase<PartModelText> {
   late final ClassMapperBase superMapper = PartModelMapper.ensureInitialized();
 
   static PartModelText _instantiate(DecodingData data) {
-    return PartModelText(
-      id: data.dec(_f$id),
-      text: data.dec(_f$text),
-      type: data.dec(_f$type),
-    );
+    return PartModelText(id: data.dec(_f$id), text: data.dec(_f$text));
   }
 
   @override
@@ -166,7 +159,7 @@ extension PartModelTextValueCopy<$R, $Out>
 abstract class PartModelTextCopyWith<$R, $In extends PartModelText, $Out>
     implements PartModelCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? id, String? text, String? type});
+  $R call({String? id, String? text});
   PartModelTextCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -179,18 +172,13 @@ class _PartModelTextCopyWithImpl<$R, $Out>
   late final ClassMapperBase<PartModelText> $mapper =
       PartModelTextMapper.ensureInitialized();
   @override
-  $R call({String? id, String? text, String? type}) => $apply(
-    FieldCopyWithData({
-      if (id != null) #id: id,
-      if (text != null) #text: text,
-      if (type != null) #type: type,
-    }),
+  $R call({String? id, String? text}) => $apply(
+    FieldCopyWithData({if (id != null) #id: id, if (text != null) #text: text}),
   );
   @override
   PartModelText $make(CopyWithData data) => PartModelText(
     id: data.get(#id, or: $value.id),
     text: data.get(#text, or: $value.text),
-    type: data.get(#type, or: $value.type),
   );
 
   @override
@@ -234,8 +222,6 @@ class PartModelToolUseMapper extends SubClassMapperBase<PartModelToolUse> {
     _$toolInput,
     key: r'tool_input',
   );
-  static String _$type(PartModelToolUse v) => v.type;
-  static const Field<PartModelToolUse, String> _f$type = Field('type', _$type);
 
   @override
   final MappableFields<PartModelToolUse> fields = const {
@@ -243,7 +229,6 @@ class PartModelToolUseMapper extends SubClassMapperBase<PartModelToolUse> {
     #toolName: _f$toolName,
     #toolCallId: _f$toolCallId,
     #toolInput: _f$toolInput,
-    #type: _f$type,
   };
 
   @override
@@ -259,7 +244,6 @@ class PartModelToolUseMapper extends SubClassMapperBase<PartModelToolUse> {
       toolName: data.dec(_f$toolName),
       toolCallId: data.dec(_f$toolCallId),
       toolInput: data.dec(_f$toolInput),
-      type: data.dec(_f$type),
     );
   }
 
@@ -331,7 +315,6 @@ abstract class PartModelToolUseCopyWith<$R, $In extends PartModelToolUse, $Out>
     String? toolName,
     String? toolCallId,
     dynamic toolInput,
-    String? type,
   });
   PartModelToolUseCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -352,14 +335,12 @@ class _PartModelToolUseCopyWithImpl<$R, $Out>
     String? toolName,
     String? toolCallId,
     Object? toolInput = $none,
-    String? type,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (toolName != null) #toolName: toolName,
       if (toolCallId != null) #toolCallId: toolCallId,
       if (toolInput != $none) #toolInput: toolInput,
-      if (type != null) #type: type,
     }),
   );
   @override
@@ -368,7 +349,6 @@ class _PartModelToolUseCopyWithImpl<$R, $Out>
     toolName: data.get(#toolName, or: $value.toolName),
     toolCallId: data.get(#toolCallId, or: $value.toolCallId),
     toolInput: data.get(#toolInput, or: $value.toolInput),
-    type: data.get(#type, or: $value.type),
   );
 
   @override
@@ -419,11 +399,6 @@ class PartModelToolResultMapper
     _$isError,
     key: r'is_error',
   );
-  static String _$type(PartModelToolResult v) => v.type;
-  static const Field<PartModelToolResult, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<PartModelToolResult> fields = const {
@@ -432,7 +407,6 @@ class PartModelToolResultMapper
     #toolCallId: _f$toolCallId,
     #toolResult: _f$toolResult,
     #isError: _f$isError,
-    #type: _f$type,
   };
 
   @override
@@ -449,7 +423,6 @@ class PartModelToolResultMapper
       toolCallId: data.dec(_f$toolCallId),
       toolResult: data.dec(_f$toolResult),
       isError: data.dec(_f$isError),
-      type: data.dec(_f$type),
     );
   }
 
@@ -530,7 +503,6 @@ abstract class PartModelToolResultCopyWith<
     String? toolCallId,
     String? toolResult,
     bool? isError,
-    String? type,
   });
   PartModelToolResultCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
@@ -552,7 +524,6 @@ class _PartModelToolResultCopyWithImpl<$R, $Out>
     String? toolCallId,
     String? toolResult,
     bool? isError,
-    String? type,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
@@ -560,7 +531,6 @@ class _PartModelToolResultCopyWithImpl<$R, $Out>
       if (toolCallId != null) #toolCallId: toolCallId,
       if (toolResult != null) #toolResult: toolResult,
       if (isError != null) #isError: isError,
-      if (type != null) #type: type,
     }),
   );
   @override
@@ -570,7 +540,6 @@ class _PartModelToolResultCopyWithImpl<$R, $Out>
     toolCallId: data.get(#toolCallId, or: $value.toolCallId),
     toolResult: data.get(#toolResult, or: $value.toolResult),
     isError: data.get(#isError, or: $value.isError),
-    type: data.get(#type, or: $value.type),
   );
 
   @override

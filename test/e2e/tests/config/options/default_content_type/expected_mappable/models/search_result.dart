@@ -29,42 +29,26 @@ sealed class SearchResult with SearchResultMappable {
 
 @MappableClass(discriminatorValue: 'user')
 class SearchResultUser extends SearchResult with SearchResultUserMappable {
-  final UserSearchResultTypeType type;
   final User user;
   final double? score;
 
-  const SearchResultUser({
-    required this.type,
-    required this.user,
-    required this.score,
-  });
+  const SearchResultUser({required this.user, this.score});
 }
 
 @MappableClass(discriminatorValue: 'post')
 class SearchResultPost extends SearchResult with SearchResultPostMappable {
-  final PostSearchResultTypeType type;
   final PostModel post;
   final double? score;
   final List<String>? highlights;
 
-  const SearchResultPost({
-    required this.type,
-    required this.post,
-    required this.score,
-    required this.highlights,
-  });
+  const SearchResultPost({required this.post, this.score, this.highlights});
 }
 
 @MappableClass(discriminatorValue: 'comment')
 class SearchResultComment extends SearchResult
     with SearchResultCommentMappable {
-  final CommentSearchResultTypeType type;
   final Comment comment;
   final double? score;
 
-  const SearchResultComment({
-    required this.type,
-    required this.comment,
-    required this.score,
-  });
+  const SearchResultComment({required this.comment, this.score});
 }

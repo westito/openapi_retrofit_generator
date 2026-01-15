@@ -83,14 +83,8 @@ class SessionEventConnectedMapper
   @override
   final String id = 'SessionEventConnected';
 
-  static String _$type(SessionEventConnected v) => v.type;
-  static const Field<SessionEventConnected, String> _f$type = Field(
-    'type',
-    _$type,
-  );
-
   @override
-  final MappableFields<SessionEventConnected> fields = const {#type: _f$type};
+  final MappableFields<SessionEventConnected> fields = const {};
 
   @override
   final String discriminatorKey = 'type';
@@ -101,7 +95,7 @@ class SessionEventConnectedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventConnected _instantiate(DecodingData data) {
-    return SessionEventConnected(type: data.dec(_f$type));
+    return SessionEventConnected();
   }
 
   @override
@@ -175,7 +169,7 @@ abstract class SessionEventConnectedCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? type});
+  $R call();
   SessionEventConnectedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -190,11 +184,9 @@ class _SessionEventConnectedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventConnected> $mapper =
       SessionEventConnectedMapper.ensureInitialized();
   @override
-  $R call({String? type}) =>
-      $apply(FieldCopyWithData({if (type != null) #type: type}));
+  $R call() => $apply(FieldCopyWithData({}));
   @override
-  SessionEventConnected $make(CopyWithData data) =>
-      SessionEventConnected(type: data.get(#type, or: $value.type));
+  SessionEventConnected $make(CopyWithData data) => SessionEventConnected();
 
   @override
   SessionEventConnectedCopyWith<$R2, SessionEventConnected, $Out2>
@@ -226,16 +218,10 @@ class SessionEventSessionUpdatedMapper
     'session',
     _$session,
   );
-  static String _$type(SessionEventSessionUpdated v) => v.type;
-  static const Field<SessionEventSessionUpdated, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventSessionUpdated> fields = const {
     #session: _f$session,
-    #type: _f$type,
   };
 
   @override
@@ -247,10 +233,7 @@ class SessionEventSessionUpdatedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventSessionUpdated _instantiate(DecodingData data) {
-    return SessionEventSessionUpdated(
-      session: data.dec(_f$session),
-      type: data.dec(_f$type),
-    );
+    return SessionEventSessionUpdated(session: data.dec(_f$session));
   }
 
   @override
@@ -329,7 +312,7 @@ abstract class SessionEventSessionUpdatedCopyWith<
     implements SessionEventCopyWith<$R, $In, $Out> {
   SessionCopyWith<$R, Session, Session> get session;
   @override
-  $R call({Session? session, String? type});
+  $R call({Session? session});
   SessionEventSessionUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -352,17 +335,12 @@ class _SessionEventSessionUpdatedCopyWithImpl<$R, $Out>
   SessionCopyWith<$R, Session, Session> get session =>
       $value.session.copyWith.$chain((v) => call(session: v));
   @override
-  $R call({Session? session, String? type}) => $apply(
-    FieldCopyWithData({
-      if (session != null) #session: session,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({Session? session}) =>
+      $apply(FieldCopyWithData({if (session != null) #session: session}));
   @override
   SessionEventSessionUpdated $make(CopyWithData data) =>
       SessionEventSessionUpdated(
         session: data.get(#session, or: $value.session),
-        type: data.get(#type, or: $value.type),
       );
 
   @override
@@ -395,16 +373,10 @@ class SessionEventSessionDeletedMapper
     _$sessionId,
     key: r'session_id',
   );
-  static String _$type(SessionEventSessionDeleted v) => v.type;
-  static const Field<SessionEventSessionDeleted, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventSessionDeleted> fields = const {
     #sessionId: _f$sessionId,
-    #type: _f$type,
   };
 
   @override
@@ -416,10 +388,7 @@ class SessionEventSessionDeletedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventSessionDeleted _instantiate(DecodingData data) {
-    return SessionEventSessionDeleted(
-      sessionId: data.dec(_f$sessionId),
-      type: data.dec(_f$type),
-    );
+    return SessionEventSessionDeleted(sessionId: data.dec(_f$sessionId));
   }
 
   @override
@@ -497,7 +466,7 @@ abstract class SessionEventSessionDeletedCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? sessionId, String? type});
+  $R call({String? sessionId});
   SessionEventSessionDeletedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -517,17 +486,12 @@ class _SessionEventSessionDeletedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventSessionDeleted> $mapper =
       SessionEventSessionDeletedMapper.ensureInitialized();
   @override
-  $R call({String? sessionId, String? type}) => $apply(
-    FieldCopyWithData({
-      if (sessionId != null) #sessionId: sessionId,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({String? sessionId}) =>
+      $apply(FieldCopyWithData({if (sessionId != null) #sessionId: sessionId}));
   @override
   SessionEventSessionDeleted $make(CopyWithData data) =>
       SessionEventSessionDeleted(
         sessionId: data.get(#sessionId, or: $value.sessionId),
-        type: data.get(#type, or: $value.type),
       );
 
   @override
@@ -560,16 +524,10 @@ class SessionEventMessageCreatedMapper
     'message',
     _$message,
   );
-  static String _$type(SessionEventMessageCreated v) => v.type;
-  static const Field<SessionEventMessageCreated, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventMessageCreated> fields = const {
     #message: _f$message,
-    #type: _f$type,
   };
 
   @override
@@ -581,10 +539,7 @@ class SessionEventMessageCreatedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventMessageCreated _instantiate(DecodingData data) {
-    return SessionEventMessageCreated(
-      message: data.dec(_f$message),
-      type: data.dec(_f$type),
-    );
+    return SessionEventMessageCreated(message: data.dec(_f$message));
   }
 
   @override
@@ -663,7 +618,7 @@ abstract class SessionEventMessageCreatedCopyWith<
     implements SessionEventCopyWith<$R, $In, $Out> {
   MessageCopyWith<$R, Message, Message> get message;
   @override
-  $R call({Message? message, String? type});
+  $R call({Message? message});
   SessionEventMessageCreatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -686,17 +641,12 @@ class _SessionEventMessageCreatedCopyWithImpl<$R, $Out>
   MessageCopyWith<$R, Message, Message> get message =>
       $value.message.copyWith.$chain((v) => call(message: v));
   @override
-  $R call({Message? message, String? type}) => $apply(
-    FieldCopyWithData({
-      if (message != null) #message: message,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({Message? message}) =>
+      $apply(FieldCopyWithData({if (message != null) #message: message}));
   @override
   SessionEventMessageCreated $make(CopyWithData data) =>
       SessionEventMessageCreated(
         message: data.get(#message, or: $value.message),
-        type: data.get(#type, or: $value.type),
       );
 
   @override
@@ -729,16 +679,10 @@ class SessionEventMessageUpdatedMapper
     'message',
     _$message,
   );
-  static String _$type(SessionEventMessageUpdated v) => v.type;
-  static const Field<SessionEventMessageUpdated, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventMessageUpdated> fields = const {
     #message: _f$message,
-    #type: _f$type,
   };
 
   @override
@@ -750,10 +694,7 @@ class SessionEventMessageUpdatedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventMessageUpdated _instantiate(DecodingData data) {
-    return SessionEventMessageUpdated(
-      message: data.dec(_f$message),
-      type: data.dec(_f$type),
-    );
+    return SessionEventMessageUpdated(message: data.dec(_f$message));
   }
 
   @override
@@ -832,7 +773,7 @@ abstract class SessionEventMessageUpdatedCopyWith<
     implements SessionEventCopyWith<$R, $In, $Out> {
   MessageCopyWith<$R, Message, Message> get message;
   @override
-  $R call({Message? message, String? type});
+  $R call({Message? message});
   SessionEventMessageUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -855,17 +796,12 @@ class _SessionEventMessageUpdatedCopyWithImpl<$R, $Out>
   MessageCopyWith<$R, Message, Message> get message =>
       $value.message.copyWith.$chain((v) => call(message: v));
   @override
-  $R call({Message? message, String? type}) => $apply(
-    FieldCopyWithData({
-      if (message != null) #message: message,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({Message? message}) =>
+      $apply(FieldCopyWithData({if (message != null) #message: message}));
   @override
   SessionEventMessageUpdated $make(CopyWithData data) =>
       SessionEventMessageUpdated(
         message: data.get(#message, or: $value.message),
-        type: data.get(#type, or: $value.type),
       );
 
   @override
@@ -898,16 +834,10 @@ class SessionEventMessageRemovedMapper
     _$messageId,
     key: r'message_id',
   );
-  static String _$type(SessionEventMessageRemoved v) => v.type;
-  static const Field<SessionEventMessageRemoved, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventMessageRemoved> fields = const {
     #messageId: _f$messageId,
-    #type: _f$type,
   };
 
   @override
@@ -919,10 +849,7 @@ class SessionEventMessageRemovedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventMessageRemoved _instantiate(DecodingData data) {
-    return SessionEventMessageRemoved(
-      messageId: data.dec(_f$messageId),
-      type: data.dec(_f$type),
-    );
+    return SessionEventMessageRemoved(messageId: data.dec(_f$messageId));
   }
 
   @override
@@ -1000,7 +927,7 @@ abstract class SessionEventMessageRemovedCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? messageId, String? type});
+  $R call({String? messageId});
   SessionEventMessageRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1020,17 +947,12 @@ class _SessionEventMessageRemovedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventMessageRemoved> $mapper =
       SessionEventMessageRemovedMapper.ensureInitialized();
   @override
-  $R call({String? messageId, String? type}) => $apply(
-    FieldCopyWithData({
-      if (messageId != null) #messageId: messageId,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({String? messageId}) =>
+      $apply(FieldCopyWithData({if (messageId != null) #messageId: messageId}));
   @override
   SessionEventMessageRemoved $make(CopyWithData data) =>
       SessionEventMessageRemoved(
         messageId: data.get(#messageId, or: $value.messageId),
-        type: data.get(#type, or: $value.type),
       );
 
   @override
@@ -1070,17 +992,11 @@ class SessionEventPartUpdatedMapper
     _$partField,
     key: r'part',
   );
-  static String _$type(SessionEventPartUpdated v) => v.type;
-  static const Field<SessionEventPartUpdated, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventPartUpdated> fields = const {
     #messageId: _f$messageId,
     #partField: _f$partField,
-    #type: _f$type,
   };
 
   @override
@@ -1095,7 +1011,6 @@ class SessionEventPartUpdatedMapper
     return SessionEventPartUpdated(
       messageId: data.dec(_f$messageId),
       partField: data.dec(_f$partField),
-      type: data.dec(_f$type),
     );
   }
 
@@ -1171,7 +1086,7 @@ abstract class SessionEventPartUpdatedCopyWith<
     implements SessionEventCopyWith<$R, $In, $Out> {
   PartModelCopyWith<$R, PartModel, PartModel> get partField;
   @override
-  $R call({String? messageId, PartModel? partField, String? type});
+  $R call({String? messageId, PartModel? partField});
   SessionEventPartUpdatedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1190,18 +1105,16 @@ class _SessionEventPartUpdatedCopyWithImpl<$R, $Out>
   PartModelCopyWith<$R, PartModel, PartModel> get partField =>
       $value.partField.copyWith.$chain((v) => call(partField: v));
   @override
-  $R call({String? messageId, PartModel? partField, String? type}) => $apply(
+  $R call({String? messageId, PartModel? partField}) => $apply(
     FieldCopyWithData({
       if (messageId != null) #messageId: messageId,
       if (partField != null) #partField: partField,
-      if (type != null) #type: type,
     }),
   );
   @override
   SessionEventPartUpdated $make(CopyWithData data) => SessionEventPartUpdated(
     messageId: data.get(#messageId, or: $value.messageId),
     partField: data.get(#partField, or: $value.partField),
-    type: data.get(#type, or: $value.type),
   );
 
   @override
@@ -1240,17 +1153,11 @@ class SessionEventPartRemovedMapper
     _$partId,
     key: r'part_id',
   );
-  static String _$type(SessionEventPartRemoved v) => v.type;
-  static const Field<SessionEventPartRemoved, String> _f$type = Field(
-    'type',
-    _$type,
-  );
 
   @override
   final MappableFields<SessionEventPartRemoved> fields = const {
     #messageId: _f$messageId,
     #partId: _f$partId,
-    #type: _f$type,
   };
 
   @override
@@ -1265,7 +1172,6 @@ class SessionEventPartRemovedMapper
     return SessionEventPartRemoved(
       messageId: data.dec(_f$messageId),
       partId: data.dec(_f$partId),
-      type: data.dec(_f$type),
     );
   }
 
@@ -1340,7 +1246,7 @@ abstract class SessionEventPartRemovedCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? messageId, String? partId, String? type});
+  $R call({String? messageId, String? partId});
   SessionEventPartRemovedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1356,18 +1262,16 @@ class _SessionEventPartRemovedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventPartRemoved> $mapper =
       SessionEventPartRemovedMapper.ensureInitialized();
   @override
-  $R call({String? messageId, String? partId, String? type}) => $apply(
+  $R call({String? messageId, String? partId}) => $apply(
     FieldCopyWithData({
       if (messageId != null) #messageId: messageId,
       if (partId != null) #partId: partId,
-      if (type != null) #type: type,
     }),
   );
   @override
   SessionEventPartRemoved $make(CopyWithData data) => SessionEventPartRemoved(
     messageId: data.get(#messageId, or: $value.messageId),
     partId: data.get(#partId, or: $value.partId),
-    type: data.get(#type, or: $value.type),
   );
 
   @override
@@ -1394,16 +1298,8 @@ class SessionEventProcessingStartedMapper
   @override
   final String id = 'SessionEventProcessingStarted';
 
-  static String _$type(SessionEventProcessingStarted v) => v.type;
-  static const Field<SessionEventProcessingStarted, String> _f$type = Field(
-    'type',
-    _$type,
-  );
-
   @override
-  final MappableFields<SessionEventProcessingStarted> fields = const {
-    #type: _f$type,
-  };
+  final MappableFields<SessionEventProcessingStarted> fields = const {};
 
   @override
   final String discriminatorKey = 'type';
@@ -1414,7 +1310,7 @@ class SessionEventProcessingStartedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventProcessingStarted _instantiate(DecodingData data) {
-    return SessionEventProcessingStarted(type: data.dec(_f$type));
+    return SessionEventProcessingStarted();
   }
 
   @override
@@ -1492,7 +1388,7 @@ abstract class SessionEventProcessingStartedCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? type});
+  $R call();
   SessionEventProcessingStartedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1516,11 +1412,10 @@ class _SessionEventProcessingStartedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventProcessingStarted> $mapper =
       SessionEventProcessingStartedMapper.ensureInitialized();
   @override
-  $R call({String? type}) =>
-      $apply(FieldCopyWithData({if (type != null) #type: type}));
+  $R call() => $apply(FieldCopyWithData({}));
   @override
   SessionEventProcessingStarted $make(CopyWithData data) =>
-      SessionEventProcessingStarted(type: data.get(#type, or: $value.type));
+      SessionEventProcessingStarted();
 
   @override
   SessionEventProcessingStartedCopyWith<
@@ -1554,17 +1449,12 @@ class SessionEventProcessingFinishedMapper
   static const Field<SessionEventProcessingFinished, String> _f$error = Field(
     'error',
     _$error,
-  );
-  static String _$type(SessionEventProcessingFinished v) => v.type;
-  static const Field<SessionEventProcessingFinished, String> _f$type = Field(
-    'type',
-    _$type,
+    opt: true,
   );
 
   @override
   final MappableFields<SessionEventProcessingFinished> fields = const {
     #error: _f$error,
-    #type: _f$type,
   };
 
   @override
@@ -1576,10 +1466,7 @@ class SessionEventProcessingFinishedMapper
       SessionEventMapper.ensureInitialized();
 
   static SessionEventProcessingFinished _instantiate(DecodingData data) {
-    return SessionEventProcessingFinished(
-      error: data.dec(_f$error),
-      type: data.dec(_f$type),
-    );
+    return SessionEventProcessingFinished(error: data.dec(_f$error));
   }
 
   @override
@@ -1661,7 +1548,7 @@ abstract class SessionEventProcessingFinishedCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? error, String? type});
+  $R call({String? error});
   SessionEventProcessingFinishedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1685,18 +1572,11 @@ class _SessionEventProcessingFinishedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventProcessingFinished> $mapper =
       SessionEventProcessingFinishedMapper.ensureInitialized();
   @override
-  $R call({Object? error = $none, String? type}) => $apply(
-    FieldCopyWithData({
-      if (error != $none) #error: error,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({Object? error = $none}) =>
+      $apply(FieldCopyWithData({if (error != $none) #error: error}));
   @override
   SessionEventProcessingFinished $make(CopyWithData data) =>
-      SessionEventProcessingFinished(
-        error: data.get(#error, or: $value.error),
-        type: data.get(#type, or: $value.type),
-      );
+      SessionEventProcessingFinished(error: data.get(#error, or: $value.error));
 
   @override
   SessionEventProcessingFinishedCopyWith<
@@ -1728,14 +1608,9 @@ class SessionEventErrorMapper extends SubClassMapperBase<SessionEventError> {
     'message',
     _$message,
   );
-  static String _$type(SessionEventError v) => v.type;
-  static const Field<SessionEventError, String> _f$type = Field('type', _$type);
 
   @override
-  final MappableFields<SessionEventError> fields = const {
-    #message: _f$message,
-    #type: _f$type,
-  };
+  final MappableFields<SessionEventError> fields = const {#message: _f$message};
 
   @override
   final String discriminatorKey = 'type';
@@ -1746,10 +1621,7 @@ class SessionEventErrorMapper extends SubClassMapperBase<SessionEventError> {
       SessionEventMapper.ensureInitialized();
 
   static SessionEventError _instantiate(DecodingData data) {
-    return SessionEventError(
-      message: data.dec(_f$message),
-      type: data.dec(_f$type),
-    );
+    return SessionEventError(message: data.dec(_f$message));
   }
 
   @override
@@ -1824,7 +1696,7 @@ abstract class SessionEventErrorCopyWith<
 >
     implements SessionEventCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? message, String? type});
+  $R call({String? message});
   SessionEventErrorCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -1839,17 +1711,11 @@ class _SessionEventErrorCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SessionEventError> $mapper =
       SessionEventErrorMapper.ensureInitialized();
   @override
-  $R call({String? message, String? type}) => $apply(
-    FieldCopyWithData({
-      if (message != null) #message: message,
-      if (type != null) #type: type,
-    }),
-  );
+  $R call({String? message}) =>
+      $apply(FieldCopyWithData({if (message != null) #message: message}));
   @override
-  SessionEventError $make(CopyWithData data) => SessionEventError(
-    message: data.get(#message, or: $value.message),
-    type: data.get(#type, or: $value.type),
-  );
+  SessionEventError $make(CopyWithData data) =>
+      SessionEventError(message: data.get(#message, or: $value.message));
 
   @override
   SessionEventErrorCopyWith<$R2, SessionEventError, $Out2> $chain<$R2, $Out2>(
